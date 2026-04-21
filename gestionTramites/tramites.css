@@ -1,0 +1,28 @@
+.header{
+    width: 100%;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+}
+
+.header-titulos small {
+    text-transform: uppercase;
+}
+
+.filtros-section
+{
+    width: 100%;
+    gap: 10px;
+}
+
+.input-buscar-tramite-contenedor {
+    width: 300px;
+}
+.input-buscar-tramite{
+    width: 100%;
+}
+
+.tramites-list-section{ 
+    width: 100%;
+}
+

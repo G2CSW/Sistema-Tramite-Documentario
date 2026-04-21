@@ -1,0 +1,41 @@
+.header-bandeja {
+  width: 100%;
+  text-align: left;
+}
+
+.header-bandeja h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.header-bandeja .subtitle {
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+.filtros-section
+{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filtros-section > div {
+  display: flex;
+  gap: 15px;
+}
+
+.input-buscar-tramite-contenedor {
+    width: 300px;
+}
+.input-buscar-tramite{
+    width: 100%;
+}
+
+.acciones {
+  display: flex;
+  gap: 15px;
+}
+
+

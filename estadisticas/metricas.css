@@ -1,0 +1,93 @@
+.header-metricas {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 20px;
+}
+
+.header-metricas .acciones {
+  display: flex;
+  gap: 10px;
+}
+
+.header-metricas h1 {
+  color: #1e293b;
+}
+
+.grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.card {
+  width: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.card-total-doc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-total-doc h2 {
+  font-size: 50px;
+}
+
+.card-total-doc h2 span {
+  font-size: 18px;
+}
+
+.card.oscuro {
+  background: #1e293b;
+  color: white;
+}
+
+
+h2 {
+  font-size: 40px;
+  margin: 10px 0;
+}
+
+h3 {
+  margin-bottom: 15px;
+  color: #1e293b;
+}
+
+.tiempos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.tiempos div {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+
+.barra {
+  margin: 15px 0;
+}
+
+.barra span {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.progreso {
+  height: 8px;
+  background: #1e293b;
+  border-radius: 4px;
+}

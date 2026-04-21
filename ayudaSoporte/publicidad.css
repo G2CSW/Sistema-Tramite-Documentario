@@ -1,0 +1,52 @@
+/* ===== ENCABEZADO ===== */
+.titulo {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1a2332;
+  margin-bottom: 12px;
+}
+
+.subtitulo {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
+  max-width: 660px;
+}
+
+
+/* ===== BLOQUES INFERIORES ===== */
+.info-bloques {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.bloque {
+  width: 250px;
+  min-height: 120px;
+  padding: 24px 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  border-left: 3px solid var(--color-primary);
+}
+
+.bloque-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #1a2332;
+  font-size: 0.9rem;
+}
+
+.bloque-icono {
+  font-size: 1rem;
+  color: #1a2332;
+}
+
+.bloque p {
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.6;
+}

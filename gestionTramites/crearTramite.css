@@ -1,0 +1,63 @@
+label {
+  font-weight: bold;
+}
+
+.section-numero-tramite,
+.section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.textarea-descripcion {
+  width: 100%;
+  padding: 15px 20px;
+  height: 100px;
+  resize: none;
+
+  background-color: transparent;
+  border-radius: 5px;
+  border: 2px solid var(--color-neutral);
+}
+
+.form-datos-solicitante {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-datos-solicitante > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-detalles {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-detalles > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-documentos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section-acciones {
+  display: flex;
+  justify-content: end;
+  gap: 15px;
+}

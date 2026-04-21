@@ -1,0 +1,84 @@
+/* HEADER */
+
+.header-seguimiento {
+    width: 100%;
+}
+.header-seguimiento h1 {
+    font-size: 30px;
+    color: #1f2d3d;
+}
+
+.header-seguimiento p {
+    color: #666;
+    margin-top: 5px;
+}
+
+/* INFO BOX */
+.info-box {
+    width: fit-content;
+    margin-top: 20px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: start;
+    gap: 20px;
+}
+
+.info-item {
+   display: flex;
+   align-items: center;
+   gap: 15px;
+}
+
+/* TABLE */
+.table-section {
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* HEADER TABLA */
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.table-header h2 {
+    font-size: 20px;
+}
+
+/* USER */
+.user {
+    display: flex;
+    gap: 10px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: #2c3e50;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.avatar.gray {
+    background: #bdc3c7;
+    color: black;
+}
+
+.avatar.brown {
+    background: #5d4037;
+}
+
+.user small {
+    display: block;
+    color: gray;
+}

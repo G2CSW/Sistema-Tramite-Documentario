@@ -1,0 +1,122 @@
+.header-inicio {
+    margin-bottom: 40px;
+    max-width: 700px;
+    text-align: center;
+}
+
+.section-label {
+    font-size: 10px;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.welcome-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: #1a202c; /* Azul oscuro idéntico a image_0.png */
+    margin: 0 0 15px 0;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #718096;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.cards-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px 30px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 250px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-icon {
+    font-size: 24px;
+}
+
+.area-card .government-building {
+    color: #1a202c; 
+}
+
+.date-card .card-icon {
+    color: #718096; 
+}
+
+.card-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.card-label {
+    font-size: 10px;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.card-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0;
+}
+
+
+.section-acciones-rapidas {  
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    gap: 20px;
+}
+
+.acciones-rapidas {
+ width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.accion-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 10px;
+  background: var(--color-primary);
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 40px;
+}
+
+.accion-btn:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+.icono {
+  font-size: 18px;
+}
