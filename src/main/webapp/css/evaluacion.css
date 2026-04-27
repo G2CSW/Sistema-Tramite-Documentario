@@ -1,0 +1,112 @@
+.header-evaluacion {
+  width: 100%;
+}
+
+.header-evaluacion p {
+    color: var(--color-primary);
+    font-size: 20px;
+}
+
+.header-evaluacion h1 {
+  color: var(--color-primary);
+  margin-bottom: 20px;
+}
+
+.contenedor-principal {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-veredicto {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-primary);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+
+  gap: 15px;
+}
+
+.form-veredicto h2 {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+
+.form-veredicto > label {
+  display: block;
+  text-align: left;
+  color: #dee3ea;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.textarea-comentario {
+  width: 100%;
+  height: 100px;
+  max-height: 100px;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  resize: none;
+  background-color: #1e293b55;
+  outline: none;
+
+  color: var(--color-secondary);
+}
+
+.textarea-comentario:focus {
+  border: 2px solid #efefef;
+}
+
+.btn-aprobar,
+.btn-rechazar {
+  border: none;
+  color: white;
+  width: 100%;
+}
+
+.btn-aprobar {
+  background-color: var(--color-verde);
+}
+
+.btn-aprobar:hover {
+  background-color: var(--color-verde-hover);
+}
+
+.btn-rechazar {
+  background-color: var(--color-rojo);
+}
+
+.btn-rechazar:hover {
+  background-color: var(--color-rojo-hover);
+}
+
+
+.checklist-container {
+  background: var(--color-primary);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-direction: row-reverse;
+  gap: 10px;
+}
+
+.checklist-item > label {
+  color: #dee3ea;
+  font-size: 13px;
+  cursor: pointer;
+}

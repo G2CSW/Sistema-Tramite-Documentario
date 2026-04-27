@@ -1,6 +1,0 @@
-# FALTA
-
-
-Arreglar métricas
-
-
