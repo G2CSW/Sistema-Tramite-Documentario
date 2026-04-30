@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="es">
   <head>
@@ -54,68 +55,21 @@
             <th>ACCIÓN</th>
           </tr>
         </thead>
-
         <tbody>
-          <tr>
-             <td >
-                156151
-              </td>
-            <td>
-              Licencia de Estudio
-            </td>
-            <td>12345678</td>
-            <td>Hoy, 09:45 AM</td>
-            <td class="acciones">
-              
-              <button class="btn btn-evaluar">Evaluar</button>
-            </td>
-          </tr>
+          <c:forEach var="tramite" items="${tramites}">
+            <tr>
+              <td>${tramite.nroTramite}</td>
+              <td>${tramite.tipoTramite.nombre}</td>
+              <td>${tramite.solicitante.dni}</td>
+              <td>${tramite.fechaRegistro}</td>
 
-          <tr>
-             <td >
-                165489
+              <td class="acciones">
+                <a href="/bandejaTrabajo/evaluar/${tramite.nroTramite}">
+                  <button class="btn btn-evaluar">Evaluar</button>
+                </a>
               </td>
-            <td>
-              Convalidación
-            </td>
-            <td>45678912</td>
-            <td>Ayer, 04:20 PM</td>
-            <td class="acciones">
-              
-              <button class="btn btn-evaluar">Evaluar</button>
-            </td>
-          </tr>
-
-          <tr>
-             <td >
-                465481
-              </td>
-            <td>
-              Certificado de Estudio
-            </td>
-            <td>78915632</td>
-            <td>12 Abr 2026</td>
-            <td class="acciones">
-              <button class="btn btn-evaluar">Evaluar</button>
-            </td>
-          </tr>
-
-          <tr>
-             <td >
-                465165
-              </td>
-            <td>
-              Titulación
-            </td>
-            <td>89431245</td>
-            <td>11 Abr 2026</td>
-            <td class="acciones">
-              
-              <a href="evaluacion.html">
-                <button class="btn btn-evaluar">Evaluar</button></a
-              >
-            </td>
-          </tr>
+            </tr>
+          </c:forEach>
         </tbody>
       </table>
     </main>

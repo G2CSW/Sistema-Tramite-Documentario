@@ -21,7 +21,7 @@ public class TipoTramite {
     }
 
     public String getIdTipoTramite() {
-        return idTipoTramite;
+        return this.idTipoTramite;
     }
 
     public void setIdTipoTramite(String idTipoTramite) {
@@ -37,7 +37,7 @@ public class TipoTramite {
     }
 
     public String getDocumentacionMinima() {
-        return documentacionMinima;
+        return this.documentacionMinima;
     }
 
     public void setDocumentacionMinima(String documentacionMinima) {
@@ -45,7 +45,7 @@ public class TipoTramite {
     }
 
     public LocalDate getFechaCreacion() {
-        return fechaCreacion;
+        return this.fechaCreacion;
     }
 
     public void setFechaCreacion(LocalDate fechaCreacion) {

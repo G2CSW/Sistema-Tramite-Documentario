@@ -2,6 +2,7 @@ package com.example.demo.Datos;
 
 import com.example.demo.TipoTramite.TipoTramite;
 import com.example.demo.Tramite.EstadoTramite;
+import com.example.demo.Tramite.EvaluacionTramite;
 import com.example.demo.Tramite.Solicitante;
 import com.example.demo.Tramite.Tramite;
 import com.example.demo.Usuario.Usuario;
@@ -18,7 +19,7 @@ public class DatosMemoria {
     public static final List<Solicitante> SOLICITANTES = new ArrayList<>();
     public static final List<Tramite> TRAMITES = new ArrayList<>();
 //    public static final List<Trazabilidad> TRAZABILIDADES = new ArrayList<>();
-//    public static final List<EvaluacionTramite> EVALUACIONES = new ArrayList<>();
+    public static final List<EvaluacionTramite> EVALUACIONES = new ArrayList<>();
 
     static {
 //        // AREAS
@@ -81,26 +82,10 @@ public class DatosMemoria {
                 USUARIOS.get(0),
                 SOLICITANTES.get(2),
                 LocalDate.now(),
-                EstadoTramite.APROBADO
+                EstadoTramite.EN_EVALUACION
         ));
 
-//        // EVALUACIONES
-//        EVALUACIONES.add(new EvaluacionTramite(
-//                "TR0001",
-//                true,
-//                true,
-//                false,
-//                false
-//        ));
-//
-//        EVALUACIONES.add(new EvaluacionTramite(
-//                "TR0002",
-//                true,
-//                true,
-//                true,
-//                false
-//        ));
-//
+//        //
 //        // TRAZABILIDAD
 //        TRAZABILIDADES.add(new Trazabilidad(
 //                "TZ0001",
