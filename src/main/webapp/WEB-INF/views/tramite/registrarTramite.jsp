@@ -5,8 +5,8 @@
   <head>
     <meta charset="UTF-8" />
     <title>Registrar Trámite</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/global.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/registrarTramite.css" />
+    <link rel="stylesheet" href="../../../css/global.css" />
+    <link rel="stylesheet" href="../../../css/registrarTramite.css" />
   </head>
   <body>
 
@@ -18,7 +18,7 @@
         <p>Ingrese los datos para registrar una nueva solicitud en el sistema.</p>
       </header>
 
-      <form action="${pageContext.request.contextPath}/tramite/registrar" method="post" class="form-registro-tramite">
+      <form action="/tramite/registrar" method="post" class="form-registro-tramite">
         <section class="section-numero-tramite">
           <label>Número de trámite:</label>
           <input type="text" disabled value="${numeroTramiteGenerado}" placeholder="#autogenerado" />
@@ -162,7 +162,7 @@ Seleccione un tipo de trámite y presione "Cargar documentación".
         </section>
 
         <section class="section-acciones">
-          <a href="${pageContext.request.contextPath}/tramite/listar" class="btn btn-secondary">
+          <a href="/tramite/listar" class="btn btn-secondary">
             Cancelar
           </a>
 
