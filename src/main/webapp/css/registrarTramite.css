@@ -9,9 +9,11 @@ label {
 }
 .section-numero-tramite,
 .section {
+    display: flex;
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
+  gap: 5px;
 }
 
 .section {
@@ -20,16 +22,8 @@ label {
   gap: 15px;
 }
 
-.alerta {
-    font-size: 15px
-}
 
-.alerta.alerta-info {
-    color: #ff8000;
-}
-.alerta.alerta-exito {
-    color: #00913f;
-}
+
 
 .textarea-descripcion {
   width: 100%;

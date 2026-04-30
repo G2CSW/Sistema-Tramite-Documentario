@@ -22,6 +22,11 @@
         <section class="section-numero-tramite">
           <label>Número de trámite:</label>
           <input type="text" disabled value="${numeroTramiteGenerado}" placeholder="#autogenerado" />
+          <c:if test="${not empty error}">
+              <div class="mensaje mensaje-error">
+                  ERROR: ${error}
+              </div>
+          </c:if>
         </section>
 
         <section class="section">
@@ -51,13 +56,13 @@
                  <c:if test="${not empty dniBuscado}">
                   <c:choose>
                       <c:when test="${existeSolicitante}">
-                          <div class="alerta alerta-exito">
+                          <div class="mensaje mensaje-exito">
                               Solicitante ya en el sistema
                           </div>
                       </c:when>
 
                       <c:otherwise>
-                          <div class="alerta alerta-info">
+                          <div class="mensaje mensaje-info">
                               Nuevo solicitante
                           </div>
                       </c:otherwise>

@@ -41,17 +41,21 @@ public class TramiteController {
 
     @GetMapping("/registrar")
     public String mostrarFormularioRegistrar(
-            @RequestParam(required = false, name = "solicitante.dni") String dni,
+            @ModelAttribute("tramite") Tramite tramite,
             @RequestParam(required = false, name = "tipoTramite.idTipoTramite") String tipoTramiteId,
             Model model) {
 
-        Tramite tramite = new Tramite();
+        // Si no vino solicitante, evitar null
+        if (tramite.getSolicitante() == null) {
+            tramite.setSolicitante(new Solicitante());
+        }
 
+        String dni = tramite.getSolicitante().getDni();
 
-        Solicitante solicitanteEncontrado = new Solicitante();
+        Solicitante solicitanteEncontrado = tramite.getSolicitante();
         boolean existeSolicitante = false;
 
-        // buscar si está registrado en el sistema
+        // Buscar en memoria
         if (dni != null && !dni.isBlank()) {
             for (Solicitante s : solicitantes) {
                 if (s.getDni().equals(dni)) {
@@ -60,15 +64,10 @@ public class TramiteController {
                     break;
                 }
             }
-
-            // si no está -> mantiene el dni ingresado
-            if (!existeSolicitante) {
-                solicitanteEncontrado.setDni(dni);
-            }
         }
 
         TipoTramite tipoSeleccionado = new TipoTramite();
-        // si seleccionó el tipo de trámite -> lo mantiene
+
         if (tipoTramiteId != null && !tipoTramiteId.isBlank()) {
             for (TipoTramite t : tipoTramites) {
                 if (t.getIdTipoTramite().equals(tipoTramiteId)) {
@@ -94,20 +93,73 @@ public class TramiteController {
 
     @PostMapping("/registrar")
     public String registrarTramite(@ModelAttribute Tramite tramite,
+                                   Model model,
                                    RedirectAttributes redirectAttributes) {
-        // Asignar datos automáticos
+
+        Solicitante solicitanteForm = tramite.getSolicitante();
+
+        // VALIDACIÓN
+        if (solicitanteForm.getDni() == null || solicitanteForm.getDni().isBlank() ||
+                solicitanteForm.getNombreCompleto() == null || solicitanteForm.getNombreCompleto().isBlank() ||
+                solicitanteForm.getCorreoElectronico() == null || solicitanteForm.getCorreoElectronico().isBlank() ||
+                solicitanteForm.getTelefonoContacto() == null || solicitanteForm.getTelefonoContacto().isBlank()) {
+
+            // ERROR → devolver al formulario sin perder datos
+            model.addAttribute("error", "Complete todos los datos del solicitante");
+
+            // Mantener datos del formulario
+            model.addAttribute("tramite", tramite);
+            model.addAttribute("solicitante", solicitanteForm);
+            model.addAttribute("tipoTramites", tipoTramites);
+
+            // Mantener tipo seleccionado
+            String tipoTramiteId = tramite.getTipoTramite() != null
+                    ? tramite.getTipoTramite().getIdTipoTramite()
+                    : null;
+
+            model.addAttribute("tipoTramiteId", tipoTramiteId);
+
+            // Mantener documentación cargada
+            TipoTramite tipoSeleccionado = new TipoTramite();
+            if (tipoTramiteId != null) {
+                for (TipoTramite t : tipoTramites) {
+                    if (t.getIdTipoTramite().equals(tipoTramiteId)) {
+                        tipoSeleccionado = t;
+                        break;
+                    }
+                }
+            }
+            model.addAttribute("tipoSeleccionado", tipoSeleccionado);
+
+            // Mantener estado de búsqueda DNI
+            boolean existeSolicitante = false;
+            for (Solicitante s : solicitantes) {
+                if (s.getDni().equals(solicitanteForm.getDni())) {
+                    existeSolicitante = true;
+                    break;
+                }
+            }
+
+            model.addAttribute("dniBuscado", solicitanteForm.getDni());
+            model.addAttribute("existeSolicitante", existeSolicitante);
+
+            model.addAttribute("numeroTramiteGenerado", generarNumeroTramite());
+
+            return "tramite/registrarTramite";
+        }
+
+        // SI PASA VALIDACIÓN → continuar normal
+
         tramite.setNroTramite(generarNumeroTramite());
         tramite.setFechaRegistro(LocalDate.now());
         tramite.setEstadoActual(EstadoTramite.REGISTRADO);
 
         // Buscar si ya existe
-        Solicitante solicitanteForm = tramite.getSolicitante();
         Solicitante solicitanteFinal = null;
 
         for (Solicitante s : solicitantes) {
             if (s.getDni().equals(solicitanteForm.getDni())) {
 
-                // ACTUALIZAR SOLO SI VIENE DATO NUEVO
                 if (solicitanteForm.getNombreCompleto() != null && !solicitanteForm.getNombreCompleto().isBlank()) {
                     s.setNombreCompleto(solicitanteForm.getNombreCompleto());
                 }
@@ -125,17 +177,14 @@ public class TramiteController {
             }
         }
 
-        // Si NO existe → lo crea
         if (solicitanteFinal == null) {
             solicitantes.add(solicitanteForm);
             solicitanteFinal = solicitanteForm;
         }
 
-        // Asignar al trámite
         tramite.setSolicitante(solicitanteFinal);
 
-
-        // Manejar tipo de trámite
+        // Tipo trámite
         String idTipo = tramite.getTipoTramite().getIdTipoTramite();
         TipoTramite tipoReal = null;
 
@@ -148,10 +197,9 @@ public class TramiteController {
 
         tramite.setTipoTramite(tipoReal);
 
-        // Guardar trámite
         tramites.add(tramite);
 
-        redirectAttributes.addFlashAttribute("mensaje", "Trámite registrado correctamente");
+        redirectAttributes.addFlashAttribute("mensaje", "Trámite " + tramite.getNroTramite() + " registrado correctamente");
         return "redirect:/tramite/listar";
     }
 

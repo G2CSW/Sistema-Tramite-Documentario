@@ -472,3 +472,22 @@ a {
   border-radius: 5px;
   border: 2px solid var(--color-neutral);
 }
+
+
+
+.mensaje {
+    font-size: 15px
+}
+
+.mensaje.mensaje-info {
+    color: #ff8000;
+}
+.mensaje.mensaje-exito {
+    color: #00913f;
+}
+.mensaje-error {
+    color: red;
+    font-weight: 400;
+    font-size: 18px;
+    margin-left: 15px;
+}

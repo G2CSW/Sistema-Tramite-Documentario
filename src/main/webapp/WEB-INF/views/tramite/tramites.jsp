@@ -50,34 +50,37 @@
         </a>
       </header>
       <c:if test="${not empty mensaje}">
-        <div class="alerta-exito">
-          ${mensaje}
-        </div>
-      </c:if>
+          <div class="contenedor-mensaje mensaje mensaje-exito">
+            ${mensaje}
+          </div>
+       </c:if>
       <section class="filtros-section">
+       <label for="buscar-tramite" > Buscar por DNI: </label>
         <div class="input-contenedor input-buscar-tramite-contenedor">
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-search"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-            <path d="M21 21l-6 -6" />
-          </svg>
-          <input
-            type="search"
-            placeholder="Buscar trámite"
-            class="input-buscar-tramite"
-          />
-        </div>       
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-search"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+              <path d="M21 21l-6 -6" />
+            </svg>
+            <input
+                id="buscar-tramite"
+              type="search"
+              placeholder="Buscar trámite"
+              class="input-buscar-tramite"
+            />
+        </div>
+        <button class="btn btn-primary">Buscar </button>
       </section>
 
       <section class="tramites-list">
@@ -86,6 +89,7 @@
             <th>NRO. TRÁMITE</th>
             <th>TIPO TRÁMITE</th>
             <th>DNI</th>
+            <th>Solicitante</th>
             <th>FECHA REGISTRO</th>
             <th>ESTADO</th>
             <th class="acciones-crud" >Acciones</th>
@@ -96,6 +100,7 @@
                 <td>${tramite.nroTramite}</td>
                 <td>${tramite.tipoTramite.nombre}</td>
                 <td>${tramite.solicitante.dni}</td>
+                <td>${tramite.solicitante.nombreCompleto}</td>
                 <td>${tramite.fechaRegistro}</td>
 
                 <c:set var="claseEstado">
