@@ -24,6 +24,7 @@ public class TramiteController {
     public TramiteController() {
     }
 
+    // Listar trámites
     @GetMapping("/listar")
     public String listarTramites(
             @RequestParam(required = false) String dni,
@@ -50,6 +51,7 @@ public class TramiteController {
         return "tramite/tramites";
     }
 
+    // Página de registro
     @GetMapping("/registrar")
     public String mostrarFormularioRegistrar(
             @ModelAttribute("tramite") Tramite tramite,
@@ -102,6 +104,7 @@ public class TramiteController {
         return "tramite/registrarTramite";
     }
 
+    // Registrar Tramite
     @PostMapping("/registrar")
     public String registrarTramite(@ModelAttribute Tramite tramite,
                                    Model model,
@@ -214,6 +217,7 @@ public class TramiteController {
         return "redirect:/tramite/listar";
     }
 
+    // Página de editar datos de Tramite
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable("id") String id,
                                           Model model,
@@ -229,6 +233,7 @@ public class TramiteController {
         return "redirect:/tramite/listar";
     }
 
+    // Guardar datos editados de Tramite
     @PostMapping("/editar/{id}")
     public String editarTramite(@PathVariable("id") String id,
                                 @ModelAttribute Tramite tramiteEditado,
@@ -250,6 +255,7 @@ public class TramiteController {
         return "redirect:/tramite/listar";
     }
 
+    // Cambiar estado trámite
     @PostMapping("/cambiar-estado/{id}")
     public String cambiarEstadoTramite(@PathVariable("id") String id,
                                        @RequestParam("estado") EstadoTramite estado,
