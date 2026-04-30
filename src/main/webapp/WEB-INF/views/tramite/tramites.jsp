@@ -54,7 +54,7 @@
             ${mensaje}
           </div>
        </c:if>
-      <section class="filtros-section">
+      <form action="${pageContext.request.contextPath}/tramite/listar" method="get" class="filtros-section">
        <label for="buscar-tramite" > Buscar por DNI: </label>
         <div class="input-contenedor input-buscar-tramite-contenedor">
           <svg
@@ -74,14 +74,16 @@
               <path d="M21 21l-6 -6" />
             </svg>
             <input
-                id="buscar-tramite"
+              id="buscar-tramite"
               type="search"
-              placeholder="Buscar trámite"
+              name="dni"
+              value="${dniBuscado}"
+              placeholder="Ingrese DNI"
               class="input-buscar-tramite"
             />
         </div>
         <button class="btn btn-primary">Buscar </button>
-      </section>
+      </form>
 
       <section class="tramites-list">
         <table class="tbl">

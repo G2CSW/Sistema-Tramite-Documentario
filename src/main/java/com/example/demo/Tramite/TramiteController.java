@@ -25,17 +25,28 @@ public class TramiteController {
     }
 
     @GetMapping("/listar")
-    public String listarTramites(Model model) {
-        List<Tramite> tramitesActivos = new ArrayList<>();
+    public String listarTramites(
+            @RequestParam(required = false) String dni,
+            Model model) {
 
+        List<Tramite> tramitesFiltrados = new ArrayList<>();
+
+        // filtramos para obtener los trámites asociados al dni que no han sido archivados ni cancelados
         for (Tramite t : tramites) {
-            if (t.getEstadoActual() != EstadoTramite.ARCHIVADO &&
-                    t.getEstadoActual() != EstadoTramite.CANCELADO) {
-                tramitesActivos.add(t);
+            boolean esActivo = t.getEstadoActual() != EstadoTramite.ARCHIVADO &&
+                    t.getEstadoActual() != EstadoTramite.CANCELADO;
+
+            boolean coincideDni = (dni == null || dni.isBlank()) ||
+                    t.getSolicitante().getDni().equals(dni);
+
+            if (esActivo && coincideDni) {
+                tramitesFiltrados.add(t);
             }
         }
 
-        model.addAttribute("tramites", tramitesActivos);
+        model.addAttribute("tramites", tramitesFiltrados);
+        model.addAttribute("dniBuscado", dni);
+
         return "tramite/tramites";
     }
 
