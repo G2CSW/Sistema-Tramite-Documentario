@@ -19,11 +19,12 @@
 
 
   /* Estados */
-  --color-estado-creado: #f59e0b;
+  --color-estado-registrado: #f59e0b;
   --color-estado-evaluacion: #8b5cf6;
   --color-estado-aprobado: #22c55e;
   --color-estado-rechazado: #ef4444;
   --color-estado-archivado: #6b7280;
+  --color-estado-cancelado: #2c2c2e;
 
 
 
@@ -354,8 +355,8 @@ a {
   border-radius: 5px;
 }
 
-.estado-creado {
-  background-color: var(--color-estado-creado);
+.estado-registrado {
+  background-color: var(--color-estado-registrado);
   color: #000000;
 }
 
@@ -374,6 +375,9 @@ a {
   background-color: var(--color-estado-archivado);
 }
 
+.estado-cancelado {
+  background-color: var(--color-estado-cancelado);
+}
 
 
 

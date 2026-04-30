@@ -2,6 +2,11 @@ label {
   font-weight: bold;
 }
 
+.form-registro-tramite {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 .section-numero-tramite,
 .section {
   background-color: #fff;
@@ -13,6 +18,17 @@ label {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.alerta {
+    font-size: 15px
+}
+
+.alerta.alerta-info {
+    color: #ff8000;
+}
+.alerta.alerta-exito {
+    color: #00913f;
 }
 
 .textarea-descripcion {
@@ -60,4 +76,24 @@ label {
   display: flex;
   justify-content: end;
   gap: 15px;
+}
+
+.buscar-dni {
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.buscar-dni input {
+    width: 200px;
+}
+
+
+.buscar-documentacion-contenedor {
+    display: flex;
+    gap: 10px;
+}
+
+.buscar-documentacion-contenedor > .select {
+    width:200px;
 }

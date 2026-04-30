@@ -9,7 +9,7 @@
   </head>
   <body>
 
-
+<%@ include file="../barraLateral.jsp" %>
     <main>
       <header class="header-seguimiento">
         <h1>TRÁMITE CONVALIDACIÓN </h1>
