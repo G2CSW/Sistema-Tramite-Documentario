@@ -8,6 +8,7 @@ public class TipoTramite {
     private String nombre;
     private String documentacionMinima;
     private LocalDate fechaCreacion;
+    private boolean activo;
 
     public TipoTramite() {
     }
@@ -18,6 +19,7 @@ public class TipoTramite {
         this.nombre = nombre;
         this.documentacionMinima = documentacionMinima;
         this.fechaCreacion = fechaCreacion;
+        this.activo = true;
     }
 
     public String getIdTipoTramite() {
@@ -51,4 +53,8 @@ public class TipoTramite {
     public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+
+    public boolean isActivo(){ return this.activo; }
+
+    public void setActivo(boolean activo){ this.activo = activo; }
 }
