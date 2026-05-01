@@ -9,113 +9,110 @@
   <body>
 
   <%@ include file="../barraLateral.jsp" %>
+
     <main>
       <header class="header-evaluacion">
         <h1>Evaluación del trámite</h1>
-        <p>Nro. Trámite: 123456</p>
+        <p>Nro. Trámite: ${tramite.nroTramite}</p>
       </header>
 
       <div class="contenedor-principal">
-        <!-- Vista Previa -->
 
-      <section class="datos-tramite">
-        <div>
-          <h4>Datos del Trámite</h4>
+        <!-- DATOS -->
+        <section class="datos-tramite">
           <div>
-            <strong>Tipo de Trámite</strong>
-            <p>Certificado de Estudio</p>
-          </div>
+            <h4>Datos del Trámite</h4>
 
-          <div class="asunto-descripcion">
-            <strong>Asunto / Descripción</strong>
-            <textarea class="textarea-descripcion" disabled>Se ha adjuntado al trámite los siguientes documentos:
-    1. Formato único de trámite.
-    2. Certificado de estudios del semestre(s) a convalidar
-    3. Copia del sílabo de las asignaturas a convalidar.
-    4. Recibo de pago por los semestres estudiados.
-            </textarea>
-              
-          </div>
-        </div>
+            <div>
+              <strong>Tipo de Trámite</strong>
+              <p>${tramite.tipoTramite.nombre}</p>
+            </div>
 
-        <div>
-          <h4>Datos del Interesado</h4>
-          <div>
-            <strong>Nombre Completo / Razón Social</strong>
-            <p>Luis Enrique</p>
+            <div class="asunto-descripcion">
+              <strong>Documentación mínima adjuntada</strong>
+              <textarea class="textarea-descripcion" disabled>
+${tramite.tipoTramite.documentacionMinima}
+              </textarea>
+            </div>
           </div>
 
           <div>
-            <strong>DNI / RUC / CE</strong>
-            <p>12345678</p>
-          </div>
+            <h4>Datos del Interesado</h4>
 
-          <div>
-            <strong>Correo Electrónico</strong>
-            <p>luis@gmail.com</p>
-          </div>
+            <div>
+              <strong>Nombre Completo</strong>
+              <p>${tramite.solicitante.nombreCompleto}</p>
+            </div>
 
-          <div>
-            <strong>Teléfono de Contacto</strong>
-            <p>987654321</p>
-          </div>
-        </div>
-      </section>
+            <div>
+              <strong>DNI</strong>
+              <p>${tramite.solicitante.dni}</p>
+            </div>
 
-        <!-- Panel Lateral -->
-        <form class="form-veredicto">
+            <div>
+              <strong>Correo Electrónico</strong>
+              <p>${tramite.solicitante.correoElectronico}</p>
+            </div>
+
+            <div>
+              <strong>Teléfono de Contacto</strong>
+              <p>${tramite.solicitante.telefonoContacto}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- FORM -->
+        <form class="form-veredicto"
+              action="/bandejaTrabajo/evaluar/${tramite.nroTramite}"
+              method="post">
+
           <h2>Veredicto</h2>
 
           <h4>Checklist de Evaluación</h4>
-         <div class="checklist-container">
-          <div class="checklist-item">
-           <label for="datos-completos">Datos Completos</label>
-            <input type="checkbox" id="datos-completos" name="datos-completos" />
-         </div>
-         <div class="checklist-item">
-           <label for="datos-consistentes">Datos Consistentes</label>
-            <input type="checkbox" id="datos-consistentes" name="datos-consistentes" />
-         </div>
-         <div class="checklist-item">
-           <label for="cumple-requisitos">Cumple requisitos del trámite</label>
-            <input type="checkbox" id="cumple-requisitos" name="cumple-requisitos" />
-         </div>
-         <div class="checklist-item">
-           <label for="sustento-valido">Sustento válido</label>
-            <input type="checkbox" id="sustento-valido" name="sustento-valido" />
-         </div>
-         </div>
-         
-              
-          
+
+          <div class="checklist-container">
+
+            <div class="checklist-item">
+              <label>Datos Completos</label>
+              <input type="checkbox" name="datosCompletos" />
+            </div>
+
+            <div class="checklist-item">
+              <label>Datos Consistentes</label>
+              <input type="checkbox" name="datosConsistentes" />
+            </div>
+
+            <div class="checklist-item">
+              <label>Cumple requisitos del trámite</label>
+              <input type="checkbox" name="cumpleRequisitos" />
+            </div>
+
+            <div class="checklist-item">
+              <label>Sustento válido</label>
+              <input type="checkbox" name="sustentoValido" />
+            </div>
+
+          </div>
+
           <label>Comentario:</label>
           <textarea
             class="textarea-comentario"
-            placeholder=""
-            disabled
+            name="comentario"
+            placeholder="Escriba un comentario..."
           ></textarea>
 
-          <button class="btn btn-aprobar">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              class="icon icon-tabler icons-tabler-filled icon-tabler-circle-check"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path
-                d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-1.293 5.953a1 1 0 0 0 -1.32 -.083l-.094 .083l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.403 1.403l.083 .094l2 2l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z"
-              />
-            </svg>
+          <button type="submit" name="accion" value="aprobar" class="btn btn-aprobar">
             Aprobar
           </button>
-          <button class="btn btn-rechazar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-xbox-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10 -10 10s-10 -4.477 -10 -10s4.477 -10 10 -10m3.6 5.2a1 1 0 0 0 -1.4 .2l-2.2 2.933l-2.2 -2.933a1 1 0 1 0 -1.6 1.2l2.55 3.4l-2.55 3.4a1 1 0 1 0 1.6 1.2l2.2 -2.933l2.2 2.933a1 1 0 0 0 1.6 -1.2l-2.55 -3.4l2.55 -3.4a1 1 0 0 0 -.2 -1.4" /></svg> Rechazar</button>
+
+          <button type="submit" name="accion" value="rechazar" class="btn btn-rechazar">
+            Rechazar
+          </button>
+
         </form>
+
       </div>
 
     </main>
-
   </body>
 </html>

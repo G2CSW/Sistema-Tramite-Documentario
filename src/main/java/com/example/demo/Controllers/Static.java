@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class Static {
-    @GetMapping("/main")
+    @GetMapping("/")
     public String inicio(Model model) {
         return "main";
     }

@@ -30,7 +30,7 @@
         </div>
       </div>
       <nav class="nav-menu">
-        <a class="${path.contains('/main') ? 'active' : ''}" href="/main"
+        <a class="${path.contains('/main') ? 'active' : ''}" href="/"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
