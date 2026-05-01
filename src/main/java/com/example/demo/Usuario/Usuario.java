@@ -6,19 +6,19 @@ public class Usuario {
     private String correoElectronico;
     private String password;
     private String idArea;
-    private Boolean estado;
+    private boolean activo;
 
     public Usuario() {
     }
 
     public Usuario(String dni, String nombre, String correoElectronico,
-                   String password, String idArea, Boolean estado) {
+                   String password, String idArea, boolean activo) {
         this.dni = dni;
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
         this.password = password;
         this.idArea = idArea;
-        this.estado = estado;
+        this.activo = activo;
     }
 
     public String getDni() {
@@ -61,11 +61,11 @@ public class Usuario {
         this.idArea = idArea;
     }
 
-    public Boolean getEstado() {
-        return estado;
+    public boolean getEstado() {
+        return activo;
     }
 
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
+    public void setEstado(boolean activo) {
+        this.activo = activo;
     }
 }

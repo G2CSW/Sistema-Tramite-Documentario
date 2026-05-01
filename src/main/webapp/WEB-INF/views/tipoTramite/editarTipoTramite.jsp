@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!doctype html>
 <html lang="es">
@@ -16,19 +17,22 @@
 <main>
     <header class="header-seguimiento">
         <h1>Editar Tipo de Trámite</h1>
+        <c:if test="${not empty error}">
+            <p style="color:red;">${error}</p>
+        </c:if>
     </header>
 
-    <form action="/tipoTramite/editar/${tipo.idTipoTramite}" method="post">
+    <form class="formulario-tipo-tramite" action="/tipoTramite/editar/${tipo.idTipoTramite}" method="post">
 
         <section class="section">
             <div>
                 <label>Nombre</label>
-                <input class="input" type="text" name="nombre" value="${tipo.nombre}"/>
+                <input class="input" type="text" name="nombre" value="${tipo.nombre}" required/>
             </div>
 
             <div>
-                <label>Documentación</label>
-                <textarea name="documentacionMinima">${tipo.documentacionMinima}</textarea>
+                <label>Documentación mínima requerida</label>
+                <textarea class="textarea-descripcion" name="documentacionMinima" required>${tipo.documentacionMinima}</textarea>
             </div>
         </section>
 

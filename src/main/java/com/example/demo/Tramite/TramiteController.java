@@ -218,10 +218,17 @@ public class TramiteController {
                                         boolean existe,
                                         String nro) {
 
+        List<TipoTramite> tipoTramitesActivos = new ArrayList<>();
+
+        for (TipoTramite t : tipoTramites) {
+            if (t.isActivo()) {
+                tipoTramitesActivos.add(t);
+            }
+        }
         model.addAttribute("tramite", tramite);
         model.addAttribute("solicitante", solicitante);
         model.addAttribute("tipoSeleccionado", tipo);
-        model.addAttribute("tipoTramites", tipoTramites);
+        model.addAttribute("tipoTramites", tipoTramitesActivos);
         model.addAttribute("tipoTramiteId", tipoId);
         model.addAttribute("dniBuscado", dni);
         model.addAttribute("existeSolicitante", existe);
