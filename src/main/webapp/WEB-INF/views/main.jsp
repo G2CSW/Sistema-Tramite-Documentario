@@ -39,7 +39,7 @@
           </div>
           <div class="card-text">
             <p class="card-label">FECHA ACTUAL</p>
-            <p class="card-value">Viernes, 24 de abril 2026</p>
+            <p class="card-value">${fechaActual}</p>
           </div>
         </div>
 
