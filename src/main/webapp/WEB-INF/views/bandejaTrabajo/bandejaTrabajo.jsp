@@ -19,6 +19,33 @@
       </header>
 
         <h3>Trámites por revisar</h3>
+        <section class="busqueda-tramite">
+        <form action="${pageContext.request.contextPath}/bandejaTrabajo/listar" method="get" class="input-contenedor input-buscar-tramite-contenedor">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-search"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+            <path d="M21 21l-6 -6" />
+          </svg>
+          <input
+            type="search"
+            name="dni"
+            placeholder="Buscar Trámite"
+            class="input-buscar-tramite"
+            value="${param.dni}"
+          />
+        </form>
+        </section>
       <table class="tbl">
         <thead>
           <tr>
