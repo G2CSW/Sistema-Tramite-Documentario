@@ -25,4 +25,9 @@
   gap: 15px;
 }
 
+.busqueda-tramite
+{
+display: flex;
+gap: 5px;
+}
 

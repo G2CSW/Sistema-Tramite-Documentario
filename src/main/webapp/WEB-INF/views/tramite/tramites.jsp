@@ -140,7 +140,7 @@
                <td class="acciones-crud">
 
                  <!-- BOTÓN VER (SIEMPRE) -->
-                 <a href="/tramite/seguimiento/${tramite.nroTramite}">
+                 <a href="/tramite/${tramite.nroTramite}">
                    <button class="btn-icono" title="Ver">
                    <svg
                      xmlns="http://www.w3.org/2000/svg"

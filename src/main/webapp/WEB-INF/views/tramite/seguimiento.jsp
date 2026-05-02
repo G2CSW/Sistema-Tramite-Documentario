@@ -130,7 +130,7 @@
                   </div>
                 </div>
               </td>
-              <td><span class="badge-estado estado-creado">Creado</span></td>
+              <td><span class="badge-estado estado-registrado">Registrado</span></td>
               <td>Creación del trámite en el sistema</td>
               <td>
                 <strong>12 Abr, 2026</strong><br /><small>10:15 AM</small>

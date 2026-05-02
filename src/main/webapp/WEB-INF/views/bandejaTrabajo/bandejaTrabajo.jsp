@@ -19,8 +19,8 @@
       </header>
 
         <h3>Trámites por revisar</h3>
-        <section class="busqueda-tramite">
-        <form action="${pageContext.request.contextPath}/bandejaTrabajo/listar" method="get" class="input-contenedor input-buscar-tramite-contenedor">
+        <form action="${pageContext.request.contextPath}/bandejaTrabajo/listar" method="get" class="busqueda-tramite">
+        <div class="input-contenedor input-buscar-tramite-contenedor">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -44,8 +44,10 @@
             class="input-buscar-tramite"
             value="${param.dni}"
           />
+
+        </div>
+        <button class="btn btn-primary">Buscar </button>
         </form>
-        </section>
       <table class="tbl">
         <thead>
           <tr>

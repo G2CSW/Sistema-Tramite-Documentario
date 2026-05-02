@@ -70,7 +70,7 @@
               <td>14/04/2026</td>
               <td><span class="badge-estado estado-archivado">Archivado</span></td>
               <td class="acciones-crud">
-                 <a href="./seguimiento.html" >
+                 <a href="/tramite/1" >
                 <button title="Ver Estado" class="btn-icono">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

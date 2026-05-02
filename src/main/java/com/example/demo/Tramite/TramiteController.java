@@ -164,6 +164,12 @@ public class TramiteController {
         return "redirect:/tramite/listar";
     }
 
+    // página editar tramite
+    @GetMapping("/{id}")
+    public String mostrarSeguimiento(Model model) {
+        return "tramite/seguimiento";
+    }
+
     // FUNCIONES REUTILIZABLES
 
     private boolean validarSolicitante(Solicitante s) {
