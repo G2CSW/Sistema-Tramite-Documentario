@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class Static {
     @GetMapping("/")
     public String inicio(Model model) {
+        java.time.LocalDate fechaActual = java.time.LocalDate.now();
+
+        model.addAttribute("fechaActual", fechaActual);
+
         return "main";
     }
 
