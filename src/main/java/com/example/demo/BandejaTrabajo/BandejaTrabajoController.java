@@ -19,12 +19,24 @@ public class BandejaTrabajoController {
     private final List<Tramite> tramites = DatosMemoria.TRAMITES;
 
     @GetMapping("/listar")
-    public String listarTramitesAEvaluar(Model model) {
+    public String listarTramitesAEvaluar(
+            @RequestParam(required = false) String dni,
+            Model model) {
+
         List<Tramite> tramitesEvaluar = new ArrayList<>();
 
         for (Tramite t : tramites) {
+            // Primero: solo en evaluación
             if (t.getEstadoActual() == EstadoTramite.EN_EVALUACION) {
-                tramitesEvaluar.add(t);
+                // Segundo: si se buscó DNI, filtrar
+                if (dni != null && !dni.isEmpty()) {
+                    // Asumiendo que t.getSolicitante() existe y tiene getDni()
+                    if (t.getSolicitante() != null && dni.equals(t.getSolicitante().getDni())) {
+                        tramitesEvaluar.add(t);
+                    }
+                } else {
+                    tramitesEvaluar.add(t);
+                }
             }
         }
 
