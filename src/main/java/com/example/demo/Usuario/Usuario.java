@@ -1,23 +1,25 @@
 package com.example.demo.Usuario;
 
+import com.example.demo.Area.Area;
+
 public class Usuario {
     private String dni;
     private String nombre;
     private String correoElectronico;
     private String password;
-    private String idArea;
+    private Area area;
     private boolean activo;
 
     public Usuario() {
     }
 
     public Usuario(String dni, String nombre, String correoElectronico,
-                   String password, String idArea, boolean activo) {
+                   String password, Area area, boolean activo) {
         this.dni = dni;
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
         this.password = password;
-        this.idArea = idArea;
+        this.area = area;
         this.activo = activo;
     }
 
@@ -53,12 +55,12 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getIdArea() {
-        return idArea;
+    public Area getIdArea() {
+        return area;
     }
 
-    public void setIdArea(String idArea) {
-        this.idArea = idArea;
+    public void setIdArea(Area area) {
+        this.area = area;
     }
 
     public boolean getEstado() {

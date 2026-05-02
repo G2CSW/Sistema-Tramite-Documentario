@@ -13,6 +13,8 @@
 {
     width: 100%;
     gap: 10px;
+    display: flex;
+
 }
 
 .input-buscar-tramite-contenedor {

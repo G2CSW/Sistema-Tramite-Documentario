@@ -46,7 +46,8 @@
             placeholder="Buscar trámite"
             class="input-buscar-tramite"
           />
-        </div>       
+        </div>
+        <button class="btn btn-primary">Buscar </button>
       </section>
 
       <section class="tramites-list">
@@ -133,7 +134,7 @@
               <td>Certificado de Estudio</td>
               <td>44165156</td>
               <td>08/04/2026</td>
-              <td><span class="badge-estado estado-aprobado">Aprobado</span></td>
+              <td><span class="badge-estado estado-archivado">Archivado</span></td>
               <td class="acciones-crud">
                  <a href="./seguimiento.html" >
                 <button title="Ver Estado" class="btn-icono">
@@ -168,7 +169,7 @@
               <td>61519884</td>
 
               <td>01/03/2026</td>
-              <td><span class="badge-estado estado-aprobado">Aprobado</span></td>
+              <td><span class="badge-estado estado-cancelado">Cancelado</span></td>
               <td class="acciones-crud">
                  <a href="./seguimiento.html" >
                 <button title="Ver Estado" class="btn-icono">
@@ -203,7 +204,7 @@
               <td>19865492</td>
 
               <td>03/03/2026</td>
-              <td><span class="badge-estado estado-rechazado">Rechazado</span></td>
+              <td><span class="badge-estado estado-archivado">Archivado</span></td>
               <td class="acciones-crud">
                  <a href="./seguimiento.html" >
                 <button title="Ver Estado" class="btn-icono">

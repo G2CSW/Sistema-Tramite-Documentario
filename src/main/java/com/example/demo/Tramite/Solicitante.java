@@ -1,7 +1,7 @@
 package com.example.demo.Tramite;
 
 public class Solicitante {
-    private String dni;
+    private String idSolicitante;
     private String nombreCompleto;
     private String correoElectronico;
     private String telefonoContacto;
@@ -9,20 +9,20 @@ public class Solicitante {
     public Solicitante() {
     }
 
-    public Solicitante(String dni, String nombreCompleto,
+    public Solicitante(String idSolicitante, String nombreCompleto,
                        String correoElectronico, String telefonoContacto) {
-        this.dni = dni;
+        this.idSolicitante = idSolicitante;
         this.nombreCompleto = nombreCompleto;
         this.correoElectronico = correoElectronico;
         this.telefonoContacto = telefonoContacto;
     }
 
-    public String getDni() {
-        return dni;
+    public String getIdSolicitante() {
+        return idSolicitante;
     }
 
-    public void setDni(String dni) {
-        this.dni = dni;
+    public void setIdSolicitante(String idSolicitante) {
+        this.idSolicitante = idSolicitante;
     }
 
     public String getNombreCompleto() {

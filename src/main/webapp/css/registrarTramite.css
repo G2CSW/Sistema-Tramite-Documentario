@@ -71,13 +71,13 @@ label {
   gap: 15px;
 }
 
-.buscar-dni {
+.buscar-idSolicitante {
     display:flex;
     gap:10px;
     align-items:center;
 }
 
-.buscar-dni input {
+.buscar-idSolicitante input {
     width: 200px;
 }
 

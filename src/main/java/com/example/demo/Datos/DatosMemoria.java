@@ -1,5 +1,6 @@
 package com.example.demo.Datos;
 
+import com.example.demo.Area.Area;
 import com.example.demo.TipoTramite.TipoTramite;
 import com.example.demo.Tramite.EstadoTramite;
 import com.example.demo.Tramite.EvaluacionTramite;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class DatosMemoria {
 
-//    public static final List<Area> AREAS = new ArrayList<>();
+    public static final List<Area> AREAS = new ArrayList<>();
     public static final List<Usuario> USUARIOS = new ArrayList<>();
     public static final List<TipoTramite> TIPOS_TRAMITE = new ArrayList<>();
     public static final List<Solicitante> SOLICITANTES = new ArrayList<>();
@@ -22,13 +23,13 @@ public class DatosMemoria {
     public static final List<EvaluacionTramite> EVALUACIONES = new ArrayList<>();
 
     static {
-//        // AREAS
-//        AREAS.add(new Area("A001", "Mesa de Partes"));
-//        AREAS.add(new Area("A002", "Área Académica"));
+        // AREAS
+        AREAS.add(new Area("A001", "Mesa de Partes"));
+        AREAS.add(new Area("A002", "Área Académica"));
 
         // USUARIOS
-        USUARIOS.add(new Usuario("12345678", "Luis Pérez", "luis.perez@gmail.com", "123", "A1", true));
-        USUARIOS.add(new Usuario("87654321", "María Torres", "maria.torres@gmail.com", "123", "A2", true));
+        USUARIOS.add(new Usuario("12345678", "Luis Pérez", "luis.perez@gmail.com", "123", AREAS.get(0), true));
+        USUARIOS.add(new Usuario("87654321", "María Torres", "maria.torres@gmail.com", "123", AREAS.get(1), true));
 
         // TIPOS DE TRÁMITE
         TIPOS_TRAMITE.add(new TipoTramite(
@@ -55,7 +56,7 @@ public class DatosMemoria {
         // SOLICITANTES
         SOLICITANTES.add(new Solicitante("12345678", "Juan Carlos Díaz Rojas", "juan.diaz@gmail.com", "987654321"));
         SOLICITANTES.add(new Solicitante("87654321", "Ana Lucía Salazar Paredes", "ana.salazar@gmail.com", "912345678"));
-        SOLICITANTES.add(new Solicitante("45678912", "Empresa ABC S.A.C.", "contacto@empresaabc.com", "944112233"));
+        SOLICITANTES.add(new Solicitante("45678912", "Andres Lopez", "alopez@gmail.com", "944112233"));
 
         // TRÁMITES
         TRAMITES.add(new Tramite(

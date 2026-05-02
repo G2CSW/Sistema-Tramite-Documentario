@@ -45,8 +45,8 @@ ${tramite.tipoTramite.documentacionMinima}
             </div>
 
             <div>
-              <strong>DNI</strong>
-              <p>${tramite.solicitante.dni}</p>
+              <strong>DNI/CE</strong>
+              <p>${tramite.solicitante.idSolicitante}</p>
             </div>
 
             <div>

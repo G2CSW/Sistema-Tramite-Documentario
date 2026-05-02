@@ -78,7 +78,7 @@
           </div>
         </div>
 
-        <a href="main.jsp">
+        <a href="/">
           <button type="button" class="btn btn-primary btn-submit">
           Iniciar sesión
           <svg

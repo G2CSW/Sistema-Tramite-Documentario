@@ -55,7 +55,7 @@
           </div>
        </c:if>
       <form action="/tramite/listar" method="get" class="filtros-section">
-       <label for="buscar-tramite" > Buscar por DNI: </label>
+       <label for="buscar-tramite" > Buscar por DNI/CE: </label>
         <div class="input-contenedor input-buscar-tramite-contenedor">
           <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -76,9 +76,9 @@
             <input
               id="buscar-tramite"
               type="search"
-              name="dni"
-              value="${dniBuscado}"
-              placeholder="Ingrese DNI"
+              name="idSolicitante"
+              value="${idSolicitanteBuscado}"
+              placeholder="Ingrese DNI/CE"
               class="input-buscar-tramite"
             />
         </div>
@@ -90,7 +90,7 @@
           <thead>
             <th>NRO. TRÁMITE</th>
             <th>TIPO TRÁMITE</th>
-            <th>DNI</th>
+            <th>DNI/CE</th>
             <th>Solicitante</th>
             <th>FECHA REGISTRO</th>
             <th>ESTADO</th>
@@ -101,7 +101,7 @@
               <tr>
                 <td>${tramite.nroTramite}</td>
                 <td>${tramite.tipoTramite.nombre}</td>
-                <td>${tramite.solicitante.dni}</td>
+                <td>${tramite.solicitante.idSolicitante}</td>
                 <td>${tramite.solicitante.nombreCompleto}</td>
                 <td>${tramite.fechaRegistro}</td>
 

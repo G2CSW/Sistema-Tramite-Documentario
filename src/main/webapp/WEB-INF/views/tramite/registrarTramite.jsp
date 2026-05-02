@@ -36,14 +36,14 @@
 
           <div class="form-datos-solicitante">
             <div>
-              <label for="dni">DNI</label>
-              <div class="buscar-dni">
+              <label for="idSolicitante">DNI/CE</label>
+              <div class="buscar-idSolicitante">
                 <input
-                  id="dni"
+                  id="idSolicitante"
                   class="input"
                   type="text"
-                  name="solicitante.dni"
-                  value="${solicitante.dni}"
+                  name="solicitante.idSolicitante"
+                  value="${solicitante.idSolicitante}"
                   placeholder="00000000"
                 />
                 <button
@@ -51,9 +51,9 @@
                   formmethod="get"
                   class="btn btn-primary"
                 >
-                  Buscar DNI
+                  Buscar DNI/CE
                 </button>
-                 <c:if test="${not empty dniBuscado}">
+                 <c:if test="${not empty idSolicitanteBuscado}">
                   <c:choose>
                       <c:when test="${existeSolicitante}">
                           <div class="mensaje mensaje-exito">

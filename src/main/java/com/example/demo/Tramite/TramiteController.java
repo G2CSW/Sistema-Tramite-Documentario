@@ -19,9 +19,9 @@ public class TramiteController {
     private final List<Solicitante> solicitantes = DatosMemoria.SOLICITANTES;
     private final List<TipoTramite> tipoTramites = DatosMemoria.TIPOS_TRAMITE;
 
-    // página listar tramite + filtro por dni
+    // página listar tramite + filtro por idSolicitante
     @GetMapping("/listar")
-    public String listarTramites(@RequestParam(required = false) String dni, Model model) {
+    public String listarTramites(@RequestParam(required = false) String idSolicitante, Model model) {
 
         List<Tramite> resultado = new ArrayList<>();
 
@@ -29,8 +29,8 @@ public class TramiteController {
             boolean activo = t.getEstadoActual() != EstadoTramite.ARCHIVADO &&
                     t.getEstadoActual() != EstadoTramite.CANCELADO;
 
-            boolean coincide = (dni == null || dni.isBlank()) ||
-                    t.getSolicitante().getDni().equals(dni);
+            boolean coincide = (idSolicitante == null || idSolicitante.isBlank()) ||
+                    t.getSolicitante().getIdSolicitante().equals(idSolicitante);
 
             if (activo && coincide) {
                 resultado.add(t);
@@ -38,7 +38,7 @@ public class TramiteController {
         }
 
         model.addAttribute("tramites", resultado);
-        model.addAttribute("dniBuscado", dni);
+        model.addAttribute("idSolicitanteBuscado", idSolicitante);
 
         return "tramite/tramites";
     }
@@ -54,14 +54,14 @@ public class TramiteController {
             tramite.setSolicitante(new Solicitante());
         }
 
-        String dni = tramite.getSolicitante().getDni();
+        String idSolicitante = tramite.getSolicitante().getIdSolicitante();
 
-        Solicitante solicitante = buscarSolicitante(dni, tramite.getSolicitante());
-        boolean existe = existeSolicitante(dni);
+        Solicitante solicitante = buscarSolicitante(idSolicitante, tramite.getSolicitante());
+        boolean existe = existeSolicitante(idSolicitante);
 
         TipoTramite tipoSeleccionado = buscarTipo(tipoId);
 
-        cargarModeloFormulario(model, tramite, solicitante, tipoSeleccionado, tipoId, dni, existe, generarNumeroTramite());
+        cargarModeloFormulario(model, tramite, solicitante, tipoSeleccionado, tipoId, idSolicitante, existe, generarNumeroTramite());
 
         return "tramite/registrarTramite";
     }
@@ -109,14 +109,14 @@ public class TramiteController {
             form.setSolicitante(t.getSolicitante());
         }
 
-        String dni = form.getSolicitante().getDni();
+        String idSolicitante = form.getSolicitante().getIdSolicitante();
 
         TipoTramite tipoSeleccionado = buscarTipo(
                 tipoId != null ? tipoId : t.getTipoTramite().getIdTipoTramite()
         );
 
         cargarModeloFormulario(model, form, form.getSolicitante(), tipoSeleccionado,
-                tipoSeleccionado.getIdTipoTramite(), dni, true, t.getNroTramite());
+                tipoSeleccionado.getIdTipoTramite(), idSolicitante, true, t.getNroTramite());
 
         return "tramite/editarTramite";
     }
@@ -167,7 +167,7 @@ public class TramiteController {
     // FUNCIONES REUTILIZABLES
 
     private boolean validarSolicitante(Solicitante s) {
-        return !(s.getDni() == null || s.getDni().isBlank() ||
+        return !(s.getIdSolicitante() == null || s.getIdSolicitante().isBlank() ||
                 s.getNombreCompleto() == null || s.getNombreCompleto().isBlank() ||
                 s.getCorreoElectronico() == null || s.getCorreoElectronico().isBlank() ||
                 s.getTelefonoContacto() == null || s.getTelefonoContacto().isBlank());
@@ -175,7 +175,7 @@ public class TramiteController {
 
     private Solicitante guardarOActualizarSolicitante(Solicitante s) {
         for (Solicitante existente : solicitantes) {
-            if (existente.getDni().equals(s.getDni())) {
+            if (existente.getIdSolicitante().equals(s.getIdSolicitante())) {
                 existente.setNombreCompleto(s.getNombreCompleto());
                 existente.setCorreoElectronico(s.getCorreoElectronico());
                 existente.setTelefonoContacto(s.getTelefonoContacto());
@@ -194,18 +194,18 @@ public class TramiteController {
         return new TipoTramite();
     }
 
-    private Solicitante buscarSolicitante(String dni, Solicitante fallback) {
-        if (dni == null) return fallback;
+    private Solicitante buscarSolicitante(String idSolicitante, Solicitante fallback) {
+        if (idSolicitante == null) return fallback;
         for (Solicitante s : solicitantes) {
-            if (s.getDni().equals(dni)) return s;
+            if (s.getIdSolicitante().equals(idSolicitante)) return s;
         }
         return fallback;
     }
 
-    private boolean existeSolicitante(String dni) {
-        if (dni == null) return false;
+    private boolean existeSolicitante(String idSolicitante) {
+        if (idSolicitante == null) return false;
         for (Solicitante s : solicitantes) {
-            if (s.getDni().equals(dni)) return true;
+            if (s.getIdSolicitante().equals(idSolicitante)) return true;
         }
         return false;
     }
@@ -214,7 +214,7 @@ public class TramiteController {
                                         Solicitante solicitante,
                                         TipoTramite tipo,
                                         String tipoId,
-                                        String dni,
+                                        String idSolicitante,
                                         boolean existe,
                                         String nro) {
 
@@ -230,7 +230,7 @@ public class TramiteController {
         model.addAttribute("tipoSeleccionado", tipo);
         model.addAttribute("tipoTramites", tipoTramitesActivos);
         model.addAttribute("tipoTramiteId", tipoId);
-        model.addAttribute("dniBuscado", dni);
+        model.addAttribute("idSolicitanteBuscado", idSolicitante);
         model.addAttribute("existeSolicitante", existe);
         model.addAttribute("numeroTramiteGenerado", nro);
     }
@@ -247,8 +247,8 @@ public class TramiteController {
         TipoTramite tipo = buscarTipo(tipoId);
 
         cargarModeloFormulario(model, tramite, tramite.getSolicitante(),
-                tipo, tipoId, tramite.getSolicitante().getDni(),
-                existeSolicitante(tramite.getSolicitante().getDni()), nro);
+                tipo, tipoId, tramite.getSolicitante().getIdSolicitante(),
+                existeSolicitante(tramite.getSolicitante().getIdSolicitante()), nro);
 
         return vista;
     }
