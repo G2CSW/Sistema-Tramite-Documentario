@@ -31,7 +31,7 @@ public class BandejaTrabajoController {
                 // Segundo: si se buscó DNI, filtrar
                 if (dni != null && !dni.isEmpty()) {
                     // Asumiendo que t.getSolicitante() existe y tiene getDni()
-                    if (t.getSolicitante() != null && dni.equals(t.getSolicitante().getDni())) {
+                    if (t.getSolicitante() != null && dni.equals(t.getSolicitante().getIdSolicitante())) {
                         tramitesEvaluar.add(t);
                     }
                 } else {
