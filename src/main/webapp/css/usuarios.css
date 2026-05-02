@@ -6,11 +6,6 @@
     justify-content: space-between;
 }
 
-.header-acciones{
-    display: flex;
-    align-items: center; gap: 10px;
-}
-
 
 .input-busqueda-usuario {
     width: 200px;

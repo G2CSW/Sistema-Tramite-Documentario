@@ -13,19 +13,6 @@
   margin-bottom: 30px;
 }
 
-.filtros-section
-{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.filtros-section > div {
-  display: flex;
-  gap: 15px;
-}
-
 .input-buscar-tramite-contenedor {
     width: 300px;
 }
@@ -38,4 +25,9 @@
   gap: 15px;
 }
 
+.busqueda-tramite
+{
+display: flex;
+gap: 5px;
+}
 

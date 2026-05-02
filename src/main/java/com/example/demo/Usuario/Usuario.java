@@ -1,32 +1,34 @@
 package com.example.demo.Usuario;
 
+import com.example.demo.Area.Area;
+
 public class Usuario {
-    private String dni;
+    private String idUsuario;
     private String nombre;
     private String correoElectronico;
     private String password;
-    private String idArea;
-    private Boolean estado;
+    private Area area;
+    private boolean activo;
 
     public Usuario() {
     }
 
-    public Usuario(String dni, String nombre, String correoElectronico,
-                   String password, String idArea, Boolean estado) {
-        this.dni = dni;
+    public Usuario(String idUsuario, String nombre, String correoElectronico,
+                   String password, Area area, boolean activo) {
+        this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
         this.password = password;
-        this.idArea = idArea;
-        this.estado = estado;
+        this.area = area;
+        this.activo = activo;
     }
 
-    public String getDni() {
-        return dni;
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setDni(String dni) {
-        this.dni = dni;
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNombre() {
@@ -53,19 +55,19 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getIdArea() {
-        return idArea;
+    public Area getArea() {
+        return area;
     }
 
-    public void setIdArea(String idArea) {
-        this.idArea = idArea;
+    public void setArea(Area area) {
+        this.area = area;
     }
 
-    public Boolean getEstado() {
-        return estado;
+    public boolean getEstado() {
+        return activo;
     }
 
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
+    public void setEstado(boolean activo) {
+        this.activo = activo;
     }
 }

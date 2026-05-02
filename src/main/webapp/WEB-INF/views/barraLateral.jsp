@@ -26,7 +26,6 @@
         </svg>
         <div class="profile-info">
           <p class="system-name">Sistema de Trámite Documentario</p>
-          <small>Luis Pérez - Área Académica</small>
         </div>
       </div>
       <nav class="nav-menu">

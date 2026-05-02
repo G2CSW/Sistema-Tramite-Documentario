@@ -18,9 +18,9 @@
         </p>
       </header>
 
-      <section class="filtros-section">
         <h3>Trámites por revisar</h3>
-        <form action="${pageContext.request.contextPath}/bandejaTrabajo/listar" method="get" class="input-contenedor input-buscar-tramite-contenedor">
+        <form action="${pageContext.request.contextPath}/bandejaTrabajo/listar" method="get" class="busqueda-tramite">
+        <div class="input-contenedor input-buscar-tramite-contenedor">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -44,15 +44,17 @@
             class="input-buscar-tramite"
             value="${param.dni}"
           />
-        </form>
-      </section>
 
+        </div>
+        <button class="btn btn-primary">Buscar </button>
+        </form>
       <table class="tbl">
         <thead>
           <tr>
             <th>NRO. TRÁMITE</th>
             <th>TIPO DE TRÁMITE</th>
             <th>ID SOLICITANTE</th>
+            <th>NOMBRE SOLICITANTE</th>
             <th>FECHA INGRESO</th>
             <th>ACCIÓN</th>
           </tr>
@@ -62,9 +64,9 @@
             <tr>
               <td>${tramite.nroTramite}</td>
               <td>${tramite.tipoTramite.nombre}</td>
-              <td>${tramite.solicitante.dni}</td>
+              <td>${tramite.solicitante.idSolicitante}</td>
+              <td>${tramite.solicitante.nombreCompleto}</td>
               <td>${tramite.fechaRegistro}</td>
-
               <td class="acciones">
                 <a href="/bandejaTrabajo/evaluar/${tramite.nroTramite}">
                   <button class="btn btn-evaluar">Evaluar</button>

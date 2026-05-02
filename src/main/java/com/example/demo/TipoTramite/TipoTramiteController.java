@@ -29,7 +29,14 @@ public class TipoTramiteController {
 
     // REGISTRAR
     @PostMapping("/registrar")
-    public String registrar(@ModelAttribute TipoTramite tipo) {
+    public String registrar(@ModelAttribute TipoTramite tipo,
+                            Model model) {
+
+        if (!validarTipoTramite(tipo)) {
+            model.addAttribute("error", "Complete todos los campos");
+            model.addAttribute("tipo", tipo);
+            return "tipoTramite/registrarTipoTramite";
+        }
 
         tipo.setIdTipoTramite("TT" + (tipos.size() + 1));
         tipo.setFechaCreacion(java.time.LocalDate.now());
@@ -55,31 +62,27 @@ public class TipoTramiteController {
 
     // GUARDAR EDICIÓN
     @PostMapping("/editar/{id}")
-    public String editar(@PathVariable String id, @ModelAttribute TipoTramite form) {
+    public String editar(@PathVariable String id,
+                         @ModelAttribute TipoTramite form,
+                         Model model) {
+
+        if (!validarTipoTramite(form)) {
+            model.addAttribute("error", "Complete todos los campos");
+            model.addAttribute("tipo", form);
+            return "tipoTramite/editarTipoTramite";
+        }
 
         for (TipoTramite t : tipos) {
             if (t.getIdTipoTramite().equals(id)) {
                 t.setNombre(form.getNombre());
                 t.setDocumentacionMinima(form.getDocumentacionMinima());
+                break;
             }
         }
 
         return "redirect:/tipoTramite/listar";
     }
 
-    // DETALLE
-    @GetMapping("/detalle/{id}")
-    public String detalle(@PathVariable String id, Model model) {
-
-        for (TipoTramite t : tipos) {
-            if (t.getIdTipoTramite().equals(id)) {
-                model.addAttribute("tipo", t);
-                return "tipoTramite/detallesTipoTramite";
-            }
-        }
-
-        return "redirect:/tipoTramite/listar";
-    }
 
     @PostMapping("/toggle/{id}")
     public String toggle(@PathVariable String id) {
@@ -111,5 +114,10 @@ public class TipoTramiteController {
         }
 
         return "redirect:/tipoTramite/listar";
+    }
+
+    private boolean validarTipoTramite(TipoTramite t) {
+        return !(t.getNombre() == null || t.getNombre().isBlank() ||
+                t.getDocumentacionMinima() == null || t.getDocumentacionMinima().isBlank());
     }
 }

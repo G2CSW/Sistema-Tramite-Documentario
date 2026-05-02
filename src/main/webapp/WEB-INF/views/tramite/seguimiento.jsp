@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.example.demo.Tramite.EstadoTramite" %>
 <!doctype html>
 <html lang="es">
   <head>
@@ -12,20 +14,49 @@
 <%@ include file="../barraLateral.jsp" %>
     <main>
       <header class="header-seguimiento">
-        <h1>TRÁMITE CONVALIDACIÓN </h1>
-        <p>Nro: 132165</p>
+        <h1>TRÁMITE ${tramite.tipoTramite.nombre}</h1>
+        <p>Nro: ${tramite.nroTramite}</p>
       </header>
 
       <!-- INFO PRINCIPAL -->
       <section class="info-box">
         <div class="info-item">
           <strong>ESTADO ACTUAL</strong>
-          <span class="badge-estado estado-aprobado">APROBADO</span>
+          <c:choose>
+            <c:when test="${tramite.estadoActual == EstadoTramite.APROBADO}">
+              <span class="badge-estado estado-aprobado">APROBADO</span>
+            </c:when>
+            <c:when test="${tramite.estadoActual == EstadoTramite.EN_EVALUACION}">
+              <span class="badge-estado estado-evaluacion">EN EVALUACIÓN</span>
+            </c:when>
+            <c:when test="${tramite.estadoActual == EstadoTramite.REGISTRADO}">
+              <span class="badge-estado estado-registrado">REGISTRADO</span>
+            </c:when>
+            <c:when test="${tramite.estadoActual == EstadoTramite.ARCHIVADO}">
+              <span class="badge-estado estado-archivado">ARCHIVADO</span>
+            </c:when>
+            <c:when test="${tramite.estadoActual == EstadoTramite.CANCELADO}">
+              <span class="badge-estado estado-cancelado">CANCELADO</span>
+            </c:when>
+            <c:when test="${tramite.estadoActual == EstadoTramite.RECHAZADO}">
+              <span class="badge-estado estado-rechazado">RECHAZADO</span>
+            </c:when>
+            <c:otherwise>
+              <span class="badge-estado estado-evaluacion">${tramite.estadoActual}</span>
+            </c:otherwise>
+          </c:choose>
         </div>
 
         <div class="info-item">
           <strong>ÚLTIMA MODIFICACIÓN</strong>
-          <p>12 Oct, 2026</p>
+          <c:choose>
+            <c:when test="${not empty trazabilidades}">
+              <p>${trazabilidades[0].fechaHoraFormateada}</p>
+            </c:when>
+            <c:otherwise>
+              <p>Sin registros</p>
+            </c:otherwise>
+          </c:choose>
         </div>
       </section>
 
@@ -34,41 +65,35 @@
           <h4>Datos del Trámite</h4>
           <div>
             <strong>Tipo de Trámite</strong>
-            <p>Convalidación</p>
+            <p>${tramite.tipoTramite.nombre}</p>
           </div>
 
           <div class="asunto-descripcion">
             <strong>Asunto / Descripción</strong>
-            <textarea class="textarea-descripcion" disabled>Se ha adjuntado al trámite los siguientes documentos:
-    1. Formato único de trámite.
-    2. Certificado de estudios del semestre(s) a convalidar
-    3. Copia del sílabo de las asignaturas a convalidar.
-    4. Recibo de pago por los semestres estudiados.
-            </textarea>
-              
+            <textarea class="textarea-descripcion" disabled>${tramite.tipoTramite.documentacionMinima}</textarea>
           </div>
         </div>
 
         <div>
           <h4>Datos del Interesado</h4>
           <div>
-            <strong>Nombre Completo / Razón Social</strong>
-            <p>Luis Enrique</p>
+            <strong>Nombre Completo</strong>
+            <p>${tramite.solicitante.nombreCompleto}</p>
           </div>
 
           <div>
-            <strong>DNI / RUC / CE</strong>
-            <p>12345678</p>
+            <strong>DNI / CE</strong>
+            <p>${tramite.solicitante.idSolicitante}</p>
           </div>
 
           <div>
             <strong>Correo Electrónico</strong>
-            <p>luis@gmail.com</p>
+            <p>${tramite.solicitante.correoElectronico}</p>
           </div>
 
           <div>
             <strong>Teléfono de Contacto</strong>
-            <p>987654321</p>
+            <p>${tramite.solicitante.telefonoContacto}</p>
           </div>
         </div>
       </section>
@@ -89,58 +114,60 @@
             </tr>
           </thead>
 
-          <tbody>
-            <tr>
-              <td>
-                <div class="user">
-                  <div class="avatar gray">LP</div>
-                  <div>
-                    <strong>Luis Pérez</strong>
-                    <small>Área Académica</small>
-                  </div>
-                </div>
-              </td>
-              <td><span class="badge-estado estado-aprobado">Aprobado</span></td>
-              <td>Trámite aprobado por el Área académica</td>
-              <td><strong>Hoy</strong><br /><small>12:00 PM</small></td>
-            </tr>
+         <tbody>
+           <c:forEach var="tr" items="${trazabilidades}">
+             <tr>
+               <td>
+                 <div class="user">
+                   <div>
+                     <strong>${tr.usuario.nombre}</strong>
+                     <small>${tr.usuario.area.nombreArea}</small>
+                   </div>
+                 </div>
+               </td>
 
-            <tr>
-              <td>
-                <div class="user">
-                  <div class="avatar gray">LP</div>
-                  <div>
-                    <strong>Luis Pérez</strong>
-                    <small>Área Académica</small>
-                  </div>
-                </div>
-              </td>
-              <td><span class="badge-estado estado-evaluacion">Evaluación</span></td>
-              <td>Trámite recibido y en proceso de evaluación por el Área Académica</td>
-              <td><strong>Hoy</strong><br /><small>11:05 AM</small></td>
-            </tr>
-            
-            <tr>
-              <td>
-                <div class="user">
-                  <div class="avatar">AM</div>
-                  <div>
-                    <strong>Adrián Mendoza</strong>
-                    <small>Mesa de Partes</small>
-                  </div>
-                </div>
-              </td>
-              <td><span class="badge-estado estado-creado">Creado</span></td>
-              <td>Creación del trámite en el sistema</td>
-              <td>
-                <strong>12 Abr, 2026</strong><br /><small>10:15 AM</small>
-              </td>
-            </tr>
-          </tbody>
+               <td>
+                 <c:choose>
+                   <c:when test="${tr.estadoCambio == EstadoTramite.APROBADO}">
+                     <span class="badge-estado estado-aprobado">Aprobado</span>
+                   </c:when>
+                   <c:when test="${tr.estadoCambio == EstadoTramite.EN_EVALUACION}">
+                     <span class="badge-estado estado-evaluacion">Evaluación</span>
+                   </c:when>
+                   <c:when test="${tr.estadoCambio == EstadoTramite.REGISTRADO}">
+                     <span class="badge-estado estado-registrado">Registrado</span>
+                   </c:when>
+                   <c:when test="${tr.estadoCambio == EstadoTramite.ARCHIVADO}">
+                     <span class="badge-estado estado-archivado">Archivado</span>
+                   </c:when>
+                   <c:when test="${tr.estadoCambio == EstadoTramite.CANCELADO}">
+                     <span class="badge-estado estado-cancelado">Cancelado</span>
+                   </c:when>
+                   <c:when test="${tr.estadoCambio == EstadoTramite.RECHAZADO}">
+                    <span class="badge-estado estado-rechazado">Rechazado</span>
+                   </c:when>
+                   <c:otherwise>
+                     <span class="badge-estado estado-evaluacion">${tr.estadoCambio}</span>
+                   </c:otherwise>
+                 </c:choose>
+               </td>
+
+               <td>${tr.comentario}</td>
+
+               <td>
+                 <strong>${tr.fechaHoraFormateada}</strong>
+               </td>
+             </tr>
+           </c:forEach>
+
+           <c:if test="${empty trazabilidades}">
+             <tr>
+               <td colspan="4">No hay registros de trazabilidad para este trámite.</td>
+             </tr>
+           </c:if>
+         </tbody>
         </table>
       </section>
-
-      
     </main>
   </body>
 </html>
