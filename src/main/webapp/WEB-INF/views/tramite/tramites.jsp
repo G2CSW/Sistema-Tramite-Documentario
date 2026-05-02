@@ -55,7 +55,7 @@
           </div>
        </c:if>
       <form action="/tramite/listar" method="get" class="filtros-section">
-       <label for="buscar-tramite" > Buscar por DNI/CE: </label>
+       <label for="buscar-tramite" > Buscar por DNI / CE: </label>
         <div class="input-contenedor input-buscar-tramite-contenedor">
           <svg
               xmlns="http://www.w3.org/2000/svg"

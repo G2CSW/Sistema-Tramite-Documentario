@@ -39,7 +39,7 @@
 
           <div class="form-datos-solicitante">
             <div>
-              <label for="idSolicitante">DNI/CE</label>
+              <label for="idSolicitante">DNI / CE</label>
               <div class="buscar-idSolicitante">
                 <input
                   id="idSolicitante"
@@ -57,7 +57,7 @@
                   formaction="/tramite/editar/${numeroTramiteGenerado}"
                   class="btn btn-primary"
                 >
-                  Buscar DNI/CE
+                  Buscar DNI / CE
                 </button>
 
                 <c:if test="${not empty idSolicitanteBuscado}">

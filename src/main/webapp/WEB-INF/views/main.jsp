@@ -72,7 +72,7 @@
           </button>
         </a>
 
-        <a href="../../../../../html/gestionTramites/bandejaTrabajo.html">
+        <a href="/bandejaTrabajo/listar">
           <button class="accion-btn">
             <!-- inbox -->
             <svg
@@ -100,7 +100,7 @@
           </button>
         </a>
 
-        <a href="../../../../../html/gestionTramites/archivados.html">
+        <a href="/archivados/listar">
           <button class="accion-btn">
             <!-- archive -->
             <svg

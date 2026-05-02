@@ -1,7 +1,7 @@
 package com.example.demo.Tramite;
 
 public class EvaluacionTramite {
-    private String tramiteId;
+    private Tramite tramite;
     private Boolean datosCompletos;
     private Boolean datosConsistentes;
     private Boolean cumpleRequisitos;
@@ -12,10 +12,10 @@ public class EvaluacionTramite {
     }
 
     // Constructor completo
-    public EvaluacionTramite(String tramiteId, Boolean datosCompletos,
+    public EvaluacionTramite(Tramite tramite, Boolean datosCompletos,
                              Boolean datosConsistentes, Boolean cumpleRequisitos,
                              Boolean sustentoValido) {
-        this.tramiteId = tramiteId;
+        this.tramite = tramite;
         this.datosCompletos = datosCompletos;
         this.datosConsistentes = datosConsistentes;
         this.cumpleRequisitos = cumpleRequisitos;
@@ -23,12 +23,12 @@ public class EvaluacionTramite {
     }
 
     // Getters y Setters
-    public String getTramiteId() {
-        return tramiteId;
+    public Tramite getTramite() {
+        return tramite;
     }
 
-    public void setTramiteId(String tramiteId) {
-        this.tramiteId = tramiteId;
+    public void setTramite(Tramite tramite) {
+        this.tramite = tramite;
     }
 
     public Boolean getDatosCompletos() {

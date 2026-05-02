@@ -31,9 +31,13 @@
             <div class="asunto-descripcion">
               <strong>Documentación mínima adjuntada</strong>
               <textarea class="textarea-descripcion" disabled>
-${tramite.tipoTramite.documentacionMinima}
+                ${tramite.tipoTramite.documentacionMinima}
               </textarea>
             </div>
+
+            <c:if test="${not empty mensaje}">
+              <p style="color:red;">${mensaje}</p>
+            </c:if>
           </div>
 
           <div>

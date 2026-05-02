@@ -2,6 +2,7 @@ package com.example.demo.Tramite;
 
 import com.example.demo.Datos.DatosMemoria;
 import com.example.demo.TipoTramite.TipoTramite;
+import com.example.demo.Usuario.Usuario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,8 @@ public class TramiteController {
     private final List<Tramite> tramites = DatosMemoria.TRAMITES;
     private final List<Solicitante> solicitantes = DatosMemoria.SOLICITANTES;
     private final List<TipoTramite> tipoTramites = DatosMemoria.TIPOS_TRAMITE;
+    private final List<Trazabilidad> trazabilidades = DatosMemoria.TRAZABILIDADES;
+    private final List<Usuario> usuarios = DatosMemoria.USUARIOS;
 
     // página listar tramite + filtro por idSolicitante
     @GetMapping("/listar")
@@ -41,6 +44,35 @@ public class TramiteController {
         model.addAttribute("idSolicitanteBuscado", idSolicitante);
 
         return "tramite/tramites";
+    }
+
+    @GetMapping("/{nroTramite}")
+    public String mostrarSeguimiento(@PathVariable String nroTramite, Model model) {
+
+        List<Trazabilidad> resultado = new ArrayList<>();
+        Tramite tramite = null;
+
+        for (Tramite t : tramites) {
+            if (t.getNroTramite().equals(nroTramite)) {
+                tramite = t;
+                break;
+            }
+        }
+
+        for (Trazabilidad t : trazabilidades) {
+            if (t.getTramite().getNroTramite().equals(nroTramite)) {
+                resultado.add(t);
+            }
+        }
+
+        // Ordenar (más reciente primero)
+        resultado.sort((a, b) -> b.getFechaHora().compareTo(a.getFechaHora()));
+
+
+        model.addAttribute("tramite", tramite);
+        model.addAttribute("trazabilidades", resultado);
+
+        return "tramite/seguimiento";
     }
 
     // página registrar tramite
@@ -84,6 +116,17 @@ public class TramiteController {
         tramite.setTipoTramite(buscarTipo(tramite.getTipoTramite().getIdTipoTramite()));
 
         tramites.add(tramite);
+
+        // guardar trazabilidad inicial
+        Trazabilidad trazabilidad = new Trazabilidad();
+        trazabilidad.setIdTrazabilidad("TZ" + (DatosMemoria.TRAZABILIDADES.size() + 1));
+        trazabilidad.setTramite(tramite);
+        trazabilidad.setUsuario(usuarios.get(0));
+        trazabilidad.setEstadoCambio(EstadoTramite.REGISTRADO);
+        trazabilidad.setComentario("Trámite registrado en el sistema");
+        trazabilidad.setFechaHora(java.time.LocalDateTime.now());
+
+        DatosMemoria.TRAZABILIDADES.add(trazabilidad);
 
         redirectAttributes.addFlashAttribute("mensaje", "Trámite " + tramite.getNroTramite() + " registrado correctamente");
         return "redirect:/tramite/listar";
@@ -140,7 +183,8 @@ public class TramiteController {
                     "tramite/editarTramite", t.getNroTramite());
         }
 
-        t.setSolicitante(form.getSolicitante());
+        Solicitante s = guardarOActualizarSolicitante(form.getSolicitante());
+        t.setSolicitante(s);
         t.setTipoTramite(buscarTipo(form.getTipoTramite().getIdTipoTramite()));
 
         ra.addFlashAttribute("mensaje", "Trámite actualizado correctamente");
@@ -155,8 +199,39 @@ public class TramiteController {
         Tramite tramite = buscarPorId(id);
 
         if (tramite != null) {
+
+            // Cambiar estado
             tramite.setEstadoActual(estado);
+
+            // Registrar trazabilidad
+            Trazabilidad tr = new Trazabilidad();
+            tr.setIdTrazabilidad("TZ" + (DatosMemoria.TRAZABILIDADES.size() + 1));
+            tr.setTramite(tramite);
+            tr.setUsuario(usuarios.get(0)); // o usuario logueado
+            tr.setEstadoCambio(estado);
+            switch (estado) {
+                case EN_EVALUACION:
+                    tr.setComentario("Trámite derivado y en proceso de evaluación");
+                    break;
+
+                case CANCELADO:
+                    tr.setComentario("Trámite cancelado a solicitud del interesado");
+                    break;
+
+                case ARCHIVADO:
+                    tr.setComentario("Trámite archivado, proceso completado");
+                    break;
+
+                default:
+                    tr.setComentario("Cambio de estado a " + estado.name());
+                    break;
+            }
+            tr.setFechaHora(java.time.LocalDateTime.now());
+
+            DatosMemoria.TRAZABILIDADES.add(tr);
+
             redirectAttributes.addFlashAttribute("mensaje", "Estado del trámite actualizado");
+
         } else {
             redirectAttributes.addFlashAttribute("mensaje", "Trámite no encontrado");
         }
@@ -164,11 +239,7 @@ public class TramiteController {
         return "redirect:/tramite/listar";
     }
 
-    // página editar tramite
-    @GetMapping("/{id}")
-    public String mostrarSeguimiento(Model model) {
-        return "tramite/seguimiento";
-    }
+
 
     // FUNCIONES REUTILIZABLES
 
