@@ -22,17 +22,16 @@
         <section class="section-numero-tramite">
           <label>Número de trámite:</label>
           <input type="text" disabled value="${numeroTramiteGenerado}" placeholder="#autogenerado" />
+
           <c:if test="${not empty error}">
-              <div class="mensaje mensaje-error">
-                  ERROR: ${error}
-              </div>
+            <div class="mensaje mensaje-error">
+              ERROR: ${error}
+            </div>
           </c:if>
         </section>
 
         <section class="section">
           <h2>Datos del Solicitante</h2>
-
-
 
           <div class="form-datos-solicitante">
             <div>
@@ -53,22 +52,21 @@
                 >
                   Buscar DNI / CE
                 </button>
-                 <c:if test="${not empty idSolicitanteBuscado}">
+
+                <c:if test="${not empty idSolicitanteBuscado}">
                   <c:choose>
-                      <c:when test="${existeSolicitante}">
-                          <div class="mensaje mensaje-exito">
-                              Solicitante ya en el sistema
-                          </div>
-                      </c:when>
-
-                      <c:otherwise>
-                          <div class="mensaje mensaje-info">
-                              Nuevo solicitante
-                          </div>
-                      </c:otherwise>
+                    <c:when test="${existeSolicitante}">
+                      <div class="mensaje mensaje-exito">
+                        Solicitante ya en el sistema
+                      </div>
+                    </c:when>
+                    <c:otherwise>
+                      <div class="mensaje mensaje-info">
+                        Nuevo solicitante
+                      </div>
+                    </c:otherwise>
                   </c:choose>
-
-              </c:if>
+                </c:if>
               </div>
             </div>
 
@@ -117,11 +115,11 @@
             <div>
               <label for="tipoTramite">Tipo de Trámite</label>
               <div class="buscar-documentacion-contenedor">
-              <select
-                id="tipoTramite"
-                class="select"
-                name="tipoTramite.idTipoTramite"
-              >
+                <select
+                  id="tipoTramite"
+                  class="select"
+                  name="tipoTramite.idTipoTramite"
+                >
                   <c:forEach var="tipo" items="${tipoTramites}">
                     <c:choose>
                       <c:when test="${tipo.idTipoTramite eq tipoTramiteId}">
@@ -150,13 +148,23 @@
 
             <div>
               <label>Documentación mínima requerida</label>
-              <textarea class="textarea-descripcion" readonly><c:choose>
-<c:when test="${not empty tipoSeleccionado.documentacionMinima}">
-${tipoSeleccionado.documentacionMinima}
-</c:when>
-<c:otherwise>
-Seleccione un tipo de trámite y presione "Cargar documentación".
-</c:otherwise></c:choose></textarea>
+
+              <c:choose>
+                <c:when test="${not empty tipoSeleccionado and not empty tipoSeleccionado.documentacionMinima}">
+                  <ul class="doc-minima-lista">
+                    <c:forEach var="doc" items="${tipoSeleccionado.documentacionMinima}">
+                      <li class="doc-minima-item">
+                        <span class="doc-minima-texto">${doc.nombreDocumento}</span>
+                      </li>
+                    </c:forEach>
+                  </ul>
+                </c:when>
+                <c:otherwise>
+                  <div class="doc-minima-vacio">
+                    Seleccione un tipo de trámite y presione "Cargar documentación".
+                  </div>
+                </c:otherwise>
+              </c:choose>
             </div>
           </div>
         </section>

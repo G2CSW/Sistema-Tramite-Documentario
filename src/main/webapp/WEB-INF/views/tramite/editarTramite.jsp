@@ -18,7 +18,6 @@
         <p>Modifique los datos antes de guardar los cambios.</p>
       </header>
 
-      <!-- IMPORTANTE: action cambia -->
       <form action="/tramite/editar/${numeroTramiteGenerado}"
             method="post"
             class="form-registro-tramite">
@@ -28,9 +27,9 @@
           <input type="text" disabled value="${numeroTramiteGenerado}" />
 
           <c:if test="${not empty error}">
-              <div class="mensaje mensaje-error">
-                  ERROR: ${error}
-              </div>
+            <div class="mensaje mensaje-error">
+              ERROR: ${error}
+            </div>
           </c:if>
         </section>
 
@@ -50,7 +49,6 @@
                   placeholder="00000000"
                 />
 
-                <!-- MISMO BOTÓN QUE REGISTRAR -->
                 <button
                   type="submit"
                   formmethod="get"
@@ -62,19 +60,18 @@
 
                 <c:if test="${not empty idSolicitanteBuscado}">
                   <c:choose>
-                      <c:when test="${existeSolicitante}">
-                          <div class="mensaje mensaje-exito">
-                              Solicitante ya en el sistema
-                          </div>
-                      </c:when>
-                      <c:otherwise>
-                          <div class="mensaje mensaje-info">
-                              Nuevo solicitante
-                          </div>
-                      </c:otherwise>
+                    <c:when test="${existeSolicitante}">
+                      <div class="mensaje mensaje-exito">
+                        Solicitante ya en el sistema
+                      </div>
+                    </c:when>
+                    <c:otherwise>
+                      <div class="mensaje mensaje-info">
+                        Nuevo solicitante
+                      </div>
+                    </c:otherwise>
                   </c:choose>
                 </c:if>
-
               </div>
             </div>
 
@@ -142,7 +139,6 @@
                   </c:forEach>
                 </select>
 
-                <!-- MISMO BOTÓN -->
                 <button
                   type="submit"
                   formmethod="get"
@@ -156,16 +152,23 @@
 
             <div>
               <label>Documentación mínima requerida</label>
-              <textarea class="textarea-descripcion" readonly>
-<c:choose>
-<c:when test="${not empty tipoSeleccionado.documentacionMinima}">
-${tipoSeleccionado.documentacionMinima}
-</c:when>
-<c:otherwise>
-Seleccione un tipo de trámite y presione "Cargar documentación".
-</c:otherwise>
-</c:choose>
-              </textarea>
+
+              <c:choose>
+                <c:when test="${not empty tipoSeleccionado and not empty tipoSeleccionado.documentacionMinima}">
+                  <ul class="doc-minima-lista">
+                    <c:forEach var="doc" items="${tipoSeleccionado.documentacionMinima}">
+                      <li class="doc-minima-item">
+                        <span class="doc-minima-texto">${doc.nombreDocumento}</span>
+                      </li>
+                    </c:forEach>
+                  </ul>
+                </c:when>
+                <c:otherwise>
+                  <div class="doc-minima-vacio">
+                    Seleccione un tipo de trámite y presione "Cargar documentación".
+                  </div>
+                </c:otherwise>
+              </c:choose>
             </div>
           </div>
         </section>
@@ -175,7 +178,6 @@ Seleccione un tipo de trámite y presione "Cargar documentación".
             Cancelar
           </a>
 
-          <!-- TEXTO CAMBIA -->
           <button type="submit" class="btn btn-primary">
             Guardar Cambios
           </button>

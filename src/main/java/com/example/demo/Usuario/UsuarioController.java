@@ -34,6 +34,8 @@ public class UsuarioController {
                             Model model) {
 
         if (!validarUsuario(usuario) || idArea == null || idArea.isBlank()) {
+            usuario.setArea(buscarArea(idArea));
+
             model.addAttribute("error", "Complete todos los campos");
             model.addAttribute("usuario", usuario);
             model.addAttribute("areas", areas);
@@ -69,6 +71,9 @@ public class UsuarioController {
                          Model model) {
 
         if (!validarUsuario(form) || idArea == null || idArea.isBlank()) {
+
+            form.setArea(buscarArea(idArea));
+
             model.addAttribute("error", "Complete todos los campos");
             model.addAttribute("usuario", form);
             model.addAttribute("areas", areas);

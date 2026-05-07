@@ -72,6 +72,7 @@ public class BandejaTrabajoController {
                                      @RequestParam(required = false, defaultValue = "false") boolean sustentoValido,
                                      @RequestParam String accion,
                                      @RequestParam(required = false) String comentario,
+                                     Model model,
                                      RedirectAttributes ra) {
 
         Tramite t = buscarPorId(id);
@@ -81,46 +82,96 @@ public class BandejaTrabajoController {
             return "redirect:/bandejaTrabajo/listar";
         }
 
-        boolean todosCumplen = datosCompletos && datosConsistentes && cumpleRequisitos && sustentoValido;
+        boolean todosCumplen =
+                datosCompletos &&
+                        datosConsistentes &&
+                        cumpleRequisitos &&
+                        sustentoValido;
 
+        // ERROR APROBAR
         if ("aprobar".equals(accion) && !todosCumplen) {
-            ra.addFlashAttribute("mensaje", "No se puede aprobar un trámite que no cumple con los checks.");
-            return "redirect:/bandejaTrabajo/evaluar/" + id;
+
+            model.addAttribute("mensaje",
+                    "No se puede aprobar un trámite que no cumple con los checks.");
+
+            model.addAttribute("tramite", t);
+
+            model.addAttribute("datosCompletos", datosCompletos);
+            model.addAttribute("datosConsistentes", datosConsistentes);
+            model.addAttribute("cumpleRequisitos", cumpleRequisitos);
+            model.addAttribute("sustentoValido", sustentoValido);
+            model.addAttribute("comentario", comentario);
+
+            return "bandejaTrabajo/evaluacion";
         }
 
+        // ERROR RECHAZAR
         if ("rechazar".equals(accion) && todosCumplen) {
-            ra.addFlashAttribute("mensaje", "No se puede rechazar un trámite que tiene todo check.");
-            return "redirect:/bandejaTrabajo/evaluar/" + id;
+
+            model.addAttribute("mensaje",
+                    "No se puede rechazar un trámite que tiene todo check.");
+
+            model.addAttribute("tramite", t);
+
+            model.addAttribute("datosCompletos", datosCompletos);
+            model.addAttribute("datosConsistentes", datosConsistentes);
+            model.addAttribute("cumpleRequisitos", cumpleRequisitos);
+            model.addAttribute("sustentoValido", sustentoValido);
+            model.addAttribute("comentario", comentario);
+
+            return "bandejaTrabajo/evaluacion";
         }
 
         // Guardar evaluación
         EvaluacionTramite evaluacion = new EvaluacionTramite(
-                t, datosCompletos, datosConsistentes, cumpleRequisitos, sustentoValido
+                t,
+                datosCompletos,
+                datosConsistentes,
+                cumpleRequisitos,
+                sustentoValido
         );
+
         guardarOActualizarEvaluacion(evaluacion);
 
-        // Cambiar estado y guardar trazabilidad
         Trazabilidad tr = new Trazabilidad();
+
         tr.setIdTrazabilidad("TZ" + (DatosMemoria.TRAZABILIDADES.size() + 1));
         tr.setTramite(t);
         tr.setUsuario(DatosMemoria.USUARIOS.get(1));
         tr.setFechaHora(java.time.LocalDateTime.now());
 
         if ("aprobar".equals(accion)) {
+
             t.setEstadoActual(EstadoTramite.APROBADO);
+
             tr.setEstadoCambio(EstadoTramite.APROBADO);
-            tr.setComentario("Trámite aprobado" + agregarComentarioExtra(comentario));
+
+            tr.setComentario(
+                    "Trámite aprobado" + agregarComentarioExtra(comentario)
+            );
+
         } else {
+
             t.setEstadoActual(EstadoTramite.RECHAZADO);
+
             tr.setEstadoCambio(EstadoTramite.RECHAZADO);
-            tr.setComentario("Trámite rechazado por no cumplir con los siguientes criterios: " + listarChecksNoCumplidos(
-                    datosCompletos, datosConsistentes, cumpleRequisitos, sustentoValido
-            ) + agregarComentarioExtra(comentario));
+
+            tr.setComentario(
+                    "Trámite rechazado por no cumplir con los siguientes criterios: "
+                            + listarChecksNoCumplidos(
+                            datosCompletos,
+                            datosConsistentes,
+                            cumpleRequisitos,
+                            sustentoValido
+                    )
+                            + agregarComentarioExtra(comentario)
+            );
         }
 
         DatosMemoria.TRAZABILIDADES.add(tr);
 
         ra.addFlashAttribute("mensaje", "Evaluación registrada");
+
         return "redirect:/bandejaTrabajo/listar";
     }
 
