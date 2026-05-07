@@ -264,11 +264,12 @@ public class TramiteController {
     }
 
     private TipoTramite buscarTipo(String id) {
-        if (id == null) return new TipoTramite();
+        if (id == null) return null;
+
         for (TipoTramite t : tipoTramites) {
             if (t.getIdTipoTramite().equals(id)) return t;
         }
-        return new TipoTramite();
+        return null;
     }
 
     private Solicitante buscarSolicitante(String idSolicitante, Solicitante fallback) {
@@ -302,6 +303,7 @@ public class TramiteController {
                 tipoTramitesActivos.add(t);
             }
         }
+
         model.addAttribute("tramite", tramite);
         model.addAttribute("solicitante", solicitante);
         model.addAttribute("tipoSeleccionado", tipo);

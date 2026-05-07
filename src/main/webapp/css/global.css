@@ -491,3 +491,39 @@ a {
     font-size: 18px;
     margin-left: 15px;
 }
+
+
+
+
+.doc-minima-lista {
+    margin-top: 12px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.doc-minima-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.doc-minima-texto {
+    font-size: 0.95rem;
+    color: #222;
+}
+
+.doc-minima-vacio {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px dashed #cfcfcf;
+    border-radius: 10px;
+    background: #fafafa;
+    color: #777;
+}

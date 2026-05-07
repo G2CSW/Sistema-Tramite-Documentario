@@ -4,13 +4,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Controller
 public class Static {
     @GetMapping("/")
     public String inicio(Model model) {
-        java.time.LocalDate fechaActual = java.time.LocalDate.now();
+        LocalDate fechaActual = LocalDate.now();
 
-        model.addAttribute("fechaActual", fechaActual);
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        String fechaFormateada = fechaActual.format(formatter);
+
+        model.addAttribute("fechaActual", fechaFormateada);
 
         return "main";
     }

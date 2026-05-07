@@ -1,0 +1,60 @@
+.header {
+    width: 100%;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+}
+
+.documentos-list {
+    width: 100%;
+}
+
+.btn-toggle {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.btn-toggle.activo svg {
+    color: #22c55e;
+}
+
+.btn-toggle.inactivo svg {
+    color: #9ca3af;
+}
+
+.header-form-documento {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-documento {
+    width: 100%;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.section-documento {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.section-documento label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.section-acciones {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}

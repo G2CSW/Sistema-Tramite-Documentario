@@ -27,12 +27,51 @@
         <section class="section">
             <div>
                 <label>Nombre</label>
-                <input class="input" type="text" name="nombre" value="${tipo.nombre}" required/>
+                <input class="input" type="text" name="nombre"
+                       value="${tipo.nombre}" required />
             </div>
 
             <div>
                 <label>Documentación mínima requerida</label>
-                <textarea class="textarea-descripcion" name="documentacionMinima" required>${tipo.documentacionMinima}</textarea>
+
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <select class="input" name="documentoId" style="flex:1;">
+                        <option value="">-- Seleccione un documento --</option>
+                        <c:forEach var="doc" items="${documentos}">
+                            <option value="${doc.idDocumento}">${doc.nombreDocumento}</option>
+                        </c:forEach>
+                    </select>
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            formaction="/tipoTramite/editar/${tipo.idTipoTramite}/agregar">
+                        Agregar
+                    </button>
+                </div>
+
+                <ul class="doc-minima-lista">
+                    <c:forEach var="doc" items="${tipo.documentacionMinima}">
+                        <li class="doc-minima-item">
+                            <span class="doc-minima-texto">${doc.nombreDocumento}</span>
+
+                            <button type="submit"
+                                    class="btn btn-secondary doc-minima-btn"
+                                    formaction="/tipoTramite/editar/${tipo.idTipoTramite}/quitar"
+                                    name="quitarId"
+                                    value="${doc.idDocumento}">
+                                Eliminar
+                            </button>
+
+                            <input type="hidden" name="documentacionMinimaIds" value="${doc.idDocumento}">
+                        </li>
+                    </c:forEach>
+
+                    <c:if test="${empty tipo.documentacionMinima}">
+                        <li class="doc-minima-vacio">
+                            Aún no agregó documentos.
+                        </li>
+                    </c:if>
+                </ul>
             </div>
         </section>
 

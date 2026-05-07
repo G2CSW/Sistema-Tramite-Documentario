@@ -2,15 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!doctype html>
-
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Tipos de Trámite</title>
 
-<link rel="stylesheet" href="../../../css/global.css">
-<link rel="stylesheet" href="../../../css/tiposTramites.css">
-
+    <link rel="stylesheet" href="../../../css/global.css">
+    <link rel="stylesheet" href="../../../css/tiposTramites.css">
 </head>
 
 <body>
@@ -41,12 +39,12 @@
 
 <section class="tramites-list">
     <table class="tbl">
-
         <thead>
             <tr>
                 <th>Nombre</th>
                 <th>Documentación Mínima</th>
                 <th>FECHA CREACIÓN</th>
+                <th>Estado</th>
                 <th class="acciones-crud">Acciones</th>
             </tr>
         </thead>
@@ -54,11 +52,26 @@
         <tbody>
             <c:forEach var="t" items="${tipos}">
                 <tr>
-
                     <td>${t.nombre}</td>
-                    <td>${t.documentacionMinima}
+
+                    <td>
+                        <c:forEach var="doc" items="${t.documentacionMinima}" varStatus="status">
+                            ${doc.nombreDocumento}<c:if test="${!status.last}">, </c:if>
+                        </c:forEach>
+                    </td>
 
                     <td>${t.fechaCreacion}</td>
+
+                    <td>
+                        <c:choose>
+                            <c:when test="${t.activo}">
+                                Activo
+                            </c:when>
+                            <c:otherwise>
+                                Inactivo
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
 
                     <td class="acciones-crud">
 
@@ -68,20 +81,16 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                      viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path stroke="none" d="M0 0h24h0" fill="none"/>
                                     <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"/>
                                     <path d="M13.5 6.5l4 4"/>
                                 </svg>
                             </button>
                         </a>
 
-                        <!-- TOGGLE -->
                         <form action="/tipoTramite/cambiar-estado/${t.idTipoTramite}"
                               method="post"
                               style="display:inline;">
-
-                            <input type="hidden" name="activo" value="${!t.activo}" />
-
                             <button type="submit"
                                     class="btn-toggle ${t.activo ? 'activo' : 'inactivo'}"
                                     title="Cambiar estado">
@@ -90,23 +99,18 @@
                                      width="24"
                                      height="24"
                                      fill="currentColor">
-
                                     <path d="M16 5a7 7 0 0 1 0 14h-8a7 7 0 0 1 0 -14zm0 2h-8a5 5 0 1 0 0 10h8a5 5 0 0 0 0 -10"/>
-
                                     <circle cx="${t.activo ? '16' : '8'}"
                                             cy="12"
                                             r="3"/>
                                 </svg>
-
                             </button>
                         </form>
 
                     </td>
-
                 </tr>
             </c:forEach>
         </tbody>
-
     </table>
 </section>
 

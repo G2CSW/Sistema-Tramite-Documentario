@@ -1,20 +1,27 @@
 package com.example.demo.TipoTramite;
 
+import com.example.demo.Documento.Documento;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TipoTramite {
 
     private String idTipoTramite;
     private String nombre;
-    private String documentacionMinima;
+    private List<Documento> documentacionMinima = new ArrayList<>();
     private LocalDate fechaCreacion;
     private boolean activo;
 
     public TipoTramite() {
     }
 
-    public TipoTramite(String idTipoTramite, String nombre,
-                       String documentacionMinima, LocalDate fechaCreacion) {
+    public TipoTramite(String idTipoTramite,
+                       String nombre,
+                       List<Documento> documentacionMinima,
+                       LocalDate fechaCreacion) {
+
         this.idTipoTramite = idTipoTramite;
         this.nombre = nombre;
         this.documentacionMinima = documentacionMinima;
@@ -23,7 +30,7 @@ public class TipoTramite {
     }
 
     public String getIdTipoTramite() {
-        return this.idTipoTramite;
+        return idTipoTramite;
     }
 
     public void setIdTipoTramite(String idTipoTramite) {
@@ -38,23 +45,27 @@ public class TipoTramite {
         this.nombre = nombre;
     }
 
-    public String getDocumentacionMinima() {
-        return this.documentacionMinima;
+    public List<Documento> getDocumentacionMinima() {
+        return documentacionMinima;
     }
 
-    public void setDocumentacionMinima(String documentacionMinima) {
+    public void setDocumentacionMinima(List<Documento> documentacionMinima) {
         this.documentacionMinima = documentacionMinima;
     }
 
     public LocalDate getFechaCreacion() {
-        return this.fechaCreacion;
+        return fechaCreacion;
     }
 
     public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public boolean isActivo(){ return this.activo; }
+    public boolean isActivo() {
+        return activo;
+    }
 
-    public void setActivo(boolean activo){ this.activo = activo; }
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
 }
