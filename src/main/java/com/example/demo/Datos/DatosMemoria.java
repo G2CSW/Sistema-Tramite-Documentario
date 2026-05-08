@@ -108,6 +108,7 @@ public class DatosMemoria {
         tramite1.setFechaRegistro(LocalDate.now());
         tramite1.setEstadoActual(EstadoTramite.REGISTRADO);
 
+
         TRAMITES.add(tramite1);
 
         // TRAZABILIDAD
