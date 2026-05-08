@@ -97,7 +97,7 @@
             <th class="acciones-crud" >Acciones</th>
           </thead>
           <tbody>
-            <c:forEach var="tramite" items="${tramites}">
+         <c:forEach var="tramite" items="${tramites}">
               <tr>
                 <td>${tramite.nroTramite}</td>
                 <td>${tramite.tipoTramite.nombre}</td>

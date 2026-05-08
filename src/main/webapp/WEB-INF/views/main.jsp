@@ -39,7 +39,7 @@
           </div>
           <div class="card-text">
             <p class="card-label">FECHA ACTUAL</p>
-            <p class="card-value">${fechaActual}</p>
+                <p class="card-value">${fechaActual}</p>
           </div>
         </div>
 
