@@ -19,14 +19,16 @@ public class DatosMemoria {
     public static final List<Solicitante> SOLICITANTES = new ArrayList<>();
     public static final List<Tramite> TRAMITES = new ArrayList<>();
     public static final List<Trazabilidad> TRAZABILIDADES = new ArrayList<>();
-    public static final List<EvaluacionTramite> EVALUACIONES = new ArrayList<>();
     public static final List<Documento> DOCUMENTOS = new ArrayList<>();
 
     static {
 
         // AREAS
-        AREAS.add(new Area("A001", "Mesa de Partes"));
-        AREAS.add(new Area("A002", "Área Académica"));
+        Area area1 = new Area("A001", "Mesa de Partes");
+        Area area2 = new Area("A002", "Área Académica");
+
+        AREAS.add(area1);
+        AREAS.add(area2);
 
         // USUARIOS
         Usuario usuario1 = new Usuario(
@@ -34,7 +36,7 @@ public class DatosMemoria {
                 "Luis Pérez",
                 "luis.perez@gmail.com",
                 "123",
-                AREAS.get(0),
+                area1.getNombreArea(),
                 true
         );
 
@@ -43,7 +45,7 @@ public class DatosMemoria {
                 "María Torres",
                 "maria.torres@gmail.com",
                 "123",
-                AREAS.get(1),
+                area2.getNombreArea(),
                 true
         );
 
@@ -101,19 +103,16 @@ public class DatosMemoria {
 
         // TRÁMITE
         Tramite tramite1 = new Tramite();
-
         tramite1.setNroTramite("TR001");
         tramite1.setTipoTramite(tipo1);
         tramite1.setSolicitante(solicitante1);
         tramite1.setFechaRegistro(LocalDate.now());
         tramite1.setEstadoActual(EstadoTramite.REGISTRADO);
 
-
         TRAMITES.add(tramite1);
 
         // TRAZABILIDAD
         Trazabilidad trazabilidad1 = new Trazabilidad();
-
         trazabilidad1.setIdTrazabilidad("TZ001");
         trazabilidad1.setTramite(tramite1);
         trazabilidad1.setUsuario(usuario1);

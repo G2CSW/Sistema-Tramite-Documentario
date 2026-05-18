@@ -134,7 +134,7 @@
                   <div class="user">
                     <div>
                       <strong>${tr.usuario.nombre}</strong>
-                      <small>${tr.usuario.area.nombreArea}</small>
+                      <small>${tr.usuario.area}</small>
                     </div>
                   </div>
                 </td>

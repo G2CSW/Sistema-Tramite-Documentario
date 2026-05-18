@@ -17,14 +17,18 @@ public class UsuarioController {
 
     @GetMapping("/listar")
     public String listar(Model model) {
+
         model.addAttribute("usuarios", usuarios);
+
         return "usuario/usuarios";
     }
 
     @GetMapping("/registrar")
     public String irRegistrar(Model model) {
+
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("areas", areas);
+
         return "usuario/registrarUsuario";
     }
 
@@ -33,16 +37,18 @@ public class UsuarioController {
                             @RequestParam(required = false) String idArea,
                             Model model) {
 
-        if (!validarUsuario(usuario) || idArea == null || idArea.isBlank()) {
-            usuario.setArea(buscarArea(idArea));
+        Area area = buscarArea(idArea);
+
+        if (!validarUsuario(usuario) || area == null) {
 
             model.addAttribute("error", "Complete todos los campos");
             model.addAttribute("usuario", usuario);
             model.addAttribute("areas", areas);
+
             return "usuario/registrarUsuario";
         }
 
-        usuario.setArea(buscarArea(idArea));
+        usuario.setArea(area.getNombreArea());
         usuario.setEstado(true);
 
         usuarios.add(usuario);
@@ -51,12 +57,16 @@ public class UsuarioController {
     }
 
     @GetMapping("/editar/{idUsuario}")
-    public String editarForm(@PathVariable String idUsuario, Model model) {
+    public String editarForm(@PathVariable String idUsuario,
+                             Model model) {
 
         for (Usuario u : usuarios) {
+
             if (u.getIdUsuario().equals(idUsuario)) {
+
                 model.addAttribute("usuario", u);
                 model.addAttribute("areas", areas);
+
                 return "usuario/editarUsuario";
             }
         }
@@ -70,22 +80,28 @@ public class UsuarioController {
                          @RequestParam(required = false) String idArea,
                          Model model) {
 
-        if (!validarUsuario(form) || idArea == null || idArea.isBlank()) {
+        Area area = buscarArea(idArea);
 
-            form.setArea(buscarArea(idArea));
+        if (!validarUsuario(form) || area == null) {
+
+            form.setArea(area != null ? area.getNombreArea() : "");
 
             model.addAttribute("error", "Complete todos los campos");
             model.addAttribute("usuario", form);
             model.addAttribute("areas", areas);
+
             return "usuario/editarUsuario";
         }
 
         for (Usuario u : usuarios) {
+
             if (u.getIdUsuario().equals(idUsuario)) {
+
                 u.setNombre(form.getNombre());
                 u.setCorreoElectronico(form.getCorreoElectronico());
                 u.setPassword(form.getPassword());
-                u.setArea(buscarArea(idArea));
+                u.setArea(area.getNombreArea());
+
                 break;
             }
         }
@@ -95,16 +111,22 @@ public class UsuarioController {
 
     @PostMapping("/toggle/{idUsuario}")
     public String toggle(@PathVariable String idUsuario) {
+
         for (Usuario u : usuarios) {
+
             if (u.getIdUsuario().equals(idUsuario)) {
+
                 u.setEstado(!u.getEstado());
+
                 break;
             }
         }
+
         return "redirect:/usuario/listar";
     }
 
     private boolean validarUsuario(Usuario u) {
+
         return !(u.getIdUsuario() == null || u.getIdUsuario().isBlank() ||
                 u.getNombre() == null || u.getNombre().isBlank() ||
                 u.getCorreoElectronico() == null || u.getCorreoElectronico().isBlank() ||
@@ -112,11 +134,15 @@ public class UsuarioController {
     }
 
     private Area buscarArea(String idArea) {
+
         for (Area a : areas) {
+
             if (a.getIdArea().equals(idArea)) {
+
                 return a;
             }
         }
+
         return null;
     }
 }

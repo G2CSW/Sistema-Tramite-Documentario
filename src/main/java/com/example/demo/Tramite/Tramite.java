@@ -13,21 +13,31 @@ public class Tramite {
     private LocalDate fechaRegistro;
     private EstadoTramite estadoActual;
 
-    // Constructor vacío
+    // Campos relacionados a la evaluacion
+    private Boolean datosCompletos;
+    private Boolean datosConsistentes;
+    private Boolean cumpleRequisitos;
+    private Boolean sustentoValido;
+
     public Tramite() {
     }
 
     public Tramite(String nroTramite, TipoTramite tipoTramite, Usuario usuario, Solicitante solicitante,
-                   LocalDate fechaRegistro, EstadoTramite estadoActual) {
+                   LocalDate fechaRegistro, EstadoTramite estadoActual,
+                   Boolean datosCompletos, Boolean datosConsistentes,
+                   Boolean cumpleRequisitos, Boolean sustentoValido) {
         this.nroTramite = nroTramite;
         this.tipoTramite = tipoTramite;
         this.usuario = usuario;
         this.solicitante = solicitante;
         this.fechaRegistro = fechaRegistro;
         this.estadoActual = estadoActual;
+        this.datosCompletos = datosCompletos;
+        this.datosConsistentes = datosConsistentes;
+        this.cumpleRequisitos = cumpleRequisitos;
+        this.sustentoValido = sustentoValido;
     }
 
-    // Getters y Setters
     public String getNroTramite() {
         return nroTramite;
     }
@@ -74,5 +84,37 @@ public class Tramite {
 
     public void setEstadoActual(EstadoTramite estadoActual) {
         this.estadoActual = estadoActual;
+    }
+
+    public Boolean getDatosCompletos() {
+        return datosCompletos;
+    }
+
+    public void setDatosCompletos(Boolean datosCompletos) {
+        this.datosCompletos = datosCompletos;
+    }
+
+    public Boolean getDatosConsistentes() {
+        return datosConsistentes;
+    }
+
+    public void setDatosConsistentes(Boolean datosConsistentes) {
+        this.datosConsistentes = datosConsistentes;
+    }
+
+    public Boolean getCumpleRequisitos() {
+        return cumpleRequisitos;
+    }
+
+    public void setCumpleRequisitos(Boolean cumpleRequisitos) {
+        this.cumpleRequisitos = cumpleRequisitos;
+    }
+
+    public Boolean getSustentoValido() {
+        return sustentoValido;
+    }
+
+    public void setSustentoValido(Boolean sustentoValido) {
+        this.sustentoValido = sustentoValido;
     }
 }
