@@ -24,8 +24,11 @@ public class DatosMemoria {
     static {
 
         // AREAS
-        AREAS.add(new Area("A001", "Mesa de Partes"));
-        AREAS.add(new Area("A002", "Área Académica"));
+        Area area1 = new Area("A001", "Mesa de Partes");
+        Area area2 = new Area("A002", "Área Académica");
+
+        AREAS.add(area1);
+        AREAS.add(area2);
 
         // USUARIOS
         Usuario usuario1 = new Usuario(
@@ -33,7 +36,7 @@ public class DatosMemoria {
                 "Luis Pérez",
                 "luis.perez@gmail.com",
                 "123",
-                AREAS.get(0),
+                area1.getNombreArea(),
                 true
         );
 
@@ -42,7 +45,7 @@ public class DatosMemoria {
                 "María Torres",
                 "maria.torres@gmail.com",
                 "123",
-                AREAS.get(1),
+                area2.getNombreArea(),
                 true
         );
 
