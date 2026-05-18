@@ -82,7 +82,7 @@
               class="input-buscar-tramite"
             />
         </div>
-        <button class="btn btn-primary">Buscar </button>
+        <button class="btn btn-primary" title="Buscar">Buscar </button>
       </form>
 
       <section class="tramites-list">
