@@ -115,6 +115,8 @@ public class TramiteController {
         tramite.setSolicitante(guardarOActualizarSolicitante(tramite.getSolicitante()));
         tramite.setTipoTramite(buscarTipo(tramite.getTipoTramite().getIdTipoTramite()));
 
+
+
         tramites.add(tramite);
 
         // guardar trazabilidad inicial
