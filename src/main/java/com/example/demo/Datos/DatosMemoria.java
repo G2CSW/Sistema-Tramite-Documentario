@@ -19,7 +19,6 @@ public class DatosMemoria {
     public static final List<Solicitante> SOLICITANTES = new ArrayList<>();
     public static final List<Tramite> TRAMITES = new ArrayList<>();
     public static final List<Trazabilidad> TRAZABILIDADES = new ArrayList<>();
-    public static final List<EvaluacionTramite> EVALUACIONES = new ArrayList<>();
     public static final List<Documento> DOCUMENTOS = new ArrayList<>();
 
     static {
@@ -101,19 +100,16 @@ public class DatosMemoria {
 
         // TRÁMITE
         Tramite tramite1 = new Tramite();
-
         tramite1.setNroTramite("TR001");
         tramite1.setTipoTramite(tipo1);
         tramite1.setSolicitante(solicitante1);
         tramite1.setFechaRegistro(LocalDate.now());
         tramite1.setEstadoActual(EstadoTramite.REGISTRADO);
 
-
         TRAMITES.add(tramite1);
 
         // TRAZABILIDAD
         Trazabilidad trazabilidad1 = new Trazabilidad();
-
         trazabilidad1.setIdTrazabilidad("TZ001");
         trazabilidad1.setTramite(tramite1);
         trazabilidad1.setUsuario(usuario1);

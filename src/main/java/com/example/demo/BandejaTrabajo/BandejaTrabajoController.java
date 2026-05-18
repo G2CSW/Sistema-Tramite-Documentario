@@ -2,10 +2,8 @@ package com.example.demo.BandejaTrabajo;
 
 import com.example.demo.Datos.DatosMemoria;
 import com.example.demo.Tramite.EstadoTramite;
-import com.example.demo.Tramite.EvaluacionTramite;
 import com.example.demo.Tramite.Tramite;
 import com.example.demo.Tramite.Trazabilidad;
-import com.example.demo.Usuario.Usuario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +12,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Controller
 @RequestMapping("/bandejaTrabajo")
 public class BandejaTrabajoController {
 
     private final List<Tramite> tramites = DatosMemoria.TRAMITES;
-    private final List<EvaluacionTramite> evaluaciones = DatosMemoria.EVALUACIONES;
 
     @GetMapping("/listar")
     public String listarTramitesAEvaluar(
@@ -30,11 +26,8 @@ public class BandejaTrabajoController {
         List<Tramite> tramitesEvaluar = new ArrayList<>();
 
         for (Tramite t : tramites) {
-            // Primero: solo en evaluación
             if (t.getEstadoActual() == EstadoTramite.EN_EVALUACION) {
-                // Segundo: si se buscó DNI, filtrar
                 if (dni != null && !dni.isEmpty()) {
-                    // Asumiendo que t.getSolicitante() existe y tiene getDni()
                     if (t.getSolicitante() != null && dni.equals(t.getSolicitante().getIdSolicitante())) {
                         tramitesEvaluar.add(t);
                     }
@@ -88,74 +81,46 @@ public class BandejaTrabajoController {
                         cumpleRequisitos &&
                         sustentoValido;
 
-        // ERROR APROBAR
         if ("aprobar".equals(accion) && !todosCumplen) {
-
-            model.addAttribute("mensaje",
-                    "No se puede aprobar un trámite que no cumple con los checks.");
-
+            model.addAttribute("mensaje", "No se puede aprobar un trámite que no cumple con los checks.");
             model.addAttribute("tramite", t);
-
             model.addAttribute("datosCompletos", datosCompletos);
             model.addAttribute("datosConsistentes", datosConsistentes);
             model.addAttribute("cumpleRequisitos", cumpleRequisitos);
             model.addAttribute("sustentoValido", sustentoValido);
             model.addAttribute("comentario", comentario);
-
             return "bandejaTrabajo/evaluacion";
         }
 
-        // ERROR RECHAZAR
         if ("rechazar".equals(accion) && todosCumplen) {
-
-            model.addAttribute("mensaje",
-                    "No se puede rechazar un trámite que tiene todo check.");
-
+            model.addAttribute("mensaje", "No se puede rechazar un trámite que tiene todo check.");
             model.addAttribute("tramite", t);
-
             model.addAttribute("datosCompletos", datosCompletos);
             model.addAttribute("datosConsistentes", datosConsistentes);
             model.addAttribute("cumpleRequisitos", cumpleRequisitos);
             model.addAttribute("sustentoValido", sustentoValido);
             model.addAttribute("comentario", comentario);
-
             return "bandejaTrabajo/evaluacion";
         }
 
-        // Guardar evaluación
-        EvaluacionTramite evaluacion = new EvaluacionTramite(
-                t,
-                datosCompletos,
-                datosConsistentes,
-                cumpleRequisitos,
-                sustentoValido
-        );
-
-        guardarOActualizarEvaluacion(evaluacion);
+        t.setDatosCompletos(datosCompletos);
+        t.setDatosConsistentes(datosConsistentes);
+        t.setCumpleRequisitos(cumpleRequisitos);
+        t.setSustentoValido(sustentoValido);
 
         Trazabilidad tr = new Trazabilidad();
-
         tr.setIdTrazabilidad("TZ" + (DatosMemoria.TRAZABILIDADES.size() + 1));
         tr.setTramite(t);
         tr.setUsuario(DatosMemoria.USUARIOS.get(1));
         tr.setFechaHora(java.time.LocalDateTime.now());
 
         if ("aprobar".equals(accion)) {
-
             t.setEstadoActual(EstadoTramite.APROBADO);
-
             tr.setEstadoCambio(EstadoTramite.APROBADO);
-
-            tr.setComentario(
-                    "Trámite aprobado" + agregarComentarioExtra(comentario)
-            );
-
+            tr.setComentario("Trámite aprobado" + agregarComentarioExtra(comentario));
         } else {
-
             t.setEstadoActual(EstadoTramite.RECHAZADO);
-
             tr.setEstadoCambio(EstadoTramite.RECHAZADO);
-
             tr.setComentario(
                     "Trámite rechazado por no cumplir con los siguientes criterios: "
                             + listarChecksNoCumplidos(
@@ -171,7 +136,6 @@ public class BandejaTrabajoController {
         DatosMemoria.TRAZABILIDADES.add(tr);
 
         ra.addFlashAttribute("mensaje", "Evaluación registrada");
-
         return "redirect:/bandejaTrabajo/listar";
     }
 
@@ -180,19 +144,6 @@ public class BandejaTrabajoController {
             if (t.getNroTramite().equals(id)) return t;
         }
         return null;
-    }
-
-    private void guardarOActualizarEvaluacion(EvaluacionTramite nueva) {
-        for (EvaluacionTramite e : evaluaciones) {
-            if (e.getTramite().getNroTramite().equals(nueva.getTramite().getNroTramite())) {
-                e.setDatosCompletos(nueva.getDatosCompletos());
-                e.setDatosConsistentes(nueva.getDatosConsistentes());
-                e.setCumpleRequisitos(nueva.getCumpleRequisitos());
-                e.setSustentoValido(nueva.getSustentoValido());
-                return;
-            }
-        }
-        evaluaciones.add(nueva);
     }
 
     private String listarChecksNoCumplidos(boolean datosCompletos,
