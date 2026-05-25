@@ -1,0 +1,53 @@
+package com.example.demo.Adapter;
+
+import com.example.demo.Tramite.Tramite;
+import com.example.demo.Tramite.TramiteEntity;
+import org.springframework.stereotype.Component;
+
+@Component
+public class TramiteAdapter {
+
+    private final TipoTramiteAdapter tipoTramiteAdapter;
+    private final UsuarioAdapter usuarioAdapter;
+    private final SolicitanteAdapter solicitanteAdapter;
+
+    public TramiteAdapter(TipoTramiteAdapter tipoTramiteAdapter,
+                          UsuarioAdapter usuarioAdapter,
+                          SolicitanteAdapter solicitanteAdapter) {
+        this.tipoTramiteAdapter = tipoTramiteAdapter;
+        this.usuarioAdapter = usuarioAdapter;
+        this.solicitanteAdapter = solicitanteAdapter;
+    }
+
+    public TramiteEntity toEntity(Tramite tramite) {
+        if (tramite == null) return null;
+        TramiteEntity entity = new TramiteEntity();
+        entity.setNroTramite(tramite.getNroTramite());
+        entity.setTipoTramite(tipoTramiteAdapter.toEntity(tramite.getTipoTramite()));
+        entity.setUsuario(usuarioAdapter.toEntity(tramite.getUsuario()));
+        entity.setSolicitante(solicitanteAdapter.toEntity(tramite.getSolicitante()));
+        entity.setFechaRegistro(tramite.getFechaRegistro());
+        entity.setEstadoActual(tramite.getEstadoActual());
+        entity.setDatosCompletos(tramite.getDatosCompletos());
+        entity.setDatosConsistentes(tramite.getDatosConsistentes());
+        entity.setCumpleRequisitos(tramite.getCumpleRequisitos());
+        entity.setSustentoValido(tramite.getSustentoValido());
+        return entity;
+    }
+
+    public Tramite toModel(TramiteEntity entity) {
+        if (entity == null) return null;
+        Tramite tramite = new Tramite();
+        tramite.setNroTramite(entity.getNroTramite());
+        tramite.setTipoTramite(tipoTramiteAdapter.toModel(entity.getTipoTramite()));
+        tramite.setUsuario(usuarioAdapter.toModel(entity.getUsuario()));
+        tramite.setSolicitante(solicitanteAdapter.toModel(entity.getSolicitante()));
+        tramite.setFechaRegistro(entity.getFechaRegistro());
+        tramite.setEstadoActual(entity.getEstadoActual());
+        tramite.setDatosCompletos(entity.getDatosCompletos());
+        tramite.setDatosConsistentes(entity.getDatosConsistentes());
+        tramite.setCumpleRequisitos(entity.getCumpleRequisitos());
+        tramite.setSustentoValido(entity.getSustentoValido());
+        return tramite;
+    }
+}
