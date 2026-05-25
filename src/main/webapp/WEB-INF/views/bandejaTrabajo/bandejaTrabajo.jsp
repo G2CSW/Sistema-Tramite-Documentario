@@ -40,7 +40,7 @@
           <input
             type="search"
             name="dni"
-            placeholder="Buscar Trámite"
+            placeholder="Ingrese DNI/CE"
             class="input-buscar-tramite"
             value="${param.dni}"
           />
