@@ -16,12 +16,6 @@ import java.util.List;
 public class DatosMemoria {
 
     public static final List<Area> AREAS = new ArrayList<>();
-    public static final List<Usuario> USUARIOS = new ArrayList<>();
-    public static final List<TipoTramite> TIPOS_TRAMITE = new ArrayList<>();
-    public static final List<Solicitante> SOLICITANTES = new ArrayList<>();
-    public static final List<Tramite> TRAMITES = new ArrayList<>();
-    public static final List<Trazabilidad> TRAZABILIDADES = new ArrayList<>();
-    public static final List<Documento> DOCUMENTOS = new ArrayList<>();
 
     static {
 

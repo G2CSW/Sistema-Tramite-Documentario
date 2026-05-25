@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TipoTramite {
 
-    private String idTipoTramite;
+    private Long idTipoTramite;
     private String nombre;
     private List<Documento> documentacionMinima = new ArrayList<>();
     private LocalDate fechaCreacion;
@@ -17,11 +17,10 @@ public class TipoTramite {
     public TipoTramite() {
     }
 
-    public TipoTramite(String idTipoTramite,
+    public TipoTramite(Long idTipoTramite,
                        String nombre,
                        List<Documento> documentacionMinima,
                        LocalDate fechaCreacion) {
-
         this.idTipoTramite = idTipoTramite;
         this.nombre = nombre;
         this.documentacionMinima = documentacionMinima;
@@ -29,11 +28,11 @@ public class TipoTramite {
         this.activo = true;
     }
 
-    public String getIdTipoTramite() {
+    public Long getIdTipoTramite() {
         return idTipoTramite;
     }
 
-    public void setIdTipoTramite(String idTipoTramite) {
+    public void setIdTipoTramite(Long idTipoTramite) {
         this.idTipoTramite = idTipoTramite;
     }
 

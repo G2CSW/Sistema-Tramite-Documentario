@@ -1,30 +1,22 @@
 package com.example.demo.TipoTramite;
 
-import com.example.demo.Documento.Documento;
-
 import java.util.List;
 
 public interface TipoTramiteService {
 
     List<TipoTramite> listar();
 
-
-
     boolean validarTipoTramite(String nombre,
                                List<Long> documentacionMinimaIds);
 
-    void registrar(String nombre,
-                   List<Long> documentacionMinimaIds);
+    TipoTramite registrar(String nombre,
+                          List<Long> documentacionMinimaIds);
 
-    TipoTramite buscarTipo(String id);
+    TipoTramite buscarTipo(Long id);
 
+    TipoTramite editar(Long id,
+                       String nombre,
+                       List<Long> documentacionMinimaIds);
 
-
-    void editar(String id,
-                String nombre,
-                List<Long> documentacionMinimaIds);
-
-    void cambiarEstado(String id);
-
-
+    void cambiarEstado(Long id);
 }

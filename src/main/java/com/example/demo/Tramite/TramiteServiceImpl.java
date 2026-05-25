@@ -81,7 +81,7 @@ public class TramiteServiceImpl implements TramiteService {
                 solicitanteService.guardarOActualizarSolicitante(tramite.getSolicitante())
         );
 
-        String idTipoTramite = tramite.getTipoTramite().getIdTipoTramite();
+        Long idTipoTramite = tramite.getTipoTramite().getIdTipoTramite();
         tramite.setTipoTramite(
                 tipoTramiteService.buscarTipo(idTipoTramite)
         );
@@ -114,7 +114,7 @@ public class TramiteServiceImpl implements TramiteService {
                 solicitanteService.guardarOActualizarSolicitante(form.getSolicitante())
         );
 
-        String idTipoTramite = form.getTipoTramite().getIdTipoTramite();
+        Long idTipoTramite = form.getTipoTramite().getIdTipoTramite();
         tramiteActual.setTipoTramite(
                 tipoTramiteService.buscarTipo(idTipoTramite)
         );

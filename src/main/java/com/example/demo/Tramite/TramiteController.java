@@ -76,7 +76,7 @@ public class TramiteController {
             @ModelAttribute("tramite") Tramite tramite,
             @RequestParam(required = false,
                     name = "tipoTramite.idTipoTramite")
-            String tipoId,
+            Long tipoId,
             Model model) {
 
         cargarFormularioRegistro(model, tramite, tipoId);
@@ -98,7 +98,7 @@ public class TramiteController {
                     "Complete todos los datos del solicitante"
             );
 
-            String tipoId = tramite.getTipoTramite() != null ? tramite.getTipoTramite().getIdTipoTramite() : null;
+            Long tipoId = tramite.getTipoTramite() != null ? tramite.getTipoTramite().getIdTipoTramite() : null;
             cargarFormularioRegistro(model, tramite, tipoId);
 
             return "tramite/registrarTramite";
@@ -226,7 +226,7 @@ public class TramiteController {
     private void cargarFormularioRegistro(
             Model model,
             Tramite tramite,
-            String tipoId) {
+            Long tipoId) {
 
         if (tramite.getSolicitante() == null) {
             tramite.setSolicitante(new Solicitante());

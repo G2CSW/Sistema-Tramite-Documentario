@@ -1,15 +1,7 @@
 package com.example.demo.TipoTramite;
 
 import com.example.demo.Documento.DocumentoEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,10 +12,11 @@ import java.util.List;
 public class TipoTramiteEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tipo_tramite")
-    private String idTipoTramite;
+    private Long idTipoTramite;
 
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false)
     private String nombre;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -43,9 +36,11 @@ public class TipoTramiteEntity {
     public TipoTramiteEntity() {
     }
 
-    public TipoTramiteEntity(String idTipoTramite, String nombre,
-                              List<DocumentoEntity> documentacionMinima,
-                              LocalDate fechaCreacion, boolean activo) {
+    public TipoTramiteEntity(Long idTipoTramite,
+                             String nombre,
+                             List<DocumentoEntity> documentacionMinima,
+                             LocalDate fechaCreacion,
+                             boolean activo) {
         this.idTipoTramite = idTipoTramite;
         this.nombre = nombre;
         this.documentacionMinima = documentacionMinima;
@@ -53,11 +48,11 @@ public class TipoTramiteEntity {
         this.activo = activo;
     }
 
-    public String getIdTipoTramite() {
+    public Long getIdTipoTramite() {
         return idTipoTramite;
     }
 
-    public void setIdTipoTramite(String idTipoTramite) {
+    public void setIdTipoTramite(Long idTipoTramite) {
         this.idTipoTramite = idTipoTramite;
     }
 

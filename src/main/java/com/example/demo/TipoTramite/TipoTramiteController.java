@@ -96,7 +96,7 @@ public class TipoTramiteController {
     }
 
     @GetMapping("/editar/{id}")
-    public String editarForm(@PathVariable String id, Model model) {
+    public String editarForm(@PathVariable Long id, Model model) {
         TipoTramite tipo = service.buscarTipo(id);
 
         if (tipo == null) {
@@ -110,7 +110,7 @@ public class TipoTramiteController {
 
     @PostMapping("/editar/{id}/agregar")
     public String agregarDocumentoEdicion(
-            @PathVariable String id,
+            @PathVariable Long id,
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) Long documentoId,
             @RequestParam(value = "documentacionMinimaIds", required = false)
@@ -136,7 +136,7 @@ public class TipoTramiteController {
 
     @PostMapping("/editar/{id}/quitar")
     public String quitarDocumentoEdicion(
-            @PathVariable String id,
+            @PathVariable Long id,
             @RequestParam(required = false) String nombre,
             @RequestParam Long quitarId,
             @RequestParam(value = "documentacionMinimaIds", required = false)
@@ -157,7 +157,7 @@ public class TipoTramiteController {
     }
 
     @PostMapping("/editar/{id}")
-    public String editar(@PathVariable String id,
+    public String editar(@PathVariable Long id,
                          @RequestParam String nombre,
                          @RequestParam(value = "documentacionMinimaIds", required = false)
                          List<Long> documentacionMinimaIds,
@@ -182,7 +182,7 @@ public class TipoTramiteController {
         return tipo;
     }
 
-    private TipoTramite construirVistaParaEdicion(String id, String nombre, List<Long> ids) {
+    private TipoTramite construirVistaParaEdicion(Long id, String nombre, List<Long> ids) {
         TipoTramite tipo = service.buscarTipo(id);
         if (tipo == null) return null;
         
@@ -206,7 +206,7 @@ public class TipoTramiteController {
     }
 
     @PostMapping("/cambiar-estado/{id}")
-    public String cambiarEstado(@PathVariable String id) {
+    public String cambiarEstado(@PathVariable Long id) {
         service.cambiarEstado(id);
         return "redirect:/tipoTramite/listar";
     }

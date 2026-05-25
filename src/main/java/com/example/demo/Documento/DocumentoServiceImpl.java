@@ -1,57 +1,81 @@
 package com.example.demo.Documento;
 
-import com.example.demo.Datos.DatosMemoria;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class DocumentoServiceImpl implements DocumentoService {
 
-    private final List<Documento> documentos = DatosMemoria.DOCUMENTOS;
+    private final DocumentoRepository documentoRepository;
+    private final DocumentoAdapter documentoAdapter;
+
+    public DocumentoServiceImpl(DocumentoRepository documentoRepository,
+                                DocumentoAdapter documentoAdapter) {
+        this.documentoRepository = documentoRepository;
+        this.documentoAdapter = documentoAdapter;
+    }
 
     @Override
     public List<Documento> listar() {
-        return documentos;
+        List<DocumentoEntity> entidades = documentoRepository.findAll();
+
+        return entidades.stream()
+                .map(e -> documentoAdapter.toModel(e))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Documento> obtenerDocumentosActivos() {
-        List<Documento> activos = new ArrayList<>();
-        for (Documento d : documentos) {
-            if (d.isActivo()) {
-                activos.add(d);
-            }
-        }
-        return activos;
+        List<DocumentoEntity> entidades = documentoRepository.findByActivoTrue();
+
+        return entidades.stream()
+                .map(e -> documentoAdapter.toModel(e))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Documento> obtenerDocumentosPorIds(List<Long> ids) {
         List<Documento> seleccionados = new ArrayList<>();
-        if (ids == null) {
+
+        if (ids == null || ids.isEmpty()) {
             return seleccionados;
         }
+
+        List<DocumentoEntity> entidades = documentoRepository.findByIdDocumentoIn(ids);
+
+        Map<Long, DocumentoEntity> mapa = entidades.stream()
+                .collect(Collectors.toMap(DocumentoEntity::getIdDocumento, entity -> entity));
+
         for (Long id : ids) {
-            for (Documento d : documentos) {
-                if (d.getIdDocumento().equals(id)) {
-                    seleccionados.add(d);
-                    break;
-                }
+            DocumentoEntity entidad = mapa.get(id);
+
+            if (entidad != null) {
+                seleccionados.add(documentoAdapter.toModel(entidad));
             }
         }
+
         return seleccionados;
     }
 
     @Override
     public Documento buscarPorId(Long id) {
-        for (Documento d : documentos) {
-            if (d.getIdDocumento().equals(id)) {
-                return d;
-            }
+        if (id == null) {
+            return null;
         }
-        return null;
+
+        DocumentoEntity entidad = documentoRepository.findById(id).orElse(null);
+
+        if (entidad == null) {
+            return null;
+        }
+
+        return documentoAdapter.toModel(entidad);
     }
 
     @Override
@@ -60,33 +84,42 @@ public class DocumentoServiceImpl implements DocumentoService {
             return null;
         }
 
-        documento.setIdDocumento((long) (documentos.size() + 1));
-        documento.setActivo(true);
-        documentos.add(documento);
+        DocumentoEntity entidad = documentoAdapter.toEntity(documento);
+        entidad.setIdDocumento(null);
+        entidad.setActivo(true);
 
-        return documento;
+        DocumentoEntity guardado = documentoRepository.save(entidad);
+
+        return documentoAdapter.toModel(guardado);
     }
 
     @Override
     public Documento editar(Long id, Documento form) {
-        Documento actual = buscarPorId(id);
+        DocumentoEntity actual = documentoRepository.findById(id).orElse(null);
 
         if (actual == null || !validarDocumento(form)) {
             return null;
         }
 
         actual.setNombreDocumento(form.getNombreDocumento());
-        return actual;
+
+        DocumentoEntity guardado = documentoRepository.save(actual);
+
+        return documentoAdapter.toModel(guardado);
     }
 
     @Override
     public void cambiarEstado(Long id) {
-        for (Documento d : documentos) {
-            if (d.getIdDocumento().equals(id)) {
-                d.setActivo(!d.isActivo());
-                break;
-            }
+        DocumentoEntity actual = documentoRepository.findById(id).orElse(null);
+
+        if (actual == null) {
+            return;
         }
+
+        boolean nuevoEstado = !actual.isActivo();
+        actual.setActivo(nuevoEstado);
+
+        documentoRepository.save(actual);
     }
 
     private boolean validarDocumento(Documento documento) {
