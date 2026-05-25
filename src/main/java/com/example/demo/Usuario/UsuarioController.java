@@ -1,24 +1,25 @@
 package com.example.demo.Usuario;
 
-import com.example.demo.Area.Area;
-import com.example.demo.Datos.DatosMemoria;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-    private final List<Usuario> usuarios = DatosMemoria.USUARIOS;
-    private final List<Area> areas = DatosMemoria.AREAS;
+    private final UsuarioService usuarioService;
+
+    public UsuarioController(UsuarioService usuarioService) {
+
+        this.usuarioService = usuarioService;
+    }
 
     @GetMapping("/listar")
     public String listar(Model model) {
 
-        model.addAttribute("usuarios", usuarios);
+        model.addAttribute("usuarios",
+                usuarioService.listarUsuarios());
 
         return "usuario/usuarios";
     }
@@ -27,7 +28,8 @@ public class UsuarioController {
     public String irRegistrar(Model model) {
 
         model.addAttribute("usuario", new Usuario());
-        model.addAttribute("areas", areas);
+        model.addAttribute("areas",
+                usuarioService.listarAreas());
 
         return "usuario/registrarUsuario";
     }
@@ -37,21 +39,21 @@ public class UsuarioController {
                             @RequestParam(required = false) String idArea,
                             Model model) {
 
-        Area area = buscarArea(idArea);
+        boolean registrado =
+                usuarioService.registrarUsuario(usuario, idArea);
 
-        if (!validarUsuario(usuario) || area == null) {
+        if (!registrado) {
 
-            model.addAttribute("error", "Complete todos los campos");
+            model.addAttribute("error",
+                    "Complete todos los campos");
+
             model.addAttribute("usuario", usuario);
-            model.addAttribute("areas", areas);
+
+            model.addAttribute("areas",
+                    usuarioService.listarAreas());
 
             return "usuario/registrarUsuario";
         }
-
-        usuario.setArea(area.getNombreArea());
-        usuario.setEstado(true);
-
-        usuarios.add(usuario);
 
         return "redirect:/usuario/listar";
     }
@@ -60,18 +62,20 @@ public class UsuarioController {
     public String editarForm(@PathVariable String idUsuario,
                              Model model) {
 
-        for (Usuario u : usuarios) {
+        Usuario usuario =
+                usuarioService.obtenerUsuario(idUsuario);
 
-            if (u.getIdUsuario().equals(idUsuario)) {
+        if (usuario == null) {
 
-                model.addAttribute("usuario", u);
-                model.addAttribute("areas", areas);
-
-                return "usuario/editarUsuario";
-            }
+            return "redirect:/usuario/listar";
         }
 
-        return "redirect:/usuario/listar";
+        model.addAttribute("usuario", usuario);
+
+        model.addAttribute("areas",
+                usuarioService.listarAreas());
+
+        return "usuario/editarUsuario";
     }
 
     @PostMapping("/editar/{idUsuario}")
@@ -80,30 +84,22 @@ public class UsuarioController {
                          @RequestParam(required = false) String idArea,
                          Model model) {
 
-        Area area = buscarArea(idArea);
+        boolean editado =
+                usuarioService.editarUsuario(idUsuario,
+                        form,
+                        idArea);
 
-        if (!validarUsuario(form) || area == null) {
+        if (!editado) {
 
-            form.setArea(area != null ? area.getNombreArea() : "");
+            model.addAttribute("error",
+                    "Complete todos los campos");
 
-            model.addAttribute("error", "Complete todos los campos");
             model.addAttribute("usuario", form);
-            model.addAttribute("areas", areas);
+
+            model.addAttribute("areas",
+                    usuarioService.listarAreas());
 
             return "usuario/editarUsuario";
-        }
-
-        for (Usuario u : usuarios) {
-
-            if (u.getIdUsuario().equals(idUsuario)) {
-
-                u.setNombre(form.getNombre());
-                u.setCorreoElectronico(form.getCorreoElectronico());
-                u.setPassword(form.getPassword());
-                u.setArea(area.getNombreArea());
-
-                break;
-            }
         }
 
         return "redirect:/usuario/listar";
@@ -112,37 +108,8 @@ public class UsuarioController {
     @PostMapping("/toggle/{idUsuario}")
     public String toggle(@PathVariable String idUsuario) {
 
-        for (Usuario u : usuarios) {
-
-            if (u.getIdUsuario().equals(idUsuario)) {
-
-                u.setEstado(!u.getEstado());
-
-                break;
-            }
-        }
+        usuarioService.toggleEstado(idUsuario);
 
         return "redirect:/usuario/listar";
-    }
-
-    private boolean validarUsuario(Usuario u) {
-
-        return !(u.getIdUsuario() == null || u.getIdUsuario().isBlank() ||
-                u.getNombre() == null || u.getNombre().isBlank() ||
-                u.getCorreoElectronico() == null || u.getCorreoElectronico().isBlank() ||
-                u.getPassword() == null || u.getPassword().isBlank());
-    }
-
-    private Area buscarArea(String idArea) {
-
-        for (Area a : areas) {
-
-            if (a.getIdArea().equals(idArea)) {
-
-                return a;
-            }
-        }
-
-        return null;
     }
 }
