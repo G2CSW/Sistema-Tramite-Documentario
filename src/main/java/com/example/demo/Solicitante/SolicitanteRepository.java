@@ -1,6 +1,5 @@
-package com.example.demo.Repository;
+package com.example.demo.Solicitante;
 
-import com.example.demo.Solicitante.SolicitanteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

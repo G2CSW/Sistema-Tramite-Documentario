@@ -1,6 +1,5 @@
-package com.example.demo.Repository;
+package com.example.demo.Tramite;
 
-import com.example.demo.Tramite.TramiteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

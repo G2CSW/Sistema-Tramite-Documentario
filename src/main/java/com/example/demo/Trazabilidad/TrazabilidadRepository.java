@@ -1,6 +1,5 @@
-package com.example.demo.Repository;
+package com.example.demo.Trazabilidad;
 
-import com.example.demo.Trazabilidad.TrazabilidadEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
