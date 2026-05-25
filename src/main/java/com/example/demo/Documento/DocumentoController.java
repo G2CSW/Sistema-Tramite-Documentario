@@ -1,84 +1,69 @@
 package com.example.demo.Documento;
 
-import com.example.demo.Datos.DatosMemoria;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/documento")
 public class DocumentoController {
 
-    private final List<Documento> documentos = DatosMemoria.DOCUMENTOS;
+    private static final String ERROR_CAMPO = "Complete todos los campos";
 
-    // LISTAR
+    private final DocumentoService service;
+
+    public DocumentoController(DocumentoService service) {
+        this.service = service;
+    }
+
     @GetMapping("/listar")
     public String listar(Model model) {
-        model.addAttribute("documentos", documentos);
+        model.addAttribute("documentos", service.listar());
         return "documento/documento";
     }
 
-    // IR A REGISTRAR
     @GetMapping("/registrar")
     public String irRegistrar(Model model) {
-        model.addAttribute("documento", new Documento());
+        model.addAttribute("documento", service.prepararRegistro());
         return "documento/registrarDocumento";
     }
 
-    // REGISTRAR
     @PostMapping("/registrar")
-    public String registrar(@ModelAttribute Documento documento,
-                            Model model) {
+    public String registrar(@ModelAttribute Documento documento, Model model) {
+        Documento guardado = service.registrar(documento);
 
-        if (!validarDocumento(documento)) {
-            model.addAttribute("error", "Complete todos los campos");
+        if (guardado == null) {
+            model.addAttribute("error", ERROR_CAMPO);
             model.addAttribute("documento", documento);
             return "documento/registrarDocumento";
         }
 
-        documento.setIdDocumento((long) (documentos.size() + 1));
-        documentos.add(documento);
-
         return "redirect:/documento/listar";
     }
 
-    // EDITAR FORM
     @GetMapping("/editar/{id}")
     public String editarForm(@PathVariable Long id, Model model) {
+        Documento documento = service.buscarPorId(id);
 
-        for (Documento d : documentos) {
-            if (d.getIdDocumento().equals(id)) {
-                model.addAttribute("documento", d);
-                return "documento/editarDocumento";
-            }
+        if (documento == null) {
+            return "redirect:/documento/listar";
         }
 
-        return "redirect:/documento/listar";
+        model.addAttribute("documento", documento);
+        return "documento/editarDocumento";
     }
 
-    // GUARDAR EDICIÓN
     @PostMapping("/editar/{id}")
     public String editar(@PathVariable Long id,
                          @ModelAttribute Documento form,
                          Model model) {
+        Documento actualizado = service.editar(id, form);
 
-        if (!validarDocumento(form)) {
-
+        if (actualizado == null) {
             form.setIdDocumento(id);
-
-            model.addAttribute("error", "Complete todos los campos");
+            model.addAttribute("error", ERROR_CAMPO);
             model.addAttribute("documento", form);
-
             return "documento/editarDocumento";
-        }
-
-        for (Documento d : documentos) {
-            if (d.getIdDocumento().equals(id)) {
-                d.setNombreDocumento(form.getNombreDocumento());
-                break;
-            }
         }
 
         return "redirect:/documento/listar";
@@ -86,18 +71,7 @@ public class DocumentoController {
 
     @PostMapping("/cambiar-estado/{id}")
     public String cambiarEstado(@PathVariable Long id) {
-
-        for (Documento d : documentos) {
-            if (d.getIdDocumento().equals(id)) {
-                d.setActivo(!d.isActivo());
-                break;
-            }
-        }
-
+        service.cambiarEstado(id);
         return "redirect:/documento/listar";
-    }
-
-    private boolean validarDocumento(Documento d) {
-        return !(d.getNombreDocumento() == null || d.getNombreDocumento().isBlank());
     }
 }
