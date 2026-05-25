@@ -1,7 +1,7 @@
-package com.example.demo.Adapter;
+package com.example.demo.Trazabilidad;
 
-import com.example.demo.Trazabilidad.Trazabilidad;
-import com.example.demo.Trazabilidad.TrazabilidadEntity;
+import com.example.demo.Usuario.UsuarioAdapter;
+import com.example.demo.Tramite.TramiteAdapter;
 import org.springframework.stereotype.Component;
 
 @Component

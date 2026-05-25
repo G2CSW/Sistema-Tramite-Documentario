@@ -1,7 +1,5 @@
-package com.example.demo.Adapter;
+package com.example.demo.Usuario;
 
-import com.example.demo.Usuario.Usuario;
-import com.example.demo.Usuario.UsuarioEntity;
 import org.springframework.stereotype.Component;
 
 @Component

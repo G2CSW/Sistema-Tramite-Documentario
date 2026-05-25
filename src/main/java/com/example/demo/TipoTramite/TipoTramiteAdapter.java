@@ -1,7 +1,6 @@
-package com.example.demo.Adapter;
+package com.example.demo.TipoTramite;
 
-import com.example.demo.TipoTramite.TipoTramite;
-import com.example.demo.TipoTramite.TipoTramiteEntity;
+import com.example.demo.Documento.DocumentoAdapter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

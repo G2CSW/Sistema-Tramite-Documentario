@@ -1,6 +1,5 @@
 package com.example.demo.Trazabilidad;
 
-import com.example.demo.Adapter.TrazabilidadAdapter;
 import com.example.demo.Tramite.EstadoTramite;
 import com.example.demo.Tramite.Tramite;
 import com.example.demo.Usuario.Usuario;

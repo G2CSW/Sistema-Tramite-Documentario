@@ -1,65 +1,70 @@
 package com.example.demo.BandejaTrabajo;
 
-import com.example.demo.Datos.DatosMemoria;
-import com.example.demo.Tramite.EstadoTramite;
-import com.example.demo.Tramite.Tramite;
+import com.example.demo.Tramite.*;
 import com.example.demo.Trazabilidad.TrazabilidadService;
+import com.example.demo.Usuario.Usuario;
+import com.example.demo.Usuario.UsuarioAdapter;
+import com.example.demo.Usuario.UsuarioEntity;
+import com.example.demo.Usuario.UsuarioRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
 
-    private final List<Tramite> tramites = DatosMemoria.TRAMITES;
+    private final TramiteRepository tramiteRepository;
+    private final TramiteAdapter tramiteAdapter;
     private final TrazabilidadService trazabilidadService;
+    private final UsuarioRepository usuarioRepository;
+    private final UsuarioAdapter usuarioAdapter;
 
-    public BandejaTrabajoServiceImpl(TrazabilidadService trazabilidadService) {
+    public BandejaTrabajoServiceImpl(TramiteRepository tramiteRepository,
+                                     TramiteAdapter tramiteAdapter,
+                                     TrazabilidadService trazabilidadService,
+                                     UsuarioRepository usuarioRepository,
+                                     UsuarioAdapter usuarioAdapter) {
+        this.tramiteRepository = tramiteRepository;
+        this.tramiteAdapter = tramiteAdapter;
         this.trazabilidadService = trazabilidadService;
+        this.usuarioRepository = usuarioRepository;
+        this.usuarioAdapter = usuarioAdapter;
     }
 
     @Override
     public List<Tramite> listarTramitesAEvaluar(String dni) {
+        List<TramiteEntity> entidades;
 
-        List<Tramite> tramitesEvaluar = new ArrayList<>();
-
-        for (Tramite t : tramites) {
-
-            if (t.getEstadoActual() == EstadoTramite.EN_EVALUACION) {
-
-                if (dni != null && !dni.isEmpty()) {
-
-                    if (t.getSolicitante() != null
-                            && dni.equals(t.getSolicitante().getIdSolicitante())) {
-
-                        tramitesEvaluar.add(t);
-                    }
-
-                } else {
-                    tramitesEvaluar.add(t);
-                }
-            }
+        if (dni != null && !dni.isBlank()) {
+            entidades = tramiteRepository.findByEstadoActualAndSolicitante_IdSolicitante(
+                    EstadoTramite.EN_EVALUACION,
+                    dni
+            );
+        } else {
+            entidades = tramiteRepository.findByEstadoActual(EstadoTramite.EN_EVALUACION);
         }
 
-        return tramitesEvaluar;
+        return entidades.stream()
+                .map(e -> tramiteAdapter.toModel(e))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Tramite buscarPorId(String id) {
+    public Tramite buscarPorId(Long id) {
+        TramiteEntity entidad = tramiteRepository.findById(id).orElse(null);
 
-        for (Tramite t : tramites) {
-
-            if (t.getNroTramite().equals(id)) {
-                return t;
-            }
+        if (entidad == null) {
+            return null;
         }
 
-        return null;
+        return tramiteAdapter.toModel(entidad);
     }
 
     @Override
-    public String procesarEvaluacion(String id,
+    public String procesarEvaluacion(Long id,
                                      boolean datosCompletos,
                                      boolean datosConsistentes,
                                      boolean cumpleRequisitos,
@@ -67,17 +72,16 @@ public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
                                      String accion,
                                      String comentario) {
 
-        Tramite t = buscarPorId(id);
+        TramiteEntity entidad = tramiteRepository.findById(id).orElse(null);
 
-        if (t == null) {
+        if (entidad == null) {
             return "Trámite no encontrado";
         }
 
-        boolean todosCumplen =
-                datosCompletos
-                        && datosConsistentes
-                        && cumpleRequisitos
-                        && sustentoValido;
+        boolean todosCumplen = datosCompletos
+                && datosConsistentes
+                && cumpleRequisitos
+                && sustentoValido;
 
         if ("aprobar".equals(accion) && !todosCumplen) {
             return "No se puede aprobar un trámite que no cumple con los checks.";
@@ -87,34 +91,44 @@ public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
             return "No se puede rechazar un trámite que tiene todo check.";
         }
 
-        t.setDatosCompletos(datosCompletos);
-        t.setDatosConsistentes(datosConsistentes);
-        t.setCumpleRequisitos(cumpleRequisitos);
-        t.setSustentoValido(sustentoValido);
+        entidad.setDatosCompletos(datosCompletos);
+        entidad.setDatosConsistentes(datosConsistentes);
+        entidad.setCumpleRequisitos(cumpleRequisitos);
+        entidad.setSustentoValido(sustentoValido);
 
         EstadoTramite estado;
         String comentarioTrazabilidad;
 
         if ("aprobar".equals(accion)) {
-
-            t.setEstadoActual(EstadoTramite.APROBADO);
+            entidad.setEstadoActual(EstadoTramite.APROBADO);
             estado = EstadoTramite.APROBADO;
             comentarioTrazabilidad = "Trámite aprobado" + agregarComentarioExtra(comentario);
-
         } else {
-
-            t.setEstadoActual(EstadoTramite.RECHAZADO);
+            entidad.setEstadoActual(EstadoTramite.RECHAZADO);
             estado = EstadoTramite.RECHAZADO;
             comentarioTrazabilidad = "Trámite rechazado por no cumplir con los siguientes criterios: "
                     + listarChecksNoCumplidos(datosCompletos, datosConsistentes, cumpleRequisitos, sustentoValido)
                     + agregarComentarioExtra(comentario);
         }
 
+        TramiteEntity entidadGuardada = tramiteRepository.save(entidad);
+        Tramite tramiteGuardado = tramiteAdapter.toModel(entidadGuardada);
+
+        UsuarioEntity usuarioEntity = usuarioRepository
+                .findFirstByActivoTrueOrderByIdUsuarioAsc()
+                .orElse(null);
+
+        if (usuarioEntity == null) {
+            return "No se encontró un usuario evaluador activo";
+        }
+
+        Usuario usuarioEvaluador = usuarioAdapter.toModel(usuarioEntity);
+
         trazabilidadService.registrarTrazabilidad(
-                t,
+                tramiteGuardado,
                 estado,
                 comentarioTrazabilidad,
-                DatosMemoria.USUARIOS.get(1)
+                usuarioEvaluador
         );
 
         return null;
@@ -127,11 +141,10 @@ public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
                                                 boolean cumpleRequisitos,
                                                 boolean sustentoValido) {
 
-        boolean todosCumplen =
-                datosCompletos
-                        && datosConsistentes
-                        && cumpleRequisitos
-                        && sustentoValido;
+        boolean todosCumplen = datosCompletos
+                && datosConsistentes
+                && cumpleRequisitos
+                && sustentoValido;
 
         if ("aprobar".equals(accion) && !todosCumplen) {
             return "No se puede aprobar un trámite que no cumple con los checks.";
@@ -149,29 +162,37 @@ public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
                                            boolean cumpleRequisitos,
                                            boolean sustentoValido) {
 
-        List<String> faltantes = new ArrayList<>();
+        StringBuilder faltantes = new StringBuilder();
 
         if (!datosCompletos) {
-            faltantes.add("Datos Completos");
+            faltantes.append("Datos Completos");
         }
 
         if (!datosConsistentes) {
-            faltantes.add("Datos Consistentes");
+            if (!faltantes.isEmpty()) {
+                faltantes.append(", ");
+            }
+            faltantes.append("Datos Consistentes");
         }
 
         if (!cumpleRequisitos) {
-            faltantes.add("Cumple requisitos del trámite");
+            if (!faltantes.isEmpty()) {
+                faltantes.append(", ");
+            }
+            faltantes.append("Cumple requisitos del trámite");
         }
 
         if (!sustentoValido) {
-            faltantes.add("Sustento válido");
+            if (!faltantes.isEmpty()) {
+                faltantes.append(", ");
+            }
+            faltantes.append("Sustento válido");
         }
 
-        return String.join(", ", faltantes);
+        return faltantes.toString();
     }
 
     private String agregarComentarioExtra(String comentario) {
-
         if (comentario == null || comentario.isBlank()) {
             return "";
         }

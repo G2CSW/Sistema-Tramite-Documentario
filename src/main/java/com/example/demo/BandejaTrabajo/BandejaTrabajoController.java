@@ -17,77 +17,44 @@ public class BandejaTrabajoController {
     }
 
     @GetMapping("/listar")
-    public String listarTramitesAEvaluar(
-            @RequestParam(required = false) String dni,
-            Model model) {
+    public String listarTramitesAEvaluar(@RequestParam(required = false) String dni,
+                                         Model model) {
 
-        model.addAttribute(
-                "tramites",
-                service.listarTramitesAEvaluar(dni)
-        );
-
+        model.addAttribute("tramites", service.listarTramitesAEvaluar(dni));
         return "bandejaTrabajo/bandejaTrabajo";
     }
 
     @GetMapping("/evaluar/{id}")
-    public String evaluarTramite(@PathVariable String id,
+    public String evaluarTramite(@PathVariable Long id,
                                  Model model,
                                  RedirectAttributes ra) {
 
         Tramite tramite = service.buscarPorId(id);
 
         if (tramite == null) {
-            ra.addFlashAttribute(
-                    "mensaje",
-                    "Trámite no encontrado"
-            );
-
+            ra.addFlashAttribute("mensaje", "Trámite no encontrado");
             return "redirect:/bandejaTrabajo/listar";
         }
 
         model.addAttribute("tramite", tramite);
-
         return "bandejaTrabajo/evaluacion";
     }
 
     @PostMapping("/evaluar/{id}")
-    public String procesarEvaluacion(
-            @PathVariable String id,
-
-            @RequestParam(required = false,
-                    defaultValue = "false")
-            boolean datosCompletos,
-
-            @RequestParam(required = false,
-                    defaultValue = "false")
-            boolean datosConsistentes,
-
-            @RequestParam(required = false,
-                    defaultValue = "false")
-            boolean cumpleRequisitos,
-
-            @RequestParam(required = false,
-                    defaultValue = "false")
-            boolean sustentoValido,
-
-            @RequestParam String accion,
-
-            @RequestParam(required = false)
-            String comentario,
-
-            Model model,
-
-            RedirectAttributes ra) {
+    public String procesarEvaluacion(@PathVariable Long id,
+                                     @RequestParam(required = false, defaultValue = "false") boolean datosCompletos,
+                                     @RequestParam(required = false, defaultValue = "false") boolean datosConsistentes,
+                                     @RequestParam(required = false, defaultValue = "false") boolean cumpleRequisitos,
+                                     @RequestParam(required = false, defaultValue = "false") boolean sustentoValido,
+                                     @RequestParam String accion,
+                                     @RequestParam(required = false) String comentario,
+                                     Model model,
+                                     RedirectAttributes ra) {
 
         Tramite tramite = service.buscarPorId(id);
 
         if (tramite == null) {
-
-            ra.addFlashAttribute(
-                    "mensaje",
-                    "Trámite no encontrado"
-            );
-
+            ra.addFlashAttribute("mensaje", "Trámite no encontrado");
             return "redirect:/bandejaTrabajo/listar";
         }
 
@@ -102,43 +69,18 @@ public class BandejaTrabajoController {
         );
 
         if (error != null) {
-
             model.addAttribute("mensaje", error);
             model.addAttribute("tramite", tramite);
-
-            model.addAttribute(
-                    "datosCompletos",
-                    datosCompletos
-            );
-
-            model.addAttribute(
-                    "datosConsistentes",
-                    datosConsistentes
-            );
-
-            model.addAttribute(
-                    "cumpleRequisitos",
-                    cumpleRequisitos
-            );
-
-            model.addAttribute(
-                    "sustentoValido",
-                    sustentoValido
-            );
-
-            model.addAttribute(
-                    "comentario",
-                    comentario
-            );
+            model.addAttribute("datosCompletos", datosCompletos);
+            model.addAttribute("datosConsistentes", datosConsistentes);
+            model.addAttribute("cumpleRequisitos", cumpleRequisitos);
+            model.addAttribute("sustentoValido", sustentoValido);
+            model.addAttribute("comentario", comentario);
 
             return "bandejaTrabajo/evaluacion";
         }
 
-        ra.addFlashAttribute(
-                "mensaje",
-                "Evaluación registrada"
-        );
-
+        ra.addFlashAttribute("mensaje", "Evaluación registrada");
         return "redirect:/bandejaTrabajo/listar";
     }
 }

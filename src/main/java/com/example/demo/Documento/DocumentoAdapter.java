@@ -1,7 +1,5 @@
-package com.example.demo.Adapter;
+package com.example.demo.Documento;
 
-import com.example.demo.Documento.Documento;
-import com.example.demo.Documento.DocumentoEntity;
 import org.springframework.stereotype.Component;
 
 @Component

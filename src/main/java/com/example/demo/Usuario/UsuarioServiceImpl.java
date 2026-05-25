@@ -19,7 +19,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public List<Usuario> listarUsuarios() {
-
         return usuarios;
     }
 

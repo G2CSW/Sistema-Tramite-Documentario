@@ -1,6 +1,5 @@
 package com.example.demo.Tramite;
 
-import com.example.demo.Adapter.TramiteAdapter;
 import com.example.demo.Solicitante.SolicitanteService;
 import com.example.demo.TipoTramite.TipoTramiteService;
 import com.example.demo.Trazabilidad.TrazabilidadService;

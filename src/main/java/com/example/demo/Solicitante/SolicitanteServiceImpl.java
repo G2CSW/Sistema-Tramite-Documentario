@@ -1,6 +1,5 @@
 package com.example.demo.Solicitante;
 
-import com.example.demo.Adapter.SolicitanteAdapter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

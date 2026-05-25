@@ -1,7 +1,8 @@
-package com.example.demo.Adapter;
+package com.example.demo.Tramite;
 
-import com.example.demo.Tramite.Tramite;
-import com.example.demo.Tramite.TramiteEntity;
+import com.example.demo.Solicitante.SolicitanteAdapter;
+import com.example.demo.TipoTramite.TipoTramiteAdapter;
+import com.example.demo.Usuario.UsuarioAdapter;
 import org.springframework.stereotype.Component;
 
 @Component
