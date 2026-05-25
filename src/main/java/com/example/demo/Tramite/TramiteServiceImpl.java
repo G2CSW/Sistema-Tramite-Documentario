@@ -4,6 +4,7 @@ package com.example.demo.Tramite;
 
 import com.example.demo.Datos.DatosMemoria;
 import com.example.demo.TipoTramite.TipoTramite;
+import com.example.demo.TipoTramite.TipoTramiteService;
 import com.example.demo.Usuario.Usuario;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +17,20 @@ import java.util.List;
 public class TramiteServiceImpl implements TramiteService {
 
     private final List<Tramite> tramites = DatosMemoria.TRAMITES;
-    private final List<Solicitante> solicitantes = DatosMemoria.SOLICITANTES;
     private final List<TipoTramite> tipoTramites = DatosMemoria.TIPOS_TRAMITE;
-    private final List<Trazabilidad> trazabilidades = DatosMemoria.TRAZABILIDADES;
     private final List<Usuario> usuarios = DatosMemoria.USUARIOS;
+    
+    private final TrazabilidadService trazabilidadService;
+    private final SolicitanteService solicitanteService;
+    private final TipoTramiteService tipoTramiteService;
+
+    public TramiteServiceImpl(TrazabilidadService trazabilidadService, 
+                              SolicitanteService solicitanteService,
+                              TipoTramiteService tipoTramiteService) {
+        this.trazabilidadService = trazabilidadService;
+        this.solicitanteService = solicitanteService;
+        this.tipoTramiteService = tipoTramiteService;
+    }
 
     @Override
     public List<Tramite> listarActivos(String idSolicitante) {
@@ -57,101 +68,7 @@ public class TramiteServiceImpl implements TramiteService {
         return null;
     }
 
-    @Override
-    public List<Trazabilidad> obtenerTrazabilidad(String nroTramite) {
 
-        List<Trazabilidad> resultado = new ArrayList<>();
-
-        for (Trazabilidad t : trazabilidades) {
-
-            if (t.getTramite().getNroTramite().equals(nroTramite)) {
-                resultado.add(t);
-            }
-        }
-
-        resultado.sort((a, b) ->
-                b.getFechaHora().compareTo(a.getFechaHora()));
-
-        return resultado;
-    }
-
-    @Override
-    public FormularioTramiteDTO prepararFormularioRegistro(
-            Tramite tramite,
-            String tipoId) {
-
-        if (tramite.getSolicitante() == null) {
-            tramite.setSolicitante(new Solicitante());
-        }
-
-        String idSolicitante =
-                tramite.getSolicitante().getIdSolicitante();
-
-        Solicitante solicitante =
-                buscarSolicitante(
-                        idSolicitante,
-                        tramite.getSolicitante()
-                );
-
-        boolean existe =
-                existeSolicitante(idSolicitante);
-
-        TipoTramite tipoSeleccionado =
-                buscarTipo(tipoId);
-
-        return construirFormularioDTO(
-                tramite,
-                solicitante,
-                tipoSeleccionado,
-                tipoId,
-                idSolicitante,
-                existe,
-                generarNumeroTramite()
-        );
-    }
-
-    @Override
-    public FormularioTramiteDTO prepararFormularioEdicion(
-            String id,
-            Tramite form) {
-
-        Tramite tramite = buscarPorId(id);
-
-        if (tramite == null) {
-            return null;
-        }
-
-        if (form.getSolicitante() == null) {
-            form.setSolicitante(tramite.getSolicitante());
-        }
-
-        String idSolicitante =
-                form.getSolicitante().getIdSolicitante();
-
-        TipoTramite tipoSeleccionado =
-                buscarTipo(
-                        tramite.getTipoTramite().getIdTipoTramite()
-                );
-
-        return construirFormularioDTO(
-                form,
-                form.getSolicitante(),
-                tipoSeleccionado,
-                tipoSeleccionado.getIdTipoTramite(),
-                idSolicitante,
-                true,
-                tramite.getNroTramite()
-        );
-    }
-
-    @Override
-    public boolean validarSolicitante(Solicitante s) {
-
-        return !(s.getIdSolicitante() == null || s.getIdSolicitante().isBlank() ||
-                s.getNombreCompleto() == null || s.getNombreCompleto().isBlank() ||
-                s.getCorreoElectronico() == null || s.getCorreoElectronico().isBlank() ||
-                s.getTelefonoContacto() == null || s.getTelefonoContacto().isBlank());
-    }
 
     @Override
     public Tramite registrar(Tramite tramite) {
@@ -161,32 +78,25 @@ public class TramiteServiceImpl implements TramiteService {
         tramite.setEstadoActual(EstadoTramite.REGISTRADO);
 
         tramite.setSolicitante(
-                guardarOActualizarSolicitante(
+                solicitanteService.guardarOActualizarSolicitante(
                         tramite.getSolicitante()
                 )
         );
 
         tramite.setTipoTramite(
-                buscarTipo(
+                tipoTramiteService.buscarTipo(
                         tramite.getTipoTramite().getIdTipoTramite()
                 )
         );
 
         tramites.add(tramite);
 
-        Trazabilidad trazabilidad = new Trazabilidad();
-
-        trazabilidad.setIdTrazabilidad(
-                "TZ" + (trazabilidades.size() + 1)
+        trazabilidadService.registrarTrazabilidad(
+                tramite,
+                EstadoTramite.REGISTRADO,
+                "Trámite registrado en el sistema",
+                usuarios.get(0)
         );
-
-        trazabilidad.setTramite(tramite);
-        trazabilidad.setUsuario(usuarios.get(0));
-        trazabilidad.setEstadoCambio(EstadoTramite.REGISTRADO);
-        trazabilidad.setComentario("Trámite registrado en el sistema");
-        trazabilidad.setFechaHora(LocalDateTime.now());
-
-        trazabilidades.add(trazabilidad);
 
         return tramite;
     }
@@ -201,14 +111,14 @@ public class TramiteServiceImpl implements TramiteService {
         }
 
         Solicitante solicitante =
-                guardarOActualizarSolicitante(
+                solicitanteService.guardarOActualizarSolicitante(
                         form.getSolicitante()
                 );
 
         tramite.setSolicitante(solicitante);
 
         tramite.setTipoTramite(
-                buscarTipo(
+                tipoTramiteService.buscarTipo(
                         form.getTipoTramite().getIdTipoTramite()
                 )
         );
@@ -227,119 +137,33 @@ public class TramiteServiceImpl implements TramiteService {
 
         tramite.setEstadoActual(estado);
 
-        Trazabilidad tr = new Trazabilidad();
-
-        tr.setIdTrazabilidad(
-                "TZ" + (trazabilidades.size() + 1)
-        );
-
-        tr.setTramite(tramite);
-        tr.setUsuario(usuarios.get(0));
-        tr.setEstadoCambio(estado);
-
+        String comentario;
         switch (estado) {
-
             case EN_EVALUACION:
-                tr.setComentario("Trámite derivado y en proceso de evaluación");
+                comentario = "Trámite derivado y en proceso de evaluación";
                 break;
-
             case CANCELADO:
-                tr.setComentario("Trámite cancelado a solicitud del interesado");
+                comentario = "Trámite cancelado a solicitud del interesado";
                 break;
-
             case ARCHIVADO:
-                tr.setComentario("Trámite archivado, proceso completado");
+                comentario = "Trámite archivado, proceso completado";
                 break;
-
             default:
-                tr.setComentario("Cambio de estado a " + estado.name());
+                comentario = "Cambio de estado a " + estado.name();
                 break;
         }
 
-        tr.setFechaHora(LocalDateTime.now());
-
-        trazabilidades.add(tr);
+        trazabilidadService.registrarTrazabilidad(
+                tramite,
+                estado,
+                comentario,
+                usuarios.get(0)
+        );
 
         return true;
     }
 
 
-
-    // HELPERS PRIVADOS DEL SERVICE
-    private Solicitante guardarOActualizarSolicitante(Solicitante s) {
-
-        for (Solicitante existente : solicitantes) {
-
-            if (existente.getIdSolicitante().equals(
-                    s.getIdSolicitante())) {
-
-                existente.setNombreCompleto(
-                        s.getNombreCompleto());
-
-                existente.setCorreoElectronico(
-                        s.getCorreoElectronico());
-
-                existente.setTelefonoContacto(
-                        s.getTelefonoContacto());
-
-                return existente;
-            }
-        }
-
-        solicitantes.add(s);
-
-        return s;
-    }
-
-    private TipoTramite buscarTipo(String id) {
-
-        if (id == null) {
-            return null;
-        }
-
-        for (TipoTramite t : tipoTramites) {
-
-            if (t.getIdTipoTramite().equals(id)) {
-                return t;
-            }
-        }
-
-        return null;
-    }
-
-    private Solicitante buscarSolicitante(
-            String idSolicitante,
-            Solicitante fallback) {
-
-        if (idSolicitante == null) {
-            return fallback;
-        }
-
-        for (Solicitante s : solicitantes) {
-
-            if (s.getIdSolicitante().equals(idSolicitante)) {
-                return s;
-            }
-        }
-
-        return fallback;
-    }
-
-    private boolean existeSolicitante(String idSolicitante) {
-
-        if (idSolicitante == null) {
-            return false;
-        }
-
-        for (Solicitante s : solicitantes) {
-
-            if (s.getIdSolicitante().equals(idSolicitante)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     private List<TipoTramite> listarTiposActivos() {
 
@@ -355,47 +179,18 @@ public class TramiteServiceImpl implements TramiteService {
         return activos;
     }
 
-    private String generarNumeroTramite() {
-
+    @Override
+    public String generarNumeroTramite() {
         int max = 0;
-
         for (Tramite t : tramites) {
-
             try {
-
-                int num = Integer.parseInt(
-                        t.getNroTramite().substring(2)
-                );
-
+                int num = Integer.parseInt(t.getNroTramite().substring(2));
                 if (num > max) {
                     max = num;
                 }
-
             } catch (Exception ignored) {
             }
         }
-
         return "TR" + (max + 1);
-    }
-
-    private FormularioTramiteDTO construirFormularioDTO(
-            Tramite tramite,
-            Solicitante solicitante,
-            TipoTramite tipoSeleccionado,
-            String tipoId,
-            String idSolicitante,
-            boolean existe,
-            String nro) {
-
-        return new FormularioTramiteDTO(
-                tramite,
-                solicitante,
-                tipoSeleccionado,
-                listarTiposActivos(),
-                tipoId,
-                idSolicitante,
-                existe,
-                nro
-        );
     }
 }

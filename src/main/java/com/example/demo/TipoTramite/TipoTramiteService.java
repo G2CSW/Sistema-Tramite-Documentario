@@ -8,25 +8,7 @@ public interface TipoTramiteService {
 
     List<TipoTramite> listar();
 
-    TipoTramite prepararRegistro();
 
-    TipoTramite agregarDocumento(String nombre,
-                                 Long documentoId,
-                                 List<Long> documentacionMinimaIds);
-
-    TipoTramite quitarDocumento(String nombre,
-                                Long quitarId,
-                                List<Long> documentacionMinimaIds);
-
-    TipoTramite agregarDocumento(String id,
-                                 String nombre,
-                                 Long documentoId,
-                                 List<Long> documentacionMinimaIds);
-
-    TipoTramite quitarDocumento(String id,
-                                String nombre,
-                                Long quitarId,
-                                List<Long> documentacionMinimaIds);
 
     boolean validarTipoTramite(String nombre,
                                List<Long> documentacionMinimaIds);
@@ -36,9 +18,7 @@ public interface TipoTramiteService {
 
     TipoTramite buscarTipo(String id);
 
-    TipoTramite prepararEdicion(String id,
-                                String nombre,
-                                List<Long> ids);
+
 
     void editar(String id,
                 String nombre,
@@ -46,7 +26,5 @@ public interface TipoTramiteService {
 
     void cambiarEstado(String id);
 
-    List<Documento> obtenerDocumentosActivos();
 
-    List<Documento> obtenerDocumentosPorIds(List<Long> ids);
 }

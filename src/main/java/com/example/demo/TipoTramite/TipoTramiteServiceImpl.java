@@ -2,6 +2,7 @@ package com.example.demo.TipoTramite;
 
 import com.example.demo.Datos.DatosMemoria;
 import com.example.demo.Documento.Documento;
+import com.example.demo.Documento.DocumentoService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -12,111 +13,18 @@ import java.util.List;
 public class TipoTramiteServiceImpl implements TipoTramiteService {
 
     private final List<TipoTramite> tipos = DatosMemoria.TIPOS_TRAMITE;
+    private final DocumentoService documentoService;
+
+    public TipoTramiteServiceImpl(DocumentoService documentoService) {
+        this.documentoService = documentoService;
+    }
 
     @Override
     public List<TipoTramite> listar() {
         return tipos;
     }
 
-    @Override
-    public TipoTramite prepararRegistro() {
-        TipoTramite tipo = new TipoTramite();
-        tipo.setDocumentacionMinima(new ArrayList<>());
-        return tipo;
-    }
 
-    @Override
-    public TipoTramite agregarDocumento(String nombre,
-                                        Long documentoId,
-                                        List<Long> documentacionMinimaIds) {
-        List<Long> ids = new ArrayList<>();
-
-        if (documentacionMinimaIds != null) {
-            ids.addAll(documentacionMinimaIds);
-        }
-
-        if (documentoId != null && !ids.contains(documentoId)) {
-            ids.add(documentoId);
-        }
-
-        TipoTramite tipo = new TipoTramite();
-        tipo.setNombre(nombre);
-        tipo.setDocumentacionMinima(obtenerDocumentosPorIds(ids));
-
-        return tipo;
-    }
-
-    @Override
-    public TipoTramite quitarDocumento(String nombre,
-                                       Long quitarId,
-                                       List<Long> documentacionMinimaIds) {
-        List<Long> ids = new ArrayList<>();
-
-        if (documentacionMinimaIds != null) {
-            ids.addAll(documentacionMinimaIds);
-        }
-
-        ids.remove(quitarId);
-
-        TipoTramite tipo = new TipoTramite();
-        tipo.setNombre(nombre);
-        tipo.setDocumentacionMinima(obtenerDocumentosPorIds(ids));
-
-        return tipo;
-    }
-
-    @Override
-    public TipoTramite agregarDocumento(String id,
-                                        String nombre,
-                                        Long documentoId,
-                                        List<Long> documentacionMinimaIds) {
-        List<Long> ids = new ArrayList<>();
-
-        if (documentacionMinimaIds != null) {
-            ids.addAll(documentacionMinimaIds);
-        }
-
-        if (documentoId != null && !ids.contains(documentoId)) {
-            ids.add(documentoId);
-        }
-
-        return construirVistaEdicion(id, nombre, ids);
-    }
-
-    @Override
-    public TipoTramite quitarDocumento(String id,
-                                       String nombre,
-                                       Long quitarId,
-                                       List<Long> documentacionMinimaIds) {
-        List<Long> ids = new ArrayList<>();
-
-        if (documentacionMinimaIds != null) {
-            ids.addAll(documentacionMinimaIds);
-        }
-
-        ids.remove(quitarId);
-
-        return construirVistaEdicion(id, nombre, ids);
-    }
-
-    private TipoTramite construirVistaEdicion(String id,
-                                              String nombre,
-                                              List<Long> ids) {
-        TipoTramite tipo = buscarTipo(id);
-
-        if (tipo == null) {
-            return null;
-        }
-
-        TipoTramite vista = new TipoTramite();
-        vista.setIdTipoTramite(tipo.getIdTipoTramite());
-        vista.setNombre(nombre);
-        vista.setFechaCreacion(tipo.getFechaCreacion());
-        vista.setActivo(tipo.isActivo());
-        vista.setDocumentacionMinima(obtenerDocumentosPorIds(ids));
-
-        return vista;
-    }
 
     @Override
     public boolean validarTipoTramite(String nombre,
@@ -133,7 +41,7 @@ public class TipoTramiteServiceImpl implements TipoTramiteService {
 
         tipo.setIdTipoTramite("TT" + (tipos.size() + 1));
         tipo.setNombre(nombre);
-        tipo.setDocumentacionMinima(obtenerDocumentosPorIds(documentacionMinimaIds));
+        tipo.setDocumentacionMinima(documentoService.obtenerDocumentosPorIds(documentacionMinimaIds));
         tipo.setFechaCreacion(LocalDate.now());
         tipo.setActivo(true);
 
@@ -150,25 +58,7 @@ public class TipoTramiteServiceImpl implements TipoTramiteService {
         return null;
     }
 
-    @Override
-    public TipoTramite prepararEdicion(String id,
-                                       String nombre,
-                                       List<Long> ids) {
-        TipoTramite tipo = buscarTipo(id);
 
-        if (tipo == null) {
-            return null;
-        }
-
-        TipoTramite vista = new TipoTramite();
-        vista.setIdTipoTramite(tipo.getIdTipoTramite());
-        vista.setNombre(nombre);
-        vista.setFechaCreacion(tipo.getFechaCreacion());
-        vista.setActivo(tipo.isActivo());
-        vista.setDocumentacionMinima(obtenerDocumentosPorIds(ids));
-
-        return vista;
-    }
 
     @Override
     public void editar(String id,
@@ -178,7 +68,7 @@ public class TipoTramiteServiceImpl implements TipoTramiteService {
             if (t.getIdTipoTramite().equals(id)) {
                 t.setNombre(nombre);
                 t.setDocumentacionMinima(
-                        obtenerDocumentosPorIds(documentacionMinimaIds)
+                        documentoService.obtenerDocumentosPorIds(documentacionMinimaIds)
                 );
                 break;
             }
@@ -195,36 +85,4 @@ public class TipoTramiteServiceImpl implements TipoTramiteService {
         }
     }
 
-    @Override
-    public List<Documento> obtenerDocumentosActivos() {
-        List<Documento> activos = new ArrayList<>();
-
-        for (Documento d : DatosMemoria.DOCUMENTOS) {
-            if (d.isActivo()) {
-                activos.add(d);
-            }
-        }
-
-        return activos;
-    }
-
-    @Override
-    public List<Documento> obtenerDocumentosPorIds(List<Long> ids) {
-        List<Documento> seleccionados = new ArrayList<>();
-
-        if (ids == null) {
-            return seleccionados;
-        }
-
-        for (Long id : ids) {
-            for (Documento d : DatosMemoria.DOCUMENTOS) {
-                if (d.getIdDocumento().equals(id)) {
-                    seleccionados.add(d);
-                    break;
-                }
-            }
-        }
-
-        return seleccionados;
-    }
 }

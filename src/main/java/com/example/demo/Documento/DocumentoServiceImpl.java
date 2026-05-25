@@ -3,6 +3,7 @@ package com.example.demo.Documento;
 import com.example.demo.Datos.DatosMemoria;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,8 +17,31 @@ public class DocumentoServiceImpl implements DocumentoService {
     }
 
     @Override
-    public Documento prepararRegistro() {
-        return new Documento();
+    public List<Documento> obtenerDocumentosActivos() {
+        List<Documento> activos = new ArrayList<>();
+        for (Documento d : documentos) {
+            if (d.isActivo()) {
+                activos.add(d);
+            }
+        }
+        return activos;
+    }
+
+    @Override
+    public List<Documento> obtenerDocumentosPorIds(List<Long> ids) {
+        List<Documento> seleccionados = new ArrayList<>();
+        if (ids == null) {
+            return seleccionados;
+        }
+        for (Long id : ids) {
+            for (Documento d : documentos) {
+                if (d.getIdDocumento().equals(id)) {
+                    seleccionados.add(d);
+                    break;
+                }
+            }
+        }
+        return seleccionados;
     }
 
     @Override

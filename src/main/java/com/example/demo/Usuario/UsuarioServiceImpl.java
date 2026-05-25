@@ -1,6 +1,7 @@
 package com.example.demo.Usuario;
 
 import com.example.demo.Area.Area;
+import com.example.demo.Area.AreaService;
 import com.example.demo.Datos.DatosMemoria;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,11 @@ import java.util.List;
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final List<Usuario> usuarios = DatosMemoria.USUARIOS;
-    private final List<Area> areas = DatosMemoria.AREAS;
+    private final AreaService areaService;
+
+    public UsuarioServiceImpl(AreaService areaService) {
+        this.areaService = areaService;
+    }
 
     @Override
     public List<Usuario> listarUsuarios() {
@@ -18,16 +23,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarios;
     }
 
-    @Override
-    public List<Area> listarAreas() {
 
-        return areas;
-    }
 
     @Override
     public boolean registrarUsuario(Usuario usuario, String idArea) {
 
-        Area area = buscarArea(idArea);
+        Area area = areaService.buscarArea(idArea);
 
         if (!validarUsuario(usuario) || area == null) {
 
@@ -61,7 +62,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                                  Usuario form,
                                  String idArea) {
 
-        Area area = buscarArea(idArea);
+        Area area = areaService.buscarArea(idArea);
 
         if (!validarUsuario(form) || area == null) {
 
@@ -106,16 +107,5 @@ public class UsuarioServiceImpl implements UsuarioService {
                 u.getPassword() == null || u.getPassword().isBlank());
     }
 
-    private Area buscarArea(String idArea) {
 
-        for (Area a : areas) {
-
-            if (a.getIdArea().equals(idArea)) {
-
-                return a;
-            }
-        }
-
-        return null;
-    }
 }

@@ -24,7 +24,7 @@ public class DocumentoController {
 
     @GetMapping("/registrar")
     public String irRegistrar(Model model) {
-        model.addAttribute("documento", service.prepararRegistro());
+        model.addAttribute("documento", new Documento());
         return "documento/registrarDocumento";
     }
 

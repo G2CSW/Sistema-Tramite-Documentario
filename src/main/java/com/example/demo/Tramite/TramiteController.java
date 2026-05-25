@@ -2,19 +2,33 @@
 
 package com.example.demo.Tramite;
 
+import com.example.demo.TipoTramite.TipoTramite;
+import com.example.demo.TipoTramite.TipoTramiteService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/tramite")
 public class TramiteController {
 
     private final TramiteService tramiteService;
+    private final TrazabilidadService trazabilidadService;
+    private final SolicitanteService solicitanteService;
+    private final TipoTramiteService tipoTramiteService;
 
-    public TramiteController(TramiteService tramiteService) {
+    public TramiteController(TramiteService tramiteService, 
+                             TrazabilidadService trazabilidadService,
+                             SolicitanteService solicitanteService,
+                             TipoTramiteService tipoTramiteService) {
         this.tramiteService = tramiteService;
+        this.trazabilidadService = trazabilidadService;
+        this.solicitanteService = solicitanteService;
+        this.tipoTramiteService = tipoTramiteService;
     }
 
     @GetMapping("/listar")
@@ -48,7 +62,7 @@ public class TramiteController {
 
         model.addAttribute(
                 "trazabilidades",
-                tramiteService.obtenerTrazabilidad(nroTramite)
+                trazabilidadService.obtenerTrazabilidad(nroTramite)
         );
 
         return "tramite/seguimiento";
@@ -62,13 +76,7 @@ public class TramiteController {
             String tipoId,
             Model model) {
 
-        FormularioTramiteDTO dto =
-                tramiteService.prepararFormularioRegistro(
-                        tramite,
-                        tipoId
-                );
-
-        cargarFormulario(model, dto);
+        cargarFormularioRegistro(model, tramite, tipoId);
 
         return "tramite/registrarTramite";
     }
@@ -79,24 +87,16 @@ public class TramiteController {
             RedirectAttributes ra,
             Model model) {
 
-        if (!tramiteService.validarSolicitante(
+        if (!solicitanteService.validarSolicitante(
                 tramite.getSolicitante())) {
-
-            FormularioTramiteDTO dto =
-                    tramiteService.prepararFormularioRegistro(
-                            tramite,
-                            tramite.getTipoTramite() != null
-                                    ? tramite.getTipoTramite()
-                                    .getIdTipoTramite()
-                                    : null
-                    );
 
             model.addAttribute(
                     "error",
                     "Complete todos los datos del solicitante"
             );
 
-            cargarFormulario(model, dto);
+            String tipoId = tramite.getTipoTramite() != null ? tramite.getTipoTramite().getIdTipoTramite() : null;
+            cargarFormularioRegistro(model, tramite, tipoId);
 
             return "tramite/registrarTramite";
         }
@@ -121,23 +121,21 @@ public class TramiteController {
             RedirectAttributes ra,
             Model model) {
 
-        FormularioTramiteDTO dto =
-                tramiteService.prepararFormularioEdicion(
-                        id,
-                        form
-                );
+        Tramite tramite = tramiteService.buscarPorId(id);
 
-        if (dto == null) {
-
+        if (tramite == null) {
             ra.addFlashAttribute(
                     "mensaje",
                     "Trámite no encontrado"
             );
-
             return "redirect:/tramite/listar";
         }
 
-        cargarFormulario(model, dto);
+        if (form.getSolicitante() == null) {
+            form.setSolicitante(tramite.getSolicitante());
+        }
+
+        cargarFormularioEdicion(model, form, tramite);
 
         return "tramite/editarTramite";
     }
@@ -149,21 +147,21 @@ public class TramiteController {
             RedirectAttributes ra,
             Model model) {
 
-        if (!tramiteService.validarSolicitante(
+        if (!solicitanteService.validarSolicitante(
                 form.getSolicitante())) {
-
-            FormularioTramiteDTO dto =
-                    tramiteService.prepararFormularioEdicion(
-                            id,
-                            form
-                    );
 
             model.addAttribute(
                     "error",
                     "Complete todos los datos del solicitante"
             );
 
-            cargarFormulario(model, dto);
+            Tramite tramite = tramiteService.buscarPorId(id);
+            if (tramite != null) {
+                cargarFormularioEdicion(model, form, tramite);
+            } else {
+                ra.addFlashAttribute("mensaje", "Trámite no encontrado");
+                return "redirect:/tramite/listar";
+            }
 
             return "tramite/editarTramite";
         }
@@ -222,17 +220,52 @@ public class TramiteController {
 
 
 
-    private void cargarFormulario(
+    private void cargarFormularioRegistro(
             Model model,
-            FormularioTramiteDTO dto) {
+            Tramite tramite,
+            String tipoId) {
 
-        model.addAttribute("tramite", dto.getTramite());
-        model.addAttribute("solicitante", dto.getSolicitante());
-        model.addAttribute("tipoSeleccionado", dto.getTipoSeleccionado());
-        model.addAttribute("tipoTramites", dto.getTipoTramites());
-        model.addAttribute("tipoTramiteId", dto.getTipoId());
-        model.addAttribute("idSolicitanteBuscado", dto.getIdSolicitante());
-        model.addAttribute("existeSolicitante", dto.isExisteSolicitante());
-        model.addAttribute("numeroTramiteGenerado", dto.getNumeroTramite());
+        if (tramite.getSolicitante() == null) {
+            tramite.setSolicitante(new Solicitante());
+        }
+
+        String idSolicitante = tramite.getSolicitante().getIdSolicitante();
+        Solicitante solicitanteBuscado = solicitanteService.buscarSolicitante(idSolicitante);
+        Solicitante solicitante = solicitanteBuscado != null ? solicitanteBuscado : tramite.getSolicitante();
+        boolean existe = solicitanteService.existeSolicitante(idSolicitante);
+        
+        TipoTramite tipoSeleccionado = tipoId != null ? tipoTramiteService.buscarTipo(tipoId) : null;
+        List<TipoTramite> tipoTramitesActivos = tipoTramiteService.listar().stream()
+                .filter(TipoTramite::isActivo).collect(Collectors.toList());
+
+        model.addAttribute("tramite", tramite);
+        model.addAttribute("solicitante", solicitante);
+        model.addAttribute("tipoSeleccionado", tipoSeleccionado);
+        model.addAttribute("tipoTramites", tipoTramitesActivos);
+        model.addAttribute("tipoTramiteId", tipoId);
+        model.addAttribute("idSolicitanteBuscado", idSolicitante);
+        model.addAttribute("existeSolicitante", existe);
+        model.addAttribute("numeroTramiteGenerado", tramiteService.generarNumeroTramite());
+    }
+
+    private void cargarFormularioEdicion(
+            Model model,
+            Tramite form,
+            Tramite tramiteOriginal) {
+
+        String idSolicitante = form.getSolicitante().getIdSolicitante();
+        TipoTramite tipoSeleccionado = tipoTramiteService.buscarTipo(
+                tramiteOriginal.getTipoTramite().getIdTipoTramite());
+        List<TipoTramite> tipoTramitesActivos = tipoTramiteService.listar().stream()
+                .filter(TipoTramite::isActivo).collect(Collectors.toList());
+
+        model.addAttribute("tramite", form);
+        model.addAttribute("solicitante", form.getSolicitante());
+        model.addAttribute("tipoSeleccionado", tipoSeleccionado);
+        model.addAttribute("tipoTramites", tipoTramitesActivos);
+        model.addAttribute("tipoTramiteId", tipoSeleccionado.getIdTipoTramite());
+        model.addAttribute("idSolicitanteBuscado", idSolicitante);
+        model.addAttribute("existeSolicitante", true);
+        model.addAttribute("numeroTramiteGenerado", tramiteOriginal.getNroTramite());
     }
 }

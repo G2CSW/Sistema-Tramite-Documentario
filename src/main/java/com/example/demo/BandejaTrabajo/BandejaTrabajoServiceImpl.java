@@ -4,9 +4,9 @@ import com.example.demo.Datos.DatosMemoria;
 import com.example.demo.Tramite.EstadoTramite;
 import com.example.demo.Tramite.Tramite;
 import com.example.demo.Tramite.Trazabilidad;
+import com.example.demo.Tramite.TrazabilidadService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +14,11 @@ import java.util.List;
 public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
 
     private final List<Tramite> tramites = DatosMemoria.TRAMITES;
+    private final TrazabilidadService trazabilidadService;
+
+    public BandejaTrabajoServiceImpl(TrazabilidadService trazabilidadService) {
+        this.trazabilidadService = trazabilidadService;
+    }
 
     @Override
     public List<Tramite> listarTramitesAEvaluar(String dni) {
@@ -88,46 +93,30 @@ public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
         t.setCumpleRequisitos(cumpleRequisitos);
         t.setSustentoValido(sustentoValido);
 
-        Trazabilidad tr = new Trazabilidad();
-
-        tr.setIdTrazabilidad(
-                "TZ" + (DatosMemoria.TRAZABILIDADES.size() + 1)
-        );
-
-        tr.setTramite(t);
-        tr.setUsuario(DatosMemoria.USUARIOS.get(1));
-        tr.setFechaHora(LocalDateTime.now());
+        EstadoTramite estado;
+        String comentarioTrazabilidad;
 
         if ("aprobar".equals(accion)) {
 
             t.setEstadoActual(EstadoTramite.APROBADO);
-
-            tr.setEstadoCambio(EstadoTramite.APROBADO);
-
-            tr.setComentario(
-                    "Trámite aprobado"
-                            + agregarComentarioExtra(comentario)
-            );
+            estado = EstadoTramite.APROBADO;
+            comentarioTrazabilidad = "Trámite aprobado" + agregarComentarioExtra(comentario);
 
         } else {
 
             t.setEstadoActual(EstadoTramite.RECHAZADO);
-
-            tr.setEstadoCambio(EstadoTramite.RECHAZADO);
-
-            tr.setComentario(
-                    "Trámite rechazado por no cumplir con los siguientes criterios: "
-                            + listarChecksNoCumplidos(
-                            datosCompletos,
-                            datosConsistentes,
-                            cumpleRequisitos,
-                            sustentoValido
-                    )
-                            + agregarComentarioExtra(comentario)
-            );
+            estado = EstadoTramite.RECHAZADO;
+            comentarioTrazabilidad = "Trámite rechazado por no cumplir con los siguientes criterios: "
+                    + listarChecksNoCumplidos(datosCompletos, datosConsistentes, cumpleRequisitos, sustentoValido)
+                    + agregarComentarioExtra(comentario);
         }
 
-        DatosMemoria.TRAZABILIDADES.add(tr);
+        trazabilidadService.registrarTrazabilidad(
+                t,
+                estado,
+                comentarioTrazabilidad,
+                DatosMemoria.USUARIOS.get(1)
+        );
 
         return null;
     }

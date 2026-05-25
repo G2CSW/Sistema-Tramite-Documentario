@@ -10,19 +10,9 @@ public interface TramiteService {
 
     Tramite buscarPorId(String id);
 
-    List<Trazabilidad> obtenerTrazabilidad(String nroTramite);
 
-    FormularioTramiteDTO prepararFormularioRegistro(
-            Tramite tramite,
-            String tipoId
-    );
+    String generarNumeroTramite();
 
-    FormularioTramiteDTO prepararFormularioEdicion(
-            String id,
-            Tramite form
-    );
-
-    boolean validarSolicitante(Solicitante solicitante);
 
     Tramite registrar(Tramite tramite);
 

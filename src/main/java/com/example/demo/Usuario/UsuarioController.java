@@ -1,5 +1,6 @@
 package com.example.demo.Usuario;
 
+import com.example.demo.Area.AreaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +10,11 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+    private final AreaService areaService;
 
-    public UsuarioController(UsuarioService usuarioService) {
-
+    public UsuarioController(UsuarioService usuarioService, AreaService areaService) {
         this.usuarioService = usuarioService;
+        this.areaService = areaService;
     }
 
     @GetMapping("/listar")
@@ -29,7 +31,7 @@ public class UsuarioController {
 
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("areas",
-                usuarioService.listarAreas());
+                areaService.listarAreas());
 
         return "usuario/registrarUsuario";
     }
@@ -50,7 +52,7 @@ public class UsuarioController {
             model.addAttribute("usuario", usuario);
 
             model.addAttribute("areas",
-                    usuarioService.listarAreas());
+                    areaService.listarAreas());
 
             return "usuario/registrarUsuario";
         }
@@ -73,7 +75,7 @@ public class UsuarioController {
         model.addAttribute("usuario", usuario);
 
         model.addAttribute("areas",
-                usuarioService.listarAreas());
+                areaService.listarAreas());
 
         return "usuario/editarUsuario";
     }
@@ -97,7 +99,7 @@ public class UsuarioController {
             model.addAttribute("usuario", form);
 
             model.addAttribute("areas",
-                    usuarioService.listarAreas());
+                    areaService.listarAreas());
 
             return "usuario/editarUsuario";
         }

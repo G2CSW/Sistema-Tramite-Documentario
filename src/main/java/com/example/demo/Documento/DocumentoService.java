@@ -6,7 +6,9 @@ public interface DocumentoService {
 
     List<Documento> listar();
 
-    Documento prepararRegistro();
+    List<Documento> obtenerDocumentosActivos();
+
+    List<Documento> obtenerDocumentosPorIds(List<Long> ids);
 
     Documento buscarPorId(Long id);
 
