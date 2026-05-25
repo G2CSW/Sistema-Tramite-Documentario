@@ -1,4 +1,4 @@
-package com.example.demo.Tramite;
+package com.example.demo.Solicitante;
 
 import com.example.demo.Datos.DatosMemoria;
 import org.springframework.stereotype.Service;

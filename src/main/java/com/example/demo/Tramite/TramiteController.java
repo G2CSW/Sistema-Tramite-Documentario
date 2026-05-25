@@ -2,8 +2,11 @@
 
 package com.example.demo.Tramite;
 
+import com.example.demo.Solicitante.Solicitante;
+import com.example.demo.Solicitante.SolicitanteService;
 import com.example.demo.TipoTramite.TipoTramite;
 import com.example.demo.TipoTramite.TipoTramiteService;
+import com.example.demo.Trazabilidad.TrazabilidadService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +55,7 @@ public class TramiteController {
 
     @GetMapping("/{nroTramite}")
     public String mostrarSeguimiento(
-            @PathVariable String nroTramite,
+            @PathVariable Long nroTramite,
             Model model) {
 
         model.addAttribute(
@@ -116,7 +119,7 @@ public class TramiteController {
 
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEditar(
-            @PathVariable String id,
+            @PathVariable Long id,
             @ModelAttribute("tramite") Tramite form,
             RedirectAttributes ra,
             Model model) {
@@ -142,7 +145,7 @@ public class TramiteController {
 
     @PostMapping("/editar/{id}")
     public String editarTramite(
-            @PathVariable String id,
+            @PathVariable Long id,
             @ModelAttribute Tramite form,
             RedirectAttributes ra,
             Model model) {
@@ -189,7 +192,7 @@ public class TramiteController {
 
     @PostMapping("/cambiar-estado/{id}")
     public String cambiarEstadoTramite(
-            @PathVariable String id,
+            @PathVariable Long id,
             @RequestParam("estado")
             EstadoTramite estado,
             RedirectAttributes ra) {
@@ -245,7 +248,7 @@ public class TramiteController {
         model.addAttribute("tipoTramiteId", tipoId);
         model.addAttribute("idSolicitanteBuscado", idSolicitante);
         model.addAttribute("existeSolicitante", existe);
-        model.addAttribute("numeroTramiteGenerado", tramiteService.generarNumeroTramite());
+        model.addAttribute("numeroTramiteGenerado", tramiteService.obtenerSiguienteId());
     }
 
     private void cargarFormularioEdicion(

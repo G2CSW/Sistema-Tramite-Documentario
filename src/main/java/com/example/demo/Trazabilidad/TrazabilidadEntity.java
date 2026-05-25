@@ -1,14 +1,9 @@
-package com.example.demo.Tramite;
+package com.example.demo.Trazabilidad;
 
+import com.example.demo.Tramite.EstadoTramite;
+import com.example.demo.Tramite.TramiteEntity;
 import com.example.demo.Usuario.UsuarioEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -17,11 +12,12 @@ import java.time.LocalDateTime;
 public class TrazabilidadEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_trazabilidad")
-    private String idTrazabilidad;
+    private Long idTrazabilidad;
 
     @ManyToOne
-    @JoinColumn(name = "nro_tramite")
+    @JoinColumn(name = "nro_tramite", nullable = false)
     private TramiteEntity tramite;
 
     @ManyToOne
@@ -29,33 +25,23 @@ public class TrazabilidadEntity {
     private UsuarioEntity usuario;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "estado_cambio")
+    @Column(name = "estado_cambio", nullable = false)
     private EstadoTramite estadoCambio;
 
-    @Column(name = "comentario")
+    @Column(name = "comentario", length = 500)
     private String comentario;
 
-    @Column(name = "fecha_hora")
+    @Column(name = "fecha_hora", nullable = false)
     private LocalDateTime fechaHora;
 
     public TrazabilidadEntity() {
     }
 
-    public TrazabilidadEntity(String idTrazabilidad, TramiteEntity tramite, UsuarioEntity usuario,
-                               EstadoTramite estadoCambio, String comentario, LocalDateTime fechaHora) {
-        this.idTrazabilidad = idTrazabilidad;
-        this.tramite = tramite;
-        this.usuario = usuario;
-        this.estadoCambio = estadoCambio;
-        this.comentario = comentario;
-        this.fechaHora = fechaHora;
-    }
-
-    public String getIdTrazabilidad() {
+    public Long getIdTrazabilidad() {
         return idTrazabilidad;
     }
 
-    public void setIdTrazabilidad(String idTrazabilidad) {
+    public void setIdTrazabilidad(Long idTrazabilidad) {
         this.idTrazabilidad = idTrazabilidad;
     }
 

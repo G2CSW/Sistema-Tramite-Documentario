@@ -8,15 +8,13 @@ public interface TramiteService {
 
     List<Tramite> listarActivos(String idSolicitante);
 
-    Tramite buscarPorId(String id);
-
-
-    String generarNumeroTramite();
-
+    Tramite buscarPorId(Long id);
 
     Tramite registrar(Tramite tramite);
 
-    boolean editar(String id, Tramite form);
+    boolean editar(Long id, Tramite form);
 
-    boolean cambiarEstado(String id, EstadoTramite estado);
+    boolean cambiarEstado(Long id, EstadoTramite estado);
+
+    Long obtenerSiguienteId();
 }

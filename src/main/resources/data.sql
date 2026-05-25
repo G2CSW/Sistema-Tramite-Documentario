@@ -33,10 +33,21 @@ INSERT INTO solicitantes (id_solicitante, nombre_completo, correo_electronico, t
     ('74185296', 'Carlos Ramírez', 'carlos@gmail.com', '987654321');
 
 -- Trámites
-INSERT INTO tramites (nro_tramite, id_tipo_tramite, id_usuario, id_solicitante, fecha_registro, estado_actual,
+INSERT INTO tramites (id_tipo_tramite, id_usuario, id_solicitante, fecha_registro, estado_actual,
                       datos_completos, datos_consistentes, cumple_requisitos, sustento_valido) VALUES
-    ('TR001', 'TT1', NULL, '74185296', CURRENT_DATE, 'REGISTRADO', NULL, NULL, NULL, NULL);
+    ('TT1', NULL, '74185296', CURRENT_DATE, 'REGISTRADO', NULL, NULL, NULL, NULL);
 
 -- Trazabilidades
-INSERT INTO trazabilidades (id_trazabilidad, nro_tramite, id_usuario, estado_cambio, comentario, fecha_hora) VALUES
-    ('TZ001', 'TR001', '12345678', 'REGISTRADO', 'Trámite registrado correctamente', CURRENT_TIMESTAMP);
+INSERT INTO trazabilidades (
+    nro_tramite,
+    id_usuario,
+    estado_cambio,
+    comentario,
+    fecha_hora
+) VALUES (
+    1,
+    '12345678',
+    'REGISTRADO',
+    'Trámite registrado correctamente',
+    CURRENT_TIMESTAMP
+);

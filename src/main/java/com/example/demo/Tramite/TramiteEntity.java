@@ -1,15 +1,9 @@
 package com.example.demo.Tramite;
 
+import com.example.demo.Solicitante.SolicitanteEntity;
 import com.example.demo.TipoTramite.TipoTramiteEntity;
 import com.example.demo.Usuario.UsuarioEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -18,8 +12,9 @@ import java.time.LocalDate;
 public class TramiteEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "nro_tramite")
-    private String nroTramite;
+    private Long nroTramite;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_tramite")
@@ -55,7 +50,7 @@ public class TramiteEntity {
     public TramiteEntity() {
     }
 
-    public TramiteEntity(String nroTramite, TipoTramiteEntity tipoTramite, UsuarioEntity usuario,
+    public TramiteEntity(Long nroTramite, TipoTramiteEntity tipoTramite, UsuarioEntity usuario,
                          SolicitanteEntity solicitante, LocalDate fechaRegistro,
                          EstadoTramite estadoActual, Boolean datosCompletos,
                          Boolean datosConsistentes, Boolean cumpleRequisitos, Boolean sustentoValido) {
@@ -71,11 +66,11 @@ public class TramiteEntity {
         this.sustentoValido = sustentoValido;
     }
 
-    public String getNroTramite() {
+    public Long getNroTramite() {
         return nroTramite;
     }
 
-    public void setNroTramite(String nroTramite) {
+    public void setNroTramite(Long nroTramite) {
         this.nroTramite = nroTramite;
     }
 

@@ -1,4 +1,4 @@
-package com.example.demo.Tramite;
+package com.example.demo.Solicitante;
 
 public interface SolicitanteService {
 

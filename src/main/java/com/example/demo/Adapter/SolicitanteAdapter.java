@@ -1,7 +1,7 @@
 package com.example.demo.Adapter;
 
-import com.example.demo.Tramite.Solicitante;
-import com.example.demo.Tramite.SolicitanteEntity;
+import com.example.demo.Solicitante.Solicitante;
+import com.example.demo.Solicitante.SolicitanteEntity;
 import org.springframework.stereotype.Component;
 
 @Component

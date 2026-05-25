@@ -2,8 +2,10 @@ package com.example.demo.Datos;
 
 import com.example.demo.Area.Area;
 import com.example.demo.Documento.Documento;
+import com.example.demo.Solicitante.Solicitante;
 import com.example.demo.TipoTramite.TipoTramite;
 import com.example.demo.Tramite.*;
+import com.example.demo.Trazabilidad.Trazabilidad;
 import com.example.demo.Usuario.Usuario;
 
 import java.time.LocalDate;
@@ -103,7 +105,7 @@ public class DatosMemoria {
 
         // TRÁMITE
         Tramite tramite1 = new Tramite();
-        tramite1.setNroTramite("TR001");
+        tramite1.setNroTramite(1L);
         tramite1.setTipoTramite(tipo1);
         tramite1.setSolicitante(solicitante1);
         tramite1.setFechaRegistro(LocalDate.now());

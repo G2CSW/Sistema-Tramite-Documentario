@@ -1,16 +1,32 @@
-package com.example.demo.Tramite;
+package com.example.demo.Solicitante;
 
-public class Solicitante {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "solicitantes")
+public class SolicitanteEntity {
+
+    @Id
+    @Column(name = "id_solicitante")
     private String idSolicitante;
+
+    @Column(name = "nombre_completo")
     private String nombreCompleto;
+
+    @Column(name = "correo_electronico")
     private String correoElectronico;
+
+    @Column(name = "telefono_contacto")
     private String telefonoContacto;
 
-    public Solicitante() {
+    public SolicitanteEntity() {
     }
 
-    public Solicitante(String idSolicitante, String nombreCompleto,
-                       String correoElectronico, String telefonoContacto) {
+    public SolicitanteEntity(String idSolicitante, String nombreCompleto,
+                              String correoElectronico, String telefonoContacto) {
         this.idSolicitante = idSolicitante;
         this.nombreCompleto = nombreCompleto;
         this.correoElectronico = correoElectronico;
@@ -49,4 +65,3 @@ public class Solicitante {
         this.telefonoContacto = telefonoContacto;
     }
 }
-

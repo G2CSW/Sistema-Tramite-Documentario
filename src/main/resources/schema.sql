@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS solicitantes (
 
 -- Trámites
 CREATE TABLE IF NOT EXISTS tramites (
-    nro_tramite          VARCHAR(20)  PRIMARY KEY,
+    nro_tramite          BIGINT AUTO_INCREMENT PRIMARY KEY,
     id_tipo_tramite      VARCHAR(50)  NOT NULL,
     id_usuario           VARCHAR(20),
     id_solicitante       VARCHAR(20)  NOT NULL,
@@ -64,12 +64,18 @@ CREATE TABLE IF NOT EXISTS tramites (
 
 -- Trazabilidades
 CREATE TABLE IF NOT EXISTS trazabilidades (
-    id_trazabilidad  VARCHAR(20)  PRIMARY KEY,
-    nro_tramite      VARCHAR(20)  NOT NULL,
+    id_trazabilidad  BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nro_tramite      BIGINT NOT NULL,
     id_usuario       VARCHAR(20),
-    estado_cambio    VARCHAR(50)  NOT NULL,
+    estado_cambio    VARCHAR(50) NOT NULL,
     comentario       VARCHAR(500),
-    fecha_hora       TIMESTAMP    NOT NULL,
-    CONSTRAINT fk_traz_tramite  FOREIGN KEY (nro_tramite) REFERENCES tramites(nro_tramite),
-    CONSTRAINT fk_traz_usuario  FOREIGN KEY (id_usuario)  REFERENCES usuarios(id_usuario)
+    fecha_hora       TIMESTAMP NOT NULL,
+
+    CONSTRAINT fk_traz_tramite
+        FOREIGN KEY (nro_tramite)
+        REFERENCES tramites(nro_tramite),
+
+    CONSTRAINT fk_traz_usuario
+        FOREIGN KEY (id_usuario)
+        REFERENCES usuarios(id_usuario)
 );

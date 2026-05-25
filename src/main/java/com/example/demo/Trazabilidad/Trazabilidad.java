@@ -1,12 +1,14 @@
-package com.example.demo.Tramite;
+package com.example.demo.Trazabilidad;
 
+import com.example.demo.Tramite.EstadoTramite;
+import com.example.demo.Tramite.Tramite;
 import com.example.demo.Usuario.Usuario;
 
 import java.time.LocalDateTime;
 
 public class Trazabilidad {
 
-    private String idTrazabilidad;
+    private Long idTrazabilidad;
     private Tramite tramite;
     private Usuario usuario;
     private EstadoTramite estadoCambio;
@@ -16,8 +18,12 @@ public class Trazabilidad {
     public Trazabilidad() {
     }
 
-    public Trazabilidad(String idTrazabilidad, Tramite tramite, Usuario usuario,
-                        EstadoTramite estadoCambio, String comentario, LocalDateTime fechaHora) {
+    public Trazabilidad(Long idTrazabilidad,
+                        Tramite tramite,
+                        Usuario usuario,
+                        EstadoTramite estadoCambio,
+                        String comentario,
+                        LocalDateTime fechaHora) {
         this.idTrazabilidad = idTrazabilidad;
         this.tramite = tramite;
         this.usuario = usuario;
@@ -26,11 +32,11 @@ public class Trazabilidad {
         this.fechaHora = fechaHora;
     }
 
-    public String getIdTrazabilidad() {
+    public Long getIdTrazabilidad() {
         return idTrazabilidad;
     }
 
-    public void setIdTrazabilidad(String idTrazabilidad) {
+    public void setIdTrazabilidad(Long idTrazabilidad) {
         this.idTrazabilidad = idTrazabilidad;
     }
 
@@ -75,6 +81,8 @@ public class Trazabilidad {
     }
 
     public String getFechaHoraFormateada() {
-        return fechaHora.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+        return fechaHora.format(
+                java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+        );
     }
 }

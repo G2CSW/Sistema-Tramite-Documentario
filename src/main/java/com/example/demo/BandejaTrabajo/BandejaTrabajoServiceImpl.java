@@ -3,8 +3,7 @@ package com.example.demo.BandejaTrabajo;
 import com.example.demo.Datos.DatosMemoria;
 import com.example.demo.Tramite.EstadoTramite;
 import com.example.demo.Tramite.Tramite;
-import com.example.demo.Tramite.Trazabilidad;
-import com.example.demo.Tramite.TrazabilidadService;
+import com.example.demo.Trazabilidad.TrazabilidadService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

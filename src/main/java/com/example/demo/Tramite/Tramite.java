@@ -1,12 +1,13 @@
 package com.example.demo.Tramite;
 
+import com.example.demo.Solicitante.Solicitante;
 import com.example.demo.TipoTramite.TipoTramite;
 import com.example.demo.Usuario.Usuario;
 
 import java.time.LocalDate;
 
 public class Tramite {
-    private String nroTramite;
+    private Long nroTramite;
     private TipoTramite tipoTramite;
     private Usuario usuario;
     private Solicitante solicitante;
@@ -22,7 +23,7 @@ public class Tramite {
     public Tramite() {
     }
 
-    public Tramite(String nroTramite, TipoTramite tipoTramite, Usuario usuario, Solicitante solicitante,
+    public Tramite(Long nroTramite, TipoTramite tipoTramite, Usuario usuario, Solicitante solicitante,
                    LocalDate fechaRegistro, EstadoTramite estadoActual,
                    Boolean datosCompletos, Boolean datosConsistentes,
                    Boolean cumpleRequisitos, Boolean sustentoValido) {
@@ -38,11 +39,11 @@ public class Tramite {
         this.sustentoValido = sustentoValido;
     }
 
-    public String getNroTramite() {
+    public Long getNroTramite() {
         return nroTramite;
     }
 
-    public void setNroTramite(String nroTramite) {
+    public void setNroTramite(Long nroTramite) {
         this.nroTramite = nroTramite;
     }
 
