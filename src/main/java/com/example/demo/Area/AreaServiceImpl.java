@@ -1,14 +1,19 @@
 package com.example.demo.Area;
 
-import com.example.demo.Datos.DatosMemoria;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AreaServiceImpl implements AreaService {
 
-    private final List<Area> areas = DatosMemoria.AREAS;
+    private final List<Area> areas = new ArrayList<>();
+
+    public AreaServiceImpl() {
+        areas.add(new Area("A001", "Mesa de Partes"));
+        areas.add(new Area("A002", "Área Académica"));
+    }
 
     @Override
     public List<Area> listarAreas() {

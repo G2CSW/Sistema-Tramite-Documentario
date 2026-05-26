@@ -1,12 +1,10 @@
 package com.example.demo.Usuario;
 
-
 import java.util.List;
 
 public interface UsuarioService {
 
     List<Usuario> listarUsuarios();
-
 
     boolean registrarUsuario(Usuario usuario, String idArea);
 

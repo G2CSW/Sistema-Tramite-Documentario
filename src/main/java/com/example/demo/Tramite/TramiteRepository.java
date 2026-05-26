@@ -8,15 +8,13 @@ import java.util.List;
 
 @Repository
 public interface TramiteRepository extends JpaRepository<TramiteEntity, Long> {
-
     @Query("""
-            SELECT MAX(t.idTramite)
+            SELECT MAX(t.nroTramite)
             FROM TramiteEntity t
             """)
     Long obtenerUltimoId();
 
     List<TramiteEntity> findByEstadoActual(EstadoTramite estadoActual);
 
-    List<TramiteEntity> findByEstadoActualAndSolicitante_IdSolicitante(EstadoTramite estadoActual,
-                                                                       String idSolicitante);
+    List<TramiteEntity> findByEstadoActualAndSolicitante_IdSolicitante(EstadoTramite estadoActual, String idSolicitante);
 }

@@ -1,27 +1,23 @@
--- ============================================================
--- data.sql  –  Datos iniciales del Sistema de Trámite Documentario
--- Basado en DatosMemoria.java
--- ============================================================
-
 -- Documentos
-INSERT INTO documentos (id_documento, nombre_documento, activo) VALUES
-    (1, 'Solicitud simple',     TRUE),
-    (2, 'Copia DNI',            TRUE),
-    (3, 'Recibo de pago',       TRUE),
-    (4, 'Certificado de notas', TRUE),
-    (5, 'Sílabos',              TRUE);
+INSERT INTO documentos (nombre_documento, activo) VALUES
+    ('Solicitud simple',     TRUE),
+    ('Copia DNI',            TRUE),
+    ('Recibo de pago',       TRUE),
+    ('Certificado de notas', TRUE),
+    ('Sílabos',              TRUE);
 
 -- Tipos de Trámite
-INSERT INTO tipos_tramite (id_tipo_tramite, nombre, fecha_creacion, activo) VALUES
-    ('TT1', 'Certificado de Estudios',  CURRENT_DATE, TRUE),
-    ('TT2', 'Constancia de Matrícula',  CURRENT_DATE, TRUE),
-    ('TT3', 'Convalidación',            CURRENT_DATE, TRUE);
+INSERT INTO tipos_tramite (nombre, fecha_creacion, activo) VALUES
+    ('Certificado de Estudios',  CURRENT_DATE, TRUE),
+    ('Constancia de Matrícula',  CURRENT_DATE, TRUE),
+    ('Convalidación',            CURRENT_DATE, TRUE);
 
 -- Documentación mínima por tipo de trámite
-INSERT INTO tipo_tramite_documentos (id_tipo_tramite, id_documento) VALUES
-    ('TT1', 1), ('TT1', 2), ('TT1', 3),
-    ('TT2', 1), ('TT2', 2), ('TT2', 3),
-    ('TT3', 1), ('TT3', 2), ('TT3', 4), ('TT3', 5);
+-- Si los inserts anteriores quedaron en orden, los IDs generados serán 1, 2 y 3
+INSERT INTO tipo_tramite_documento (tipo_tramite_id, documento_id) VALUES
+    (1, 1), (1, 2), (1, 3),
+    (2, 1), (2, 2), (2, 3),
+    (3, 1), (3, 2), (3, 4), (3, 5);
 
 -- Usuarios
 INSERT INTO usuarios (id_usuario, nombre, correo_electronico, password, area, activo) VALUES
@@ -33,9 +29,12 @@ INSERT INTO solicitantes (id_solicitante, nombre_completo, correo_electronico, t
     ('74185296', 'Carlos Ramírez', 'carlos@gmail.com', '987654321');
 
 -- Trámites
-INSERT INTO tramites (id_tipo_tramite, id_usuario, id_solicitante, fecha_registro, estado_actual,
-                      datos_completos, datos_consistentes, cumple_requisitos, sustento_valido) VALUES
-    ('TT1', NULL, '74185296', CURRENT_DATE, 'REGISTRADO', NULL, NULL, NULL, NULL);
+INSERT INTO tramites (
+    id_tipo_tramite, id_usuario, id_solicitante, fecha_registro, estado_actual,
+    datos_completos, datos_consistentes, cumple_requisitos, sustento_valido
+) VALUES (
+    1, NULL, '74185296', CURRENT_DATE, 'REGISTRADO', NULL, NULL, NULL, NULL
+);
 
 -- Trazabilidades
 INSERT INTO trazabilidades (

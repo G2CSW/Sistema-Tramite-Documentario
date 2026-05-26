@@ -18,7 +18,6 @@ public class Usuario {
                    String password,
                    String area,
                    boolean activo) {
-
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
@@ -67,11 +66,11 @@ public class Usuario {
         this.area = area;
     }
 
-    public boolean getEstado() {
+    public boolean isActivo() {
         return activo;
     }
 
-    public void setEstado(boolean activo) {
+    public void setActivo(boolean activo) {
         this.activo = activo;
     }
 }

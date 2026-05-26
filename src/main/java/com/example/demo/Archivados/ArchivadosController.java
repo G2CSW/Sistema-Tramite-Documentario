@@ -1,8 +1,5 @@
 package com.example.demo.Archivados;
 
-import com.example.demo.Datos.DatosMemoria;
-import com.example.demo.Tramite.EstadoTramite;
-import com.example.demo.Tramite.Tramite;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

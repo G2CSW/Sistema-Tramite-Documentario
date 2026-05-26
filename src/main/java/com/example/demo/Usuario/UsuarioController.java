@@ -19,20 +19,14 @@ public class UsuarioController {
 
     @GetMapping("/listar")
     public String listar(Model model) {
-
-        model.addAttribute("usuarios",
-                usuarioService.listarUsuarios());
-
+        model.addAttribute("usuarios", usuarioService.listarUsuarios());
         return "usuario/usuarios";
     }
 
     @GetMapping("/registrar")
     public String irRegistrar(Model model) {
-
         model.addAttribute("usuario", new Usuario());
-        model.addAttribute("areas",
-                areaService.listarAreas());
-
+        model.addAttribute("areas", areaService.listarAreas());
         return "usuario/registrarUsuario";
     }
 
@@ -41,19 +35,12 @@ public class UsuarioController {
                             @RequestParam(required = false) String idArea,
                             Model model) {
 
-        boolean registrado =
-                usuarioService.registrarUsuario(usuario, idArea);
+        boolean registrado = usuarioService.registrarUsuario(usuario, idArea);
 
         if (!registrado) {
-
-            model.addAttribute("error",
-                    "Complete todos los campos");
-
+            model.addAttribute("error", "Complete todos los campos");
             model.addAttribute("usuario", usuario);
-
-            model.addAttribute("areas",
-                    areaService.listarAreas());
-
+            model.addAttribute("areas", areaService.listarAreas());
             return "usuario/registrarUsuario";
         }
 
@@ -61,22 +48,15 @@ public class UsuarioController {
     }
 
     @GetMapping("/editar/{idUsuario}")
-    public String editarForm(@PathVariable String idUsuario,
-                             Model model) {
-
-        Usuario usuario =
-                usuarioService.obtenerUsuario(idUsuario);
+    public String editarForm(@PathVariable String idUsuario, Model model) {
+        Usuario usuario = usuarioService.obtenerUsuario(idUsuario);
 
         if (usuario == null) {
-
             return "redirect:/usuario/listar";
         }
 
         model.addAttribute("usuario", usuario);
-
-        model.addAttribute("areas",
-                areaService.listarAreas());
-
+        model.addAttribute("areas", areaService.listarAreas());
         return "usuario/editarUsuario";
     }
 
@@ -86,21 +66,12 @@ public class UsuarioController {
                          @RequestParam(required = false) String idArea,
                          Model model) {
 
-        boolean editado =
-                usuarioService.editarUsuario(idUsuario,
-                        form,
-                        idArea);
+        boolean editado = usuarioService.editarUsuario(idUsuario, form, idArea);
 
         if (!editado) {
-
-            model.addAttribute("error",
-                    "Complete todos los campos");
-
+            model.addAttribute("error", "Complete todos los campos");
             model.addAttribute("usuario", form);
-
-            model.addAttribute("areas",
-                    areaService.listarAreas());
-
+            model.addAttribute("areas", areaService.listarAreas());
             return "usuario/editarUsuario";
         }
 
@@ -109,9 +80,7 @@ public class UsuarioController {
 
     @PostMapping("/toggle/{idUsuario}")
     public String toggle(@PathVariable String idUsuario) {
-
         usuarioService.toggleEstado(idUsuario);
-
         return "redirect:/usuario/listar";
     }
 }
