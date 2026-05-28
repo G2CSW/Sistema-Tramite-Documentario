@@ -114,6 +114,7 @@ public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
         TramiteEntity entidadGuardada = tramiteRepository.save(entidad);
         Tramite tramiteGuardado = tramiteAdapter.toModel(entidadGuardada);
 
+
         UsuarioEntity usuarioEntity = usuarioRepository
                 .findFirstByActivoTrueOrderByIdUsuarioAsc()
                 .orElse(null);

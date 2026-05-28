@@ -74,10 +74,12 @@ public class TramiteController {
     @GetMapping("/registrar")
     public String mostrarFormularioRegistrar(
             @ModelAttribute("tramite") Tramite tramite,
-            @RequestParam(required = false,
-                    name = "tipoTramite.idTipoTramite")
-            Long tipoId,
             Model model) {
+
+        Long tipoId = null;
+        if (tramite.getTipoTramite() != null) {
+            tipoId = tramite.getTipoTramite().getIdTipoTramite();
+        }
 
         cargarFormularioRegistro(model, tramite, tipoId);
 
@@ -256,17 +258,37 @@ public class TramiteController {
             Tramite form,
             Tramite tramiteOriginal) {
 
-        String idSolicitante = form.getSolicitante().getIdSolicitante();
-        TipoTramite tipoSeleccionado = tipoTramiteService.buscarTipo(
-                tramiteOriginal.getTipoTramite().getIdTipoTramite());
-        List<TipoTramite> tipoTramitesActivos = tipoTramiteService.listar().stream()
-                .filter(TipoTramite::isActivo).collect(Collectors.toList());
+        if (form.getSolicitante() == null) {
+            form.setSolicitante(tramiteOriginal.getSolicitante());
+        }
+
+        String idSolicitante =
+                form.getSolicitante().getIdSolicitante();
+
+        Long tipoId = null;
+
+        if (form.getTipoTramite() != null) {
+            tipoId = form.getTipoTramite().getIdTipoTramite();
+        } else if (tramiteOriginal.getTipoTramite() != null) {
+            tipoId = tramiteOriginal.getTipoTramite().getIdTipoTramite();
+        }
+
+        TipoTramite tipoSeleccionado =
+                tipoId != null
+                        ? tipoTramiteService.buscarTipo(tipoId)
+                        : null;
+
+        List<TipoTramite> tipoTramitesActivos =
+                tipoTramiteService.listar()
+                        .stream()
+                        .filter(TipoTramite::isActivo)
+                        .collect(Collectors.toList());
 
         model.addAttribute("tramite", form);
         model.addAttribute("solicitante", form.getSolicitante());
         model.addAttribute("tipoSeleccionado", tipoSeleccionado);
         model.addAttribute("tipoTramites", tipoTramitesActivos);
-        model.addAttribute("tipoTramiteId", tipoSeleccionado.getIdTipoTramite());
+        model.addAttribute("tipoTramiteId", tipoId);
         model.addAttribute("idSolicitanteBuscado", idSolicitante);
         model.addAttribute("existeSolicitante", true);
         model.addAttribute("numeroTramiteGenerado", tramiteOriginal.getNroTramite());

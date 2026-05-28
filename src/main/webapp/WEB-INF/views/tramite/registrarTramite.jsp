@@ -121,18 +121,9 @@
                   name="tipoTramite.idTipoTramite"
                 >
                   <c:forEach var="tipo" items="${tipoTramites}">
-                    <c:choose>
-                      <c:when test="${tipo.idTipoTramite eq tipoTramiteId}">
-                        <option value="${tipo.idTipoTramite}" selected="selected">
-                          ${tipo.nombre}
-                        </option>
-                      </c:when>
-                      <c:otherwise>
-                        <option value="${tipo.idTipoTramite}">
-                          ${tipo.nombre}
-                        </option>
-                      </c:otherwise>
-                    </c:choose>
+                    <option value="${tipo.idTipoTramite}" <c:if test="${tipo.idTipoTramite eq tipoTramiteId}">selected</c:if>>
+                        ${tipo.nombre}
+                    </option>
                   </c:forEach>
                 </select>
 
