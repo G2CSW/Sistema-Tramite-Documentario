@@ -32,9 +32,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public boolean registrarUsuario(Usuario usuario, String idArea) {
+
         Area area = areaService.buscarArea(idArea);
 
         if (!validarUsuario(usuario) || area == null) {
+            return false;
+        }
+
+        if (repository.existsById(usuario.getIdUsuario())) {
             return false;
         }
 
@@ -42,6 +47,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setActivo(true);
 
         repository.save(adapter.toEntity(usuario));
+
         return true;
     }
 
@@ -50,6 +56,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         return repository.findById(idUsuario)
                 .map(adapter::toModel)
                 .orElse(null);
+    }
+
+    @Override
+    public boolean existeUsuario(String idUsuario) {
+        return repository.existsById(idUsuario);
     }
 
     @Override

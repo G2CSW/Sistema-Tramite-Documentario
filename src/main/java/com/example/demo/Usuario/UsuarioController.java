@@ -35,12 +35,32 @@ public class UsuarioController {
                             @RequestParam(required = false) String idArea,
                             Model model) {
 
-        boolean registrado = usuarioService.registrarUsuario(usuario, idArea);
+        if (usuarioService.existeUsuario(usuario.getIdUsuario())) {
 
-        if (!registrado) {
-            model.addAttribute("error", "Complete todos los campos");
+            model.addAttribute(
+                    "error",
+                    "El DNI ya está registrado en el sistema"
+            );
+
             model.addAttribute("usuario", usuario);
             model.addAttribute("areas", areaService.listarAreas());
+
+            return "usuario/registrarUsuario";
+        }
+
+        boolean registrado =
+                usuarioService.registrarUsuario(usuario, idArea);
+
+        if (!registrado) {
+
+            model.addAttribute(
+                    "error",
+                    "Complete todos los campos"
+            );
+
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("areas", areaService.listarAreas());
+
             return "usuario/registrarUsuario";
         }
 

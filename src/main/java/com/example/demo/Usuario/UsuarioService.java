@@ -12,5 +12,7 @@ public interface UsuarioService {
 
     boolean editarUsuario(String idUsuario, Usuario form, String idArea);
 
+    boolean existeUsuario(String idUsuario);
+
     void toggleEstado(String idUsuario);
 }
