@@ -4,6 +4,9 @@ import com.example.demo.Solicitante.SolicitanteService;
 import com.example.demo.TipoTramite.TipoTramiteService;
 import com.example.demo.Trazabilidad.TrazabilidadService;
 import com.example.demo.Usuario.Usuario;
+import com.example.demo.Usuario.UsuarioAdapter;
+import com.example.demo.Usuario.UsuarioEntity;
+import com.example.demo.Usuario.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,16 +24,26 @@ public class TramiteServiceImpl implements TramiteService {
     private final SolicitanteService solicitanteService;
     private final TipoTramiteService tipoTramiteService;
 
+
+
+    private final UsuarioRepository usuarioRepository;
+    private final UsuarioAdapter usuarioAdapter;
+
     public TramiteServiceImpl(TramiteRepository tramiteRepository,
                               TramiteAdapter tramiteAdapter,
                               TrazabilidadService trazabilidadService,
                               SolicitanteService solicitanteService,
-                              TipoTramiteService tipoTramiteService) {
+                              TipoTramiteService tipoTramiteService,
+                              UsuarioRepository usuarioRepository,
+                              UsuarioAdapter usuarioAdapter) {
+
         this.tramiteRepository = tramiteRepository;
         this.tramiteAdapter = tramiteAdapter;
         this.trazabilidadService = trazabilidadService;
         this.solicitanteService = solicitanteService;
         this.tipoTramiteService = tipoTramiteService;
+        this.usuarioRepository = usuarioRepository;
+        this.usuarioAdapter = usuarioAdapter;
     }
 
     @Override
@@ -90,7 +103,14 @@ public class TramiteServiceImpl implements TramiteService {
         TramiteEntity entidadGuardada = tramiteRepository.save(entidad);
         Tramite tramiteGuardado = tramiteAdapter.toModel(entidadGuardada);
 
-        Usuario usuarioTrazabilidad = tramiteGuardado.getUsuario();
+
+        UsuarioEntity usuarioEntity = usuarioRepository.findById("12345678").orElse(null);
+        if (usuarioEntity == null) {
+            return tramiteGuardado;
+        }
+        Usuario usuarioTrazabilidad = usuarioAdapter.toModel(usuarioEntity);
+
+
 
         trazabilidadService.registrarTrazabilidad(
                 tramiteGuardado,
@@ -154,7 +174,16 @@ public class TramiteServiceImpl implements TramiteService {
         TramiteEntity entidad = tramiteAdapter.toEntity(tramiteActual);
         tramiteRepository.save(entidad);
 
-        Usuario usuarioTrazabilidad = tramiteActual.getUsuario();
+
+
+        Usuario usuarioTrazabilidad = null;
+        UsuarioEntity usuarioEntity = usuarioRepository.findById("12345678").orElse(null);
+
+        if (usuarioEntity != null) {
+            usuarioTrazabilidad = usuarioAdapter.toModel(usuarioEntity);
+        }
+
+
 
         trazabilidadService.registrarTrazabilidad(
                 tramiteActual,

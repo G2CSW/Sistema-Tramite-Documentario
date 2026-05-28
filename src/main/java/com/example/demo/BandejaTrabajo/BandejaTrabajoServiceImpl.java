@@ -115,15 +115,14 @@ public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
         Tramite tramiteGuardado = tramiteAdapter.toModel(entidadGuardada);
 
 
-        UsuarioEntity usuarioEntity = usuarioRepository
-                .findFirstByActivoTrueOrderByIdUsuarioAsc()
-                .orElse(null);
 
+        UsuarioEntity usuarioEntity = usuarioRepository.findById("87654321").orElse(null);
         if (usuarioEntity == null) {
-            return "No se encontró un usuario evaluador activo";
+            return "No se encontró el usuario evaluador";
         }
-
         Usuario usuarioEvaluador = usuarioAdapter.toModel(usuarioEntity);
+
+
 
         trazabilidadService.registrarTrazabilidad(
                 tramiteGuardado,
