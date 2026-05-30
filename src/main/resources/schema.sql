@@ -44,7 +44,6 @@ CREATE TABLE IF NOT EXISTS solicitantes (
 CREATE TABLE IF NOT EXISTS tramites (
     nro_tramite          BIGINT AUTO_INCREMENT PRIMARY KEY,
     id_tipo_tramite      BIGINT       NOT NULL,
-    id_usuario           VARCHAR(20),
     id_solicitante       VARCHAR(20)   NOT NULL,
     fecha_registro       DATE         NOT NULL,
     estado_actual        VARCHAR(50)   NOT NULL,
@@ -53,7 +52,6 @@ CREATE TABLE IF NOT EXISTS tramites (
     cumple_requisitos    BOOLEAN,
     sustento_valido      BOOLEAN,
     CONSTRAINT fk_tramite_tipo        FOREIGN KEY (id_tipo_tramite) REFERENCES tipos_tramite(id_tipo_tramite),
-    CONSTRAINT fk_tramite_usuario     FOREIGN KEY (id_usuario)      REFERENCES usuarios(id_usuario),
     CONSTRAINT fk_tramite_solicitante FOREIGN KEY (id_solicitante)  REFERENCES solicitantes(id_solicitante)
 );
 

@@ -30,10 +30,10 @@ INSERT INTO solicitantes (id_solicitante, nombre_completo, correo_electronico, t
 
 -- Trámites
 INSERT INTO tramites (
-    id_tipo_tramite, id_usuario, id_solicitante, fecha_registro, estado_actual,
+    id_tipo_tramite, id_solicitante, fecha_registro, estado_actual,
     datos_completos, datos_consistentes, cumple_requisitos, sustento_valido
 ) VALUES (
-    1, NULL, '74185296', CURRENT_DATE, 'REGISTRADO', NULL, NULL, NULL, NULL
+    1, '74185296', CURRENT_DATE, 'REGISTRADO', NULL, NULL, NULL, NULL
 );
 
 -- Trazabilidades

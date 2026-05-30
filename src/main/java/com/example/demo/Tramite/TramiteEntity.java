@@ -21,10 +21,6 @@ public class TramiteEntity {
     private TipoTramiteEntity tipoTramite;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private UsuarioEntity usuario;
-
-    @ManyToOne
     @JoinColumn(name = "id_solicitante")
     private SolicitanteEntity solicitante;
 
@@ -50,13 +46,12 @@ public class TramiteEntity {
     public TramiteEntity() {
     }
 
-    public TramiteEntity(Long nroTramite, TipoTramiteEntity tipoTramite, UsuarioEntity usuario,
+    public TramiteEntity(Long nroTramite, TipoTramiteEntity tipoTramite,
                          SolicitanteEntity solicitante, LocalDate fechaRegistro,
                          EstadoTramite estadoActual, Boolean datosCompletos,
                          Boolean datosConsistentes, Boolean cumpleRequisitos, Boolean sustentoValido) {
         this.nroTramite = nroTramite;
         this.tipoTramite = tipoTramite;
-        this.usuario = usuario;
         this.solicitante = solicitante;
         this.fechaRegistro = fechaRegistro;
         this.estadoActual = estadoActual;
@@ -80,14 +75,6 @@ public class TramiteEntity {
 
     public void setTipoTramite(TipoTramiteEntity tipoTramite) {
         this.tipoTramite = tipoTramite;
-    }
-
-    public UsuarioEntity getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(UsuarioEntity usuario) {
-        this.usuario = usuario;
     }
 
     public SolicitanteEntity getSolicitante() {

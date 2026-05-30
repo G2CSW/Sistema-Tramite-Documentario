@@ -35,32 +35,28 @@ public class UsuarioController {
                             @RequestParam(required = false) String idArea,
                             Model model) {
 
-        if (usuarioService.existeUsuario(usuario.getIdUsuario())) {
+        String idUsuario = usuario.getIdUsuario();
 
-            model.addAttribute(
-                    "error",
-                    "El DNI ya está registrado en el sistema"
-            );
-
+        if (idUsuario == null || idUsuario.isBlank() || !idUsuario.matches("\\d{8,9}")) {
+            model.addAttribute("error", "El DNI debe contener solo números y tener entre 8 y 9 dígitos");
             model.addAttribute("usuario", usuario);
             model.addAttribute("areas", areaService.listarAreas());
-
             return "usuario/registrarUsuario";
         }
 
-        boolean registrado =
-                usuarioService.registrarUsuario(usuario, idArea);
-
-        if (!registrado) {
-
-            model.addAttribute(
-                    "error",
-                    "Complete todos los campos"
-            );
-
+        if (usuarioService.existeUsuario(idUsuario)) {
+            model.addAttribute("error", "El DNI ya está registrado en el sistema");
             model.addAttribute("usuario", usuario);
             model.addAttribute("areas", areaService.listarAreas());
+            return "usuario/registrarUsuario";
+        }
 
+        boolean registrado = usuarioService.registrarUsuario(usuario, idArea);
+
+        if (!registrado) {
+            model.addAttribute("error", "Complete todos los campos");
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("areas", areaService.listarAreas());
             return "usuario/registrarUsuario";
         }
 
@@ -85,6 +81,15 @@ public class UsuarioController {
                          @ModelAttribute Usuario form,
                          @RequestParam(required = false) String idArea,
                          Model model) {
+
+        String nuevoId = form.getIdUsuario();
+
+        if (nuevoId == null || nuevoId.isBlank() || !nuevoId.matches("\\d{8,9}")) {
+            model.addAttribute("error", "El DNI debe contener solo números y tener entre 8 y 9 dígitos");
+            model.addAttribute("usuario", form);
+            model.addAttribute("areas", areaService.listarAreas());
+            return "usuario/editarUsuario";
+        }
 
         boolean editado = usuarioService.editarUsuario(idUsuario, form, idArea);
 
