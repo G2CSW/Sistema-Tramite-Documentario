@@ -9,7 +9,6 @@ import java.time.LocalDate;
 public class Tramite {
     private Long nroTramite;
     private TipoTramite tipoTramite;
-    private Usuario usuario;
     private Solicitante solicitante;
     private LocalDate fechaRegistro;
     private EstadoTramite estadoActual;
@@ -23,13 +22,12 @@ public class Tramite {
     public Tramite() {
     }
 
-    public Tramite(Long nroTramite, TipoTramite tipoTramite, Usuario usuario, Solicitante solicitante,
+    public Tramite(Long nroTramite, TipoTramite tipoTramite, Solicitante solicitante,
                    LocalDate fechaRegistro, EstadoTramite estadoActual,
                    Boolean datosCompletos, Boolean datosConsistentes,
                    Boolean cumpleRequisitos, Boolean sustentoValido) {
         this.nroTramite = nroTramite;
         this.tipoTramite = tipoTramite;
-        this.usuario = usuario;
         this.solicitante = solicitante;
         this.fechaRegistro = fechaRegistro;
         this.estadoActual = estadoActual;
@@ -53,14 +51,6 @@ public class Tramite {
 
     public void setTipoTramite(TipoTramite tipoTramite) {
         this.tipoTramite = tipoTramite;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 
     public Solicitante getSolicitante() {

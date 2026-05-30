@@ -9,14 +9,11 @@ import org.springframework.stereotype.Component;
 public class TramiteAdapter {
 
     private final TipoTramiteAdapter tipoTramiteAdapter;
-    private final UsuarioAdapter usuarioAdapter;
     private final SolicitanteAdapter solicitanteAdapter;
 
     public TramiteAdapter(TipoTramiteAdapter tipoTramiteAdapter,
-                          UsuarioAdapter usuarioAdapter,
                           SolicitanteAdapter solicitanteAdapter) {
         this.tipoTramiteAdapter = tipoTramiteAdapter;
-        this.usuarioAdapter = usuarioAdapter;
         this.solicitanteAdapter = solicitanteAdapter;
     }
 
@@ -25,7 +22,6 @@ public class TramiteAdapter {
         TramiteEntity entity = new TramiteEntity();
         entity.setNroTramite(tramite.getNroTramite());
         entity.setTipoTramite(tipoTramiteAdapter.toEntity(tramite.getTipoTramite()));
-        entity.setUsuario(usuarioAdapter.toEntity(tramite.getUsuario()));
         entity.setSolicitante(solicitanteAdapter.toEntity(tramite.getSolicitante()));
         entity.setFechaRegistro(tramite.getFechaRegistro());
         entity.setEstadoActual(tramite.getEstadoActual());
@@ -41,7 +37,6 @@ public class TramiteAdapter {
         Tramite tramite = new Tramite();
         tramite.setNroTramite(entity.getNroTramite());
         tramite.setTipoTramite(tipoTramiteAdapter.toModel(entity.getTipoTramite()));
-        tramite.setUsuario(usuarioAdapter.toModel(entity.getUsuario()));
         tramite.setSolicitante(solicitanteAdapter.toModel(entity.getSolicitante()));
         tramite.setFechaRegistro(entity.getFechaRegistro());
         tramite.setEstadoActual(entity.getEstadoActual());
