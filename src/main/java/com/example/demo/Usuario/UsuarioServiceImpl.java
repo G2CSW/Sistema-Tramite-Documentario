@@ -92,9 +92,20 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     private boolean validarUsuario(Usuario u) {
-        return !(u.getIdUsuario() == null || u.getIdUsuario().isBlank() ||
-                u.getNombre() == null || u.getNombre().isBlank() ||
-                u.getCorreoElectronico() == null || u.getCorreoElectronico().isBlank() ||
-                u.getPassword() == null || u.getPassword().isBlank());
+        if (u == null) {
+            return false;
+        }
+
+        String idUsuario = u.getIdUsuario();
+
+        boolean idValido = idUsuario != null
+                && !idUsuario.isBlank()
+                && idUsuario.matches("\\d{8,9}");
+
+        boolean nombreValido = u.getNombre() != null && !u.getNombre().isBlank();
+        boolean correoValido = u.getCorreoElectronico() != null && !u.getCorreoElectronico().isBlank();
+        boolean passwordValida = u.getPassword() != null && !u.getPassword().isBlank();
+
+        return idValido && nombreValido && correoValido && passwordValida;
     }
 }
