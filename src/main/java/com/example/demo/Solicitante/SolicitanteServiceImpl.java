@@ -17,17 +17,38 @@ public class SolicitanteServiceImpl implements SolicitanteService {
     }
 
     @Override
-    public boolean validarSolicitante(Solicitante s) {
+    public String validarSolicitante(Solicitante s) {
         if (s == null) {
-            return false;
+            return "El solicitante no puede ser nulo";
         }
 
-        boolean idValido = s.getIdSolicitante() != null && !s.getIdSolicitante().isBlank();
-        boolean nombreValido = s.getNombreCompleto() != null && !s.getNombreCompleto().isBlank();
-        boolean correoValido = s.getCorreoElectronico() != null && !s.getCorreoElectronico().isBlank();
-        boolean telefonoValido = s.getTelefonoContacto() != null && !s.getTelefonoContacto().isBlank();
+        String dni = s.getIdSolicitante();
 
-        return idValido && nombreValido && correoValido && telefonoValido;
+        if (dni == null || dni.isBlank()) {
+            return "El DNI es obligatorio";
+        }
+
+        if (!dni.matches("\\d+")) {
+            return "El DNI solo debe contener números";
+        }
+
+        if (dni.length() < 8 || dni.length() > 9) {
+            return "El DNI debe tener entre 8 y 9 dígitos";
+        }
+
+        if (s.getNombreCompleto() == null || s.getNombreCompleto().isBlank()) {
+            return "El nombre completo es obligatorio";
+        }
+
+        if (s.getCorreoElectronico() == null || s.getCorreoElectronico().isBlank()) {
+            return "El correo electrónico es obligatorio";
+        }
+
+        if (s.getTelefonoContacto() == null || s.getTelefonoContacto().isBlank()) {
+            return "El teléfono de contacto es obligatorio";
+        }
+
+        return null;
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.example.demo.Solicitante;
 
 public interface SolicitanteService {
 
-    boolean validarSolicitante(Solicitante solicitante);
+    String validarSolicitante(Solicitante solicitante);
 
     Solicitante guardarOActualizarSolicitante(Solicitante solicitante);
 

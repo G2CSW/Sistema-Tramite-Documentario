@@ -87,7 +87,7 @@
               <input
                 id="correoElectronico"
                 class="input"
-                type="text"
+                type="email"
                 name="solicitante.correoElectronico"
                 value="${solicitante.correoElectronico}"
                 placeholder="correo@gmail.com"

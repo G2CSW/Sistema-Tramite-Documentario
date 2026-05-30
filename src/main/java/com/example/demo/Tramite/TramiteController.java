@@ -24,7 +24,7 @@ public class TramiteController {
     private final SolicitanteService solicitanteService;
     private final TipoTramiteService tipoTramiteService;
 
-    public TramiteController(TramiteService tramiteService, 
+    public TramiteController(TramiteService tramiteService,
                              TrazabilidadService trazabilidadService,
                              SolicitanteService solicitanteService,
                              TipoTramiteService tipoTramiteService) {
@@ -36,8 +36,7 @@ public class TramiteController {
 
     @GetMapping("/listar")
     public String listarTramites(
-            @RequestParam(required = false)
-            String idSolicitante,
+            @RequestParam(required = false) String idSolicitante,
             Model model) {
 
         model.addAttribute(
@@ -92,28 +91,24 @@ public class TramiteController {
             RedirectAttributes ra,
             Model model) {
 
-        if (!solicitanteService.validarSolicitante(
-                tramite.getSolicitante())) {
+        String error = solicitanteService.validarSolicitante(tramite.getSolicitante());
 
-            model.addAttribute(
-                    "error",
-                    "Complete todos los datos del solicitante"
-            );
+        if (error != null) {
+            model.addAttribute("error", error);
 
-            Long tipoId = tramite.getTipoTramite() != null ? tramite.getTipoTramite().getIdTipoTramite() : null;
+            Long tipoId = tramite.getTipoTramite() != null
+                    ? tramite.getTipoTramite().getIdTipoTramite()
+                    : null;
+
             cargarFormularioRegistro(model, tramite, tipoId);
-
             return "tramite/registrarTramite";
         }
 
-        Tramite registrado =
-                tramiteService.registrar(tramite);
+        Tramite registrado = tramiteService.registrar(tramite);
 
         ra.addFlashAttribute(
                 "mensaje",
-                "Trámite " +
-                        registrado.getNroTramite() +
-                        " registrado correctamente"
+                "Trámite " + registrado.getNroTramite() + " registrado correctamente"
         );
 
         return "redirect:/tramite/listar";
@@ -129,10 +124,7 @@ public class TramiteController {
         Tramite tramite = tramiteService.buscarPorId(id);
 
         if (tramite == null) {
-            ra.addFlashAttribute(
-                    "mensaje",
-                    "Trámite no encontrado"
-            );
+            ra.addFlashAttribute("mensaje", "Trámite no encontrado");
             return "redirect:/tramite/listar";
         }
 
@@ -152,13 +144,10 @@ public class TramiteController {
             RedirectAttributes ra,
             Model model) {
 
-        if (!solicitanteService.validarSolicitante(
-                form.getSolicitante())) {
+        String error = solicitanteService.validarSolicitante(form.getSolicitante());
 
-            model.addAttribute(
-                    "error",
-                    "Complete todos los datos del solicitante"
-            );
+        if (error != null) {
+            model.addAttribute("error", error);
 
             Tramite tramite = tramiteService.buscarPorId(id);
             if (tramite != null) {
@@ -171,59 +160,33 @@ public class TramiteController {
             return "tramite/editarTramite";
         }
 
-        boolean actualizado =
-                tramiteService.editar(id, form);
+        boolean actualizado = tramiteService.editar(id, form);
 
         if (!actualizado) {
-
-            ra.addFlashAttribute(
-                    "mensaje",
-                    "Trámite no encontrado"
-            );
-
+            ra.addFlashAttribute("mensaje", "Trámite no encontrado");
             return "redirect:/tramite/listar";
         }
 
-        ra.addFlashAttribute(
-                "mensaje",
-                "Trámite actualizado correctamente"
-        );
-
+        ra.addFlashAttribute("mensaje", "Trámite actualizado correctamente");
         return "redirect:/tramite/listar";
     }
 
     @PostMapping("/cambiar-estado/{id}")
     public String cambiarEstadoTramite(
             @PathVariable Long id,
-            @RequestParam("estado")
-            EstadoTramite estado,
+            @RequestParam("estado") EstadoTramite estado,
             RedirectAttributes ra) {
 
-        boolean actualizado =
-                tramiteService.cambiarEstado(
-                        id,
-                        estado
-                );
+        boolean actualizado = tramiteService.cambiarEstado(id, estado);
 
         if (actualizado) {
-
-            ra.addFlashAttribute(
-                    "mensaje",
-                    "Estado del trámite actualizado"
-            );
-
+            ra.addFlashAttribute("mensaje", "Estado del trámite actualizado");
         } else {
-
-            ra.addFlashAttribute(
-                    "mensaje",
-                    "Trámite no encontrado"
-            );
+            ra.addFlashAttribute("mensaje", "Trámite no encontrado");
         }
 
         return "redirect:/tramite/listar";
     }
-
-
 
     private void cargarFormularioRegistro(
             Model model,
@@ -238,10 +201,11 @@ public class TramiteController {
         Solicitante solicitanteBuscado = solicitanteService.buscarSolicitante(idSolicitante);
         Solicitante solicitante = solicitanteBuscado != null ? solicitanteBuscado : tramite.getSolicitante();
         boolean existe = solicitanteService.existeSolicitante(idSolicitante);
-        
+
         TipoTramite tipoSeleccionado = tipoId != null ? tipoTramiteService.buscarTipo(tipoId) : null;
         List<TipoTramite> tipoTramitesActivos = tipoTramiteService.listar().stream()
-                .filter(TipoTramite::isActivo).collect(Collectors.toList());
+                .filter(TipoTramite::isActivo)
+                .collect(Collectors.toList());
 
         model.addAttribute("tramite", tramite);
         model.addAttribute("solicitante", solicitante);
@@ -262,8 +226,7 @@ public class TramiteController {
             form.setSolicitante(tramiteOriginal.getSolicitante());
         }
 
-        String idSolicitante =
-                form.getSolicitante().getIdSolicitante();
+        String idSolicitante = form.getSolicitante().getIdSolicitante();
 
         Long tipoId = null;
 
