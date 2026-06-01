@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.example.demo.Usuario.UsuarioEntity;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/bandejaTrabajo")
@@ -49,7 +51,8 @@ public class BandejaTrabajoController {
                                      @RequestParam String accion,
                                      @RequestParam(required = false) String comentario,
                                      Model model,
-                                     RedirectAttributes ra) {
+                                     RedirectAttributes ra,
+                                     HttpSession session) {
 
         Tramite tramite = service.buscarPorId(id);
 
@@ -58,6 +61,9 @@ public class BandejaTrabajoController {
             return "redirect:/bandejaTrabajo/listar";
         }
 
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        String idUsuario = usuario != null ? usuario.getIdUsuario() : null;
+
         String error = service.procesarEvaluacion(
                 id,
                 datosCompletos,
@@ -65,7 +71,8 @@ public class BandejaTrabajoController {
                 cumpleRequisitos,
                 sustentoValido,
                 accion,
-                comentario
+                comentario,
+                idUsuario
         );
 
         if (error != null) {

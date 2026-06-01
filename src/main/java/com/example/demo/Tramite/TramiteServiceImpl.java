@@ -82,7 +82,7 @@ public class TramiteServiceImpl implements TramiteService {
     }
 
     @Override
-    public Tramite registrar(Tramite tramite) {
+    public Tramite registrar(Tramite tramite, String idUsuarioLogueado) {
         Long numeroTramite = obtenerSiguienteId();
         LocalDate fechaRegistro = LocalDate.now();
         EstadoTramite estadoInicial = EstadoTramite.REGISTRADO;
@@ -104,7 +104,7 @@ public class TramiteServiceImpl implements TramiteService {
         Tramite tramiteGuardado = tramiteAdapter.toModel(entidadGuardada);
 
 
-        UsuarioEntity usuarioEntity = usuarioRepository.findById("12345678").orElse(null);
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuarioLogueado).orElse(null);
         if (usuarioEntity == null) {
             return tramiteGuardado;
         }
@@ -146,7 +146,7 @@ public class TramiteServiceImpl implements TramiteService {
     }
 
     @Override
-    public boolean cambiarEstado(Long id, EstadoTramite estado) {
+    public boolean cambiarEstado(Long id, EstadoTramite estado, String idUsuarioLogueado) {
         Tramite tramiteActual = buscarPorId(id);
 
         if (tramiteActual == null) {
@@ -177,7 +177,10 @@ public class TramiteServiceImpl implements TramiteService {
 
 
         Usuario usuarioTrazabilidad = null;
-        UsuarioEntity usuarioEntity = usuarioRepository.findById("12345678").orElse(null);
+        UsuarioEntity usuarioEntity = null;
+        if (idUsuarioLogueado != null) {
+            usuarioEntity = usuarioRepository.findById(idUsuarioLogueado).orElse(null);
+        }
 
         if (usuarioEntity != null) {
             usuarioTrazabilidad = usuarioAdapter.toModel(usuarioEntity);

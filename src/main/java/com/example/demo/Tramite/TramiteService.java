@@ -10,11 +10,11 @@ public interface TramiteService {
 
     Tramite buscarPorId(Long id);
 
-    Tramite registrar(Tramite tramite);
+    Tramite registrar(Tramite tramite, String idUsuarioLogueado);
 
     boolean editar(Long id, Tramite form);
 
-    boolean cambiarEstado(Long id, EstadoTramite estado);
+    boolean cambiarEstado(Long id, EstadoTramite estado, String idUsuarioLogueado);
 
     Long obtenerSiguienteId();
 }

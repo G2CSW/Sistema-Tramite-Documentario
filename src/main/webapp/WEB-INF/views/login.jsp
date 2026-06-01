@@ -19,7 +19,7 @@
 
       <form class="login-card" action="/login" method="post">
         
-        <c:if test="${not empty param.error}">
+        <c:if test="${error != null}">
           <p style="color:red; text-align:center;">Credenciales incorrectas o usuario no encontrado.</p>
         </c:if>
 

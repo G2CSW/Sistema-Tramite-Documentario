@@ -49,6 +49,7 @@
       <section class="section-acciones-rapidas">
         <h3>ACCIONES RÁPIDAS</h3>
         <div class="acciones-rapidas">
+          <c:if test="${sessionScope.usuario.area == 'Mesa de Partes'}">
           <a href="/tramite/registrar">
           <button class="accion-btn">
             <!-- file-plus -->
@@ -71,7 +72,9 @@
             Seguimiento
           </button>
         </a>
+        </c:if>
 
+        <c:if test="${sessionScope.usuario.area == 'Área Académica'}">
         <a href="/bandejaTrabajo/listar">
           <button class="accion-btn">
             <!-- inbox -->
@@ -99,7 +102,9 @@
             Bandeja de trabajo
           </button>
         </a>
+        </c:if>
 
+        <c:if test="${sessionScope.usuario.area == 'Mesa de Partes'}">
         <a href="/archivados/listar">
           <button class="accion-btn">
             <!-- archive -->
@@ -125,6 +130,7 @@
             Archivados
           </button>
         </a>
+        </c:if>
         </div>
       </section>
     </main>

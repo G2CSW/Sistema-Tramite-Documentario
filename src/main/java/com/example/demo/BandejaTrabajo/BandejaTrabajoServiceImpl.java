@@ -70,7 +70,8 @@ public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
                                      boolean cumpleRequisitos,
                                      boolean sustentoValido,
                                      String accion,
-                                     String comentario) {
+                                     String comentario,
+                                     String idUsuarioLogueado) {
 
         TramiteEntity entidad = tramiteRepository.findById(id).orElse(null);
 
@@ -116,7 +117,10 @@ public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
 
 
 
-        UsuarioEntity usuarioEntity = usuarioRepository.findById("87654321").orElse(null);
+        UsuarioEntity usuarioEntity = null;
+        if (idUsuarioLogueado != null) {
+            usuarioEntity = usuarioRepository.findById(idUsuarioLogueado).orElse(null);
+        }
         if (usuarioEntity == null) {
             return "No se encontró el usuario evaluador";
         }

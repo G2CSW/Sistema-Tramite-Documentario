@@ -16,7 +16,8 @@ public interface BandejaTrabajoService {
                               boolean cumpleRequisitos,
                               boolean sustentoValido,
                               String accion,
-                              String comentario);
+                              String comentario,
+                              String idUsuarioLogueado);
 
     String obtenerMensajeErrorEvaluacion(String accion,
                                          boolean datosCompletos,

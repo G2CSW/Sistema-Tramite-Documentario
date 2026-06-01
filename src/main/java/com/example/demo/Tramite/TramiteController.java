@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.example.demo.Usuario.UsuarioEntity;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,7 +91,8 @@ public class TramiteController {
     public String registrarTramite(
             @ModelAttribute Tramite tramite,
             RedirectAttributes ra,
-            Model model) {
+            Model model,
+            HttpSession session) {
 
         String error = solicitanteService.validarSolicitante(tramite.getSolicitante());
 
@@ -104,7 +107,9 @@ public class TramiteController {
             return "tramite/registrarTramite";
         }
 
-        Tramite registrado = tramiteService.registrar(tramite);
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        String idUsuario = usuario != null ? usuario.getIdUsuario() : null;
+        Tramite registrado = tramiteService.registrar(tramite, idUsuario);
 
         ra.addFlashAttribute(
                 "mensaje",
@@ -175,9 +180,13 @@ public class TramiteController {
     public String cambiarEstadoTramite(
             @PathVariable Long id,
             @RequestParam("estado") EstadoTramite estado,
-            RedirectAttributes ra) {
+            RedirectAttributes ra,
+            HttpSession session) {
 
-        boolean actualizado = tramiteService.cambiarEstado(id, estado);
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        String idUsuario = usuario != null ? usuario.getIdUsuario() : null;
+
+        boolean actualizado = tramiteService.cambiarEstado(id, estado, idUsuario);
 
         if (actualizado) {
             ra.addFlashAttribute("mensaje", "Estado del trámite actualizado");
