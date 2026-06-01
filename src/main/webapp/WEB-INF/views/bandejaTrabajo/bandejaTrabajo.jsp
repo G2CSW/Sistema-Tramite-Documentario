@@ -4,7 +4,7 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Bandeja de Trabajo - Área Académica</title>
+    <title>Bandeja de Trabajo - Área de Evaluación</title>
     <link rel="stylesheet" href="../../../css/global.css" />
     <link rel="stylesheet" href="../../../css/bandejaTrabajo.css" />
   </head>
@@ -12,7 +12,7 @@
   <%@ include file="../barraLateral.jsp" %>
     <main>
       <header class="header-bandeja">
-        <h1>Bandeja de Trabajo - Área Académica</h1>
+        <h1>Bandeja de Trabajo - Área de Evaluación</h1>
         <p class="subtitle">
           Gestione los trámites pendientes de recepción y evaluación.
         </p>

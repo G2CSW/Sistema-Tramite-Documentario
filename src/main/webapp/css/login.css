@@ -54,7 +54,7 @@ main {
 
 .form-group .input-contenedor {
     width: 100%;
-} 
+}
 
 .label-row {
     display: flex;
@@ -77,17 +77,6 @@ label {
     margin-bottom: 0;
 }
 
-.forgot-link {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--color-primary);
-    text-decoration: none;
-    text-transform: uppercase;
-}
-
-.forgot-link:hover {
-    text-decoration: underline;
-}
 
 /* --- Botón --- */
 .btn-submit {

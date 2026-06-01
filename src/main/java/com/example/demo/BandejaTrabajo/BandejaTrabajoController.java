@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.example.demo.Usuario.UsuarioEntity;
+import com.example.demo.Usuario.Usuario;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -61,7 +61,7 @@ public class BandejaTrabajoController {
             return "redirect:/bandejaTrabajo/listar";
         }
 
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         String idUsuario = usuario != null ? usuario.getIdUsuario() : null;
 
         String error = service.procesarEvaluacion(

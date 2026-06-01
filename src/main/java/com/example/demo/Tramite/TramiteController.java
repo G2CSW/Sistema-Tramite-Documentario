@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.example.demo.Usuario.UsuarioEntity;
+import com.example.demo.Usuario.Usuario;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
@@ -107,7 +107,7 @@ public class TramiteController {
             return "tramite/registrarTramite";
         }
 
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         String idUsuario = usuario != null ? usuario.getIdUsuario() : null;
         Tramite registrado = tramiteService.registrar(tramite, idUsuario);
 
@@ -183,7 +183,7 @@ public class TramiteController {
             RedirectAttributes ra,
             HttpSession session) {
 
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         String idUsuario = usuario != null ? usuario.getIdUsuario() : null;
 
         boolean actualizado = tramiteService.cambiarEstado(id, estado, idUsuario);

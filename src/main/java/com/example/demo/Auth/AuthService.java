@@ -1,7 +1,7 @@
 package com.example.demo.Auth;
 
-import com.example.demo.Usuario.UsuarioEntity;
+import com.example.demo.Usuario.Usuario;
 
 public interface AuthService {
-    UsuarioEntity login(String username, String password);
+    Usuario login(String dni, String password);
 }

@@ -1,5 +1,6 @@
 package com.example.demo.Auth;
 
+import com.example.demo.Usuario.Usuario;
 import com.example.demo.Usuario.UsuarioEntity;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -26,12 +27,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String username,
+    public String login(@RequestParam String dni,
                         @RequestParam String password,
                         HttpSession session,
                         Model model) {
 
-        UsuarioEntity usuario = authService.login(username, password);
+        Usuario usuario = authService.login(dni, password);
 
         if (usuario != null) {
             session.setAttribute("usuario", usuario);

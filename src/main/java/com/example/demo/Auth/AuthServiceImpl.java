@@ -1,5 +1,7 @@
 package com.example.demo.Auth;
 
+import com.example.demo.Usuario.Usuario;
+import com.example.demo.Usuario.UsuarioAdapter;
 import com.example.demo.Usuario.UsuarioEntity;
 import com.example.demo.Usuario.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -8,17 +10,20 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final UsuarioRepository usuarioRepository;
+    private final UsuarioAdapter usuarioAdapter;
 
-    public AuthServiceImpl(UsuarioRepository usuarioRepository) {
+    public AuthServiceImpl(UsuarioRepository usuarioRepository,
+                           UsuarioAdapter usuarioAdapter) {
         this.usuarioRepository = usuarioRepository;
+        this.usuarioAdapter = usuarioAdapter;
     }
 
     @Override
-    public UsuarioEntity login(String username, String password) {
-        UsuarioEntity usuario = usuarioRepository.findById(username).orElse(null);
+    public Usuario login(String dni, String password) {
+        UsuarioEntity entity = usuarioRepository.findById(dni).orElse(null);
 
-        if (usuario != null && usuario.getPassword().equals(password)) {
-            return usuario;
+        if (entity != null && entity.isActivo() && entity.getPassword().equals(password)) {
+            return usuarioAdapter.toModel(entity);
         }
 
         return null;

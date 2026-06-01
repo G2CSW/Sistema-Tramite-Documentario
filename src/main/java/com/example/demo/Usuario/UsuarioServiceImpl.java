@@ -26,6 +26,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public List<Usuario> listarUsuarios() {
         return repository.findAll()
                 .stream()
+                .filter(e -> !"admin".equals(e.getIdUsuario()))
                 .map(adapter::toModel)
                 .collect(Collectors.toList());
     }

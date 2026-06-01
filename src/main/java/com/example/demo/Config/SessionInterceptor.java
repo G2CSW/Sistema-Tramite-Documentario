@@ -1,6 +1,6 @@
 package com.example.demo.Config;
 
-import com.example.demo.Usuario.UsuarioEntity;
+import com.example.demo.Usuario.Usuario;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -30,7 +30,7 @@ public class SessionInterceptor implements HandlerInterceptor {
         }
 
         HttpSession session = request.getSession(false);
-        UsuarioEntity usuario = (session != null) ? (UsuarioEntity) session.getAttribute("usuario") : null;
+        Usuario usuario = (session != null) ? (Usuario) session.getAttribute("usuario") : null;
 
         if (usuario == null) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -45,7 +45,7 @@ public class SessionInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        if (path.startsWith("/bandejaTrabajo") && !"Área Académica".equals(area)) {
+        if (path.startsWith("/bandejaTrabajo") && !"Área de Evaluación".equals(area)) {
             response.sendRedirect(request.getContextPath() + "/");
             return false;
         }

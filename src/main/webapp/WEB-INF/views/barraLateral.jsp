@@ -104,7 +104,7 @@
           >Trámites</a
         >
         </c:if>
-        <c:if test="${sessionScope.usuario.area == 'Área Académica'}">
+        <c:if test="${sessionScope.usuario.area == 'Área de Evaluación'}">
         <a class="${path.contains('/bandejaTrabajo') ? 'active' : ''}" href="/bandejaTrabajo/listar"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
