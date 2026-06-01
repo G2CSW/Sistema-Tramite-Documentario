@@ -28,10 +28,6 @@ public class Static {
         return "gestion";
     }
 
-    @GetMapping("/login")
-    public String login(Model model) {
-        return "login";
-    }
 
     @GetMapping("/contacto")
     public String contacto(Model model) {

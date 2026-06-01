@@ -22,7 +22,8 @@ INSERT INTO tipo_tramite_documento (tipo_tramite_id, documento_id) VALUES
 -- Usuarios
 INSERT INTO usuarios (id_usuario, nombre, correo_electronico, password, area, activo) VALUES
     ('12345678', 'Luis Pérez',    'luis.perez@gmail.com',   '123', 'Mesa de Partes', TRUE),
-    ('87654321', 'María Torres',  'maria.torres@gmail.com', '123', 'Área Académica',  TRUE);
+    ('87654321', 'María Torres',  'maria.torres@gmail.com', '123', 'Área de Evaluación',  TRUE),
+    ('admin',    'Administrador', 'admin@gmail.com',        'admin', 'Admin', TRUE);
 
 -- Solicitantes
 INSERT INTO solicitantes (id_solicitante, nombre_completo, correo_electronico, telefono_contacto) VALUES

@@ -12,7 +12,7 @@ public class AreaServiceImpl implements AreaService {
 
     public AreaServiceImpl() {
         areas.add(new Area("A001", "Mesa de Partes"));
-        areas.add(new Area("A002", "Área Académica"));
+        areas.add(new Area("A002", "Área de Evaluación"));
     }
 
     @Override
