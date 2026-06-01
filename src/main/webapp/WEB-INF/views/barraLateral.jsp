@@ -25,7 +25,17 @@
           />
         </svg>
         <div class="profile-info">
-          <p class="system-name">Sistema de Trámite Documentario</p>
+          <c:choose>
+            <c:when test="${not empty sessionScope.usuario}">
+              <p class="system-name">${sessionScope.usuario.nombre}</p>
+              <p style="font-size: 0.8rem; color: #a1a1aa; margin-top: 4px;">${sessionScope.usuario.area}</p>
+              <a href="/logout" style="font-size: 0.8rem; color: #ef4444; text-decoration: none; margin-top: 4px; display: inline-block;">Cerrar sesión</a>
+            </c:when>
+            <c:otherwise>
+              <p class="system-name">Sistema de Trámite Documentario</p>
+              <a href="/login" style="font-size: 0.8rem; color: #3b82f6; text-decoration: none; margin-top: 4px; display: inline-block;">Iniciar sesión</a>
+            </c:otherwise>
+          </c:choose>
         </div>
       </div>
       <nav class="nav-menu">
@@ -69,6 +79,7 @@
           >Gestión</a
         >
 
+        <c:if test="${sessionScope.usuario.area == 'Mesa de Partes'}">
         <p class="section-title">GESTIÓN DE TRÁMITES</p>
         <a class="${path.contains('/tramite') ? 'active' : ''}" href="/tramite/listar"
           ><svg
@@ -92,6 +103,8 @@
             <path d="M9 13h6" /></svg
           >Trámites</a
         >
+        </c:if>
+        <c:if test="${sessionScope.usuario.area == 'Área Académica'}">
         <a class="${path.contains('/bandejaTrabajo') ? 'active' : ''}" href="/bandejaTrabajo/listar"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
@@ -115,6 +128,8 @@
             <path d="M9 14l2 2l4 -4" /></svg
           >Bandeja de Trabajo</a
         >
+        </c:if>
+        <c:if test="${sessionScope.usuario.area == 'Mesa de Partes'}">
         <a class="${path.contains('/archivados') ? 'active' : ''}" href="/archivados/listar"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +151,9 @@
             <path d="M10 12l4 0" /></svg
           >Archivados</a
         >
+        </c:if>
 
+        <c:if test="${sessionScope.usuario.area == 'Admin' || sessionScope.usuario.area == 'Administrador'}">
         <p class="section-title">Configuración</p>
         <a class="${path.contains('/tipoTramite') ? 'active' : ''}" href="/tipoTramite/listar"
           ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-list-details"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M13 5h8" /><path d="M13 9h5" /><path d="M13 15h8" /><path d="M13 19h5" /><path d="M3 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M3 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /></svg>Tipo de Trámite</a
@@ -192,7 +209,9 @@
             <path d="M3 13v-1a2 2 0 0 1 2 -2h2" /></svg
           >Usuarios</a
         >
+        </c:if>
 
+        <c:if test="${sessionScope.usuario.area == 'Admin' || sessionScope.usuario.area == 'Administrador'}">
         <p class="section-title">ESTADÍSTICAS</p>
         <a class="${path.contains('/metricas') ? 'active' : ''}" href="/metricas"
           ><svg
@@ -216,6 +235,7 @@
             <path d="M3 11c6 0 5 -5 9 -5s3 5 9 5" /></svg
           >Métricas</a
         >
+        </c:if>
         <p class="section-title">AYUDA Y SOPORTE</p>
         <a class="${path.contains('/contacto') ? 'active' : ''}"  href="/contacto"
           ><svg

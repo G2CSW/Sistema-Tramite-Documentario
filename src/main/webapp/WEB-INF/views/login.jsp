@@ -17,9 +17,14 @@
         <h1>Sistema de Trámite Documentario</h1>
       </header>
 
-      <form class="login-card">
+      <form class="login-card" action="/login" method="post">
+        
+        <c:if test="${not empty param.error}">
+          <p style="color:red; text-align:center;">Credenciales incorrectas o usuario no encontrado.</p>
+        </c:if>
+
         <div class="form-group">
-          <label>CORREO ELECTRÓNICO</label>
+          <label>USUARIO O DNI</label>
           <div class="input-contenedor">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -31,17 +36,17 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-mail"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-user"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path
-                d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10"
-              />
-              <path d="M3 7l9 6l9 -6" />
+              <circle cx="12" cy="7" r="4" />
+              <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
             </svg>
             <input
-              type="email"
-              placeholder="usuario@ejemplo.com"
+              type="text"
+              name="username"
+              placeholder="Ingrese su DNI o usuario"
+              required
             />
           </div>
         </div>
@@ -73,13 +78,14 @@
             </svg>
             <input
               type="password"
+              name="password"
               placeholder="••••••••"
+              required
             />
           </div>
         </div>
 
-        <a href="/">
-          <button type="button" class="btn btn-primary btn-submit">
+        <button type="submit" class="btn btn-primary btn-submit">
           Iniciar sesión
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -99,7 +105,6 @@
             <path d="M15 8l4 4" />
           </svg>
         </button>
-        </a>
       </form>
 
       <footer class="footer">
