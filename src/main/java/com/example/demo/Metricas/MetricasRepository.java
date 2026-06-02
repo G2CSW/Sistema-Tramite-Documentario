@@ -55,31 +55,31 @@ public interface MetricasRepository extends JpaRepository<TramiteEntity, Long> {
     List<Object[]> abandonoUltimos5Meses();
 
     @Query(value = """
-        SELECT 'Hace 3 sem' AS etiqueta, COUNT(*) AS valor
-        FROM tramites
-        WHERE fecha_registro >= DATEADD('DAY', -28, CURRENT_DATE)
-          AND fecha_registro <  DATEADD('DAY', -21, CURRENT_DATE)
+    SELECT 'Hace 3 sem' AS etiqueta, COUNT(*) AS valor
+    FROM tramites
+    WHERE fecha_registro >= DATEADD('WEEK', -3, DATE_TRUNC('week', CURRENT_DATE))
+      AND fecha_registro <  DATEADD('WEEK', -2, DATE_TRUNC('week', CURRENT_DATE))
 
-        UNION ALL
+    UNION ALL
 
-        SELECT 'Hace 2 sem' AS etiqueta, COUNT(*) AS valor
-        FROM tramites
-        WHERE fecha_registro >= DATEADD('DAY', -21, CURRENT_DATE)
-          AND fecha_registro <  DATEADD('DAY', -14, CURRENT_DATE)
+    SELECT 'Hace 2 sem' AS etiqueta, COUNT(*) AS valor
+    FROM tramites
+    WHERE fecha_registro >= DATEADD('WEEK', -2, DATE_TRUNC('week', CURRENT_DATE))
+      AND fecha_registro <  DATEADD('WEEK', -1, DATE_TRUNC('week', CURRENT_DATE))
 
-        UNION ALL
+    UNION ALL
 
-        SELECT 'Hace 1 sem' AS etiqueta, COUNT(*) AS valor
-        FROM tramites
-        WHERE fecha_registro >= DATEADD('DAY', -14, CURRENT_DATE)
-          AND fecha_registro <  DATEADD('DAY', -7, CURRENT_DATE)
+    SELECT 'Hace 1 sem' AS etiqueta, COUNT(*) AS valor
+    FROM tramites
+    WHERE fecha_registro >= DATEADD('WEEK', -1, DATE_TRUNC('week', CURRENT_DATE))
+      AND fecha_registro <  DATE_TRUNC('week', CURRENT_DATE)
 
-        UNION ALL
+    UNION ALL
 
-        SELECT 'Actual' AS etiqueta, COUNT(*) AS valor
-        FROM tramites
-        WHERE fecha_registro >= DATEADD('DAY', -7, CURRENT_DATE)
-        """, nativeQuery = true)
+    SELECT 'Actual' AS etiqueta, COUNT(*) AS valor
+    FROM tramites
+    WHERE fecha_registro >= DATE_TRUNC('week', CURRENT_DATE)
+    """, nativeQuery = true)
     List<Object[]> intensidadUltimas4Semanas();
 
     @Query(value = """

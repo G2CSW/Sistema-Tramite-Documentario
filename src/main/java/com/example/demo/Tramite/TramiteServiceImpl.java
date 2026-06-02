@@ -83,7 +83,6 @@ public class TramiteServiceImpl implements TramiteService {
 
     @Override
     public Tramite registrar(Tramite tramite, String idUsuarioLogueado) {
-        Long numeroTramite = obtenerSiguienteId();
         LocalDate fechaRegistro = LocalDate.now();
         EstadoTramite estadoInicial = EstadoTramite.REGISTRADO;
 
