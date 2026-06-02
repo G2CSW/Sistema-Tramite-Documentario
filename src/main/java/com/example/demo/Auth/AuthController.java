@@ -1,7 +1,6 @@
 package com.example.demo.Auth;
 
 import com.example.demo.Usuario.Usuario;
-import com.example.demo.Usuario.UsuarioEntity;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

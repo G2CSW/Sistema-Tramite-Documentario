@@ -2,7 +2,6 @@ package com.example.demo.Tramite;
 
 import com.example.demo.Solicitante.SolicitanteEntity;
 import com.example.demo.TipoTramite.TipoTramiteEntity;
-import com.example.demo.Usuario.UsuarioEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

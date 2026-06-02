@@ -106,7 +106,7 @@
 
             <div class="checklist-item">
               <label for="chk-crequisitos">Cumple requisitos del trámite</label>
-              <input type="checkbox" name="cumpleRequisitos" ${cumpleRequisitos ? 'checked' : ''} />
+              <input id="chk-crequisitos" type="checkbox" name="cumpleRequisitos" ${cumpleRequisitos ? 'checked' : ''} />
             </div>
 
             <div class="checklist-item">

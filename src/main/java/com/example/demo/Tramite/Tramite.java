@@ -2,7 +2,6 @@ package com.example.demo.Tramite;
 
 import com.example.demo.Solicitante.Solicitante;
 import com.example.demo.TipoTramite.TipoTramite;
-import com.example.demo.Usuario.Usuario;
 
 import java.time.LocalDate;
 
