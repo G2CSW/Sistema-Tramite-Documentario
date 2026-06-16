@@ -11,7 +11,7 @@ import java.util.List;
 public interface MetricasRepository extends JpaRepository<TramiteEntity, Long> {
 
     @Query(value = """
-    SELECT FORMATDATETIME(t.fecha_registro, 'yyyy-MM') AS periodo,
+    SELECT FORMATDATETIME(tz.fecha_hora, 'yyyy-MM') AS periodo,
 
            SUM(CASE
                    WHEN tz.estado_cambio = 'APROBADO'
@@ -36,33 +36,20 @@ public interface MetricasRepository extends JpaRepository<TramiteEntity, Long> {
                    THEN 1
                    ELSE 0
                END) AS evaluacion
-    FROM tramites t
-    LEFT JOIN (
-        SELECT tz1.nro_tramite,
-               tz1.estado_cambio
-        FROM trazabilidades tz1
-        WHERE tz1.estado_cambio IN (
-            'APROBADO',
-            'RECHAZADO',
-            'CANCELADO',
-            'EN_EVALUACION'
-        )
-        AND tz1.fecha_hora = (
-            SELECT MAX(tz2.fecha_hora)
-            FROM trazabilidades tz2
-            WHERE tz2.nro_tramite = tz1.nro_tramite
-              AND tz2.estado_cambio IN (
-                  'APROBADO',
-                  'RECHAZADO',
-                  'CANCELADO',
-                  'EN_EVALUACION'
-              )
-        )
-    ) tz
-        ON tz.nro_tramite = t.nro_tramite
-        
-    WHERE t.fecha_registro >= DATEADD('MONTH', -4, CURRENT_DATE)
-    GROUP BY FORMATDATETIME(t.fecha_registro, 'yyyy-MM')
+
+    FROM trazabilidades tz
+
+    WHERE tz.estado_cambio IN (
+        'APROBADO',
+        'RECHAZADO',
+        'CANCELADO',
+        'EN_EVALUACION'
+    )
+    AND tz.fecha_hora >=
+        DATE_TRUNC('MONTH', DATEADD('MONTH', -4, CURRENT_DATE))
+
+    GROUP BY FORMATDATETIME(tz.fecha_hora, 'yyyy-MM')
+
     ORDER BY periodo
     """, nativeQuery = true)
     List<Object[]> estadosUltimos5Meses();
@@ -94,6 +81,6 @@ public interface MetricasRepository extends JpaRepository<TramiteEntity, Long> {
     FROM tramites
     WHERE fecha_registro >= DATE_TRUNC('week', CURRENT_DATE)
     """, nativeQuery = true)
-    List<Object[]> intensidadUltimas4Semanas();
+    List<Object[]> cantidadTramitesRegistradosUltimas4Semanas();
 
 }

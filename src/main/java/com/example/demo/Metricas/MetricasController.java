@@ -24,7 +24,7 @@ public class MetricasController {
         model.addAttribute("rechazadosRows", estados.getRechazados());
         model.addAttribute("canceladosRows", estados.getCancelados());
         model.addAttribute("evaluacionRows", estados.getEvaluacion());
-        model.addAttribute("intensidadRows", metricaService.intensidadUltimas4Semanas());
+        model.addAttribute("intensidadRows", metricaService.cantidadTramitesRegistradosUltimas4Semanas());
 
         return "metricas";
     }

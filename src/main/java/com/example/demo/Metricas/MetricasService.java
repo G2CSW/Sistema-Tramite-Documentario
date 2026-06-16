@@ -6,5 +6,5 @@ public interface MetricasService {
 
     MetricasEstadoDTO estadosUltimos5Meses();
 
-    List<Object[]> intensidadUltimas4Semanas();
+    List<Object[]> cantidadTramitesRegistradosUltimas4Semanas();
 }

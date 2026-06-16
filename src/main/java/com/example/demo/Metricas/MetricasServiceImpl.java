@@ -65,8 +65,8 @@ public class MetricasServiceImpl implements MetricasService {
     }
 
     @Override
-    public List<Object[]> intensidadUltimas4Semanas() {
-        return metricaRepository.intensidadUltimas4Semanas();
+    public List<Object[]> cantidadTramitesRegistradosUltimas4Semanas() {
+        return metricaRepository.cantidadTramitesRegistradosUltimas4Semanas();
     }
 
     private List<Object[]> completarMeses(Map<String, Object[]> datos) {
