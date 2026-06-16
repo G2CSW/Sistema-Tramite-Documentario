@@ -109,6 +109,7 @@ public class TramiteController {
 
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         String idUsuario = usuario != null ? usuario.getIdUsuario() : null;
+
         Tramite registrado = tramiteService.registrar(tramite, idUsuario);
 
         ra.addFlashAttribute(

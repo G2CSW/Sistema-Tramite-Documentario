@@ -18,83 +18,75 @@ public class MetricasServiceImpl implements MetricasService {
     }
 
     @Override
-    public List<Object[]> aprobarUltimos5Meses() {
-        return completarMesesPorcentaje(metricaRepository.aprobadosYRechazadosUltimos5Meses(), true);
-    }
+    public MetricasEstadoDTO estadosUltimos5Meses() {
 
-    @Override
-    public List<Object[]> rechazoUltimos5Meses() {
-        return completarMesesPorcentaje(metricaRepository.aprobadosYRechazadosUltimos5Meses(), false);
-    }
+        List<Object[]> filas = metricaRepository.estadosUltimos5Meses();
 
-    @Override
-    public List<Object[]> abandonoUltimos5Meses() {
-        List<Object[]> filas = metricaRepository.abandonoUltimos5Meses();
-        Map<String, Object[]> mapa = new LinkedHashMap<>();
+        Map<String, Object[]> aprobados = new LinkedHashMap<>();
+        Map<String, Object[]> rechazados = new LinkedHashMap<>();
+        Map<String, Object[]> cancelados = new LinkedHashMap<>();
+        Map<String, Object[]> evaluacion = new LinkedHashMap<>();
 
         for (Object[] fila : filas) {
-            String periodo = String.valueOf(fila[0]);
-            long cancelados = fila[1] == null ? 0L : ((Number) fila[1]).longValue();
-            long total = fila[2] == null ? 0L : ((Number) fila[2]).longValue();
-            double porcentaje = total == 0 ? 0 : (cancelados * 100.0 / total);
 
-            mapa.put(periodo, new Object[]{periodo, redondear2(porcentaje)});
+            String periodo = String.valueOf(fila[0]);
+
+            aprobados.put(periodo,
+                    new Object[]{
+                            periodo,
+                            fila[1] == null ? 0L : ((Number) fila[1]).longValue()
+                    });
+
+            rechazados.put(periodo,
+                    new Object[]{
+                            periodo,
+                            fila[2] == null ? 0L : ((Number) fila[2]).longValue()
+                    });
+
+            cancelados.put(periodo,
+                    new Object[]{
+                            periodo,
+                            fila[3] == null ? 0L : ((Number) fila[3]).longValue()
+                    });
+
+            evaluacion.put(periodo,
+                    new Object[]{
+                            periodo,
+                            fila[4] == null ? 0L : ((Number) fila[4]).longValue()
+                    });
         }
 
-        return completarMeses(mapa);
+        return new MetricasEstadoDTO(
+                completarMeses(aprobados),
+                completarMeses(rechazados),
+                completarMeses(cancelados),
+                completarMeses(evaluacion)
+        );
     }
 
     @Override
-    public List<Object[]> intensidadUltimas4Semanas() {
-        return metricaRepository.intensidadUltimas4Semanas();
-    }
-
-    @Override
-    public List<Object[]> tiempoResolucionUltimos5Meses() {
-        List<Object[]> filas = metricaRepository.tiempoResolucionUltimos5Meses();
-        Map<String, Object[]> mapa = new LinkedHashMap<>();
-
-        for (Object[] fila : filas) {
-            String periodo = String.valueOf(fila[0]);
-            double promedio = fila[1] == null ? 0.0 : ((Number) fila[1]).doubleValue();
-            mapa.put(periodo, new Object[]{periodo, redondear2(promedio)});
-        }
-
-        return completarMeses(mapa);
-    }
-
-    private List<Object[]> completarMesesPorcentaje(List<Object[]> filas, boolean aprobacion) {
-        Map<String, Object[]> mapa = new LinkedHashMap<>();
-
-        for (Object[] fila : filas) {
-            String periodo = String.valueOf(fila[0]);
-            long aprobados = fila[1] == null ? 0L : ((Number) fila[1]).longValue();
-            long rechazados = fila[2] == null ? 0L : ((Number) fila[2]).longValue();
-            long total = aprobados + rechazados;
-
-            double porcentaje = total == 0
-                    ? 0
-                    : (aprobacion ? (aprobados * 100.0 / total) : (rechazados * 100.0 / total));
-
-            mapa.put(periodo, new Object[]{periodo, redondear2(porcentaje)});
-        }
-
-        return completarMeses(mapa);
+    public List<Object[]> cantidadTramitesRegistradosUltimas4Semanas() {
+        return metricaRepository.cantidadTramitesRegistradosUltimas4Semanas();
     }
 
     private List<Object[]> completarMeses(Map<String, Object[]> datos) {
+
         List<Object[]> salida = new ArrayList<>();
+
         YearMonth inicio = YearMonth.now().minusMonths(4);
 
         for (int i = 0; i < 5; i++) {
+
             String periodo = inicio.plusMonths(i).toString();
-            salida.add(datos.getOrDefault(periodo, new Object[]{periodo, 0}));
+
+            salida.add(
+                    datos.getOrDefault(
+                            periodo,
+                            new Object[]{periodo, 0}
+                    )
+            );
         }
 
         return salida;
-    }
-
-    private double redondear2(double valor) {
-        return Math.round(valor * 100.0) / 100.0;
     }
 }
