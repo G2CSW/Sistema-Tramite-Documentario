@@ -24,71 +24,68 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
       <section class="cuadricula-metricas">
         <article class="tarjeta">
-          <h2>Porcentaje de Trámites Aprobados</h2>
-          <p>Últimos 5 meses</p>
-          <canvas id="graficoAprobacion"></canvas>
+            <h2>Cantidad de Trámites Registrados en el Sistema</h2>
+            <p>Últimas 4 semanas</p>
+            <canvas id="graficoEntrada"></canvas>
+        </article>
+        <article class="tarjeta">
+            <h2>Cantidad de Trámites en Evaluación</h2>
+            <p>Últimos 5 meses</p>
+            <canvas id="graficoEvaluacion"></canvas>
+        </article>
+        <article class="tarjeta">
+            <h2>Cantidad de Trámites Aprobados</h2>
+            <p>Últimos 5 meses</p>
+            <canvas id="graficoAprobados"></canvas>
+        </article>
+        <article class="tarjeta">
+            <h2>Cantidad de Trámites Rechazados</h2>
+            <p>Últimos 5 meses</p>
+            <canvas id="graficoRechazados"></canvas>
+        </article>
+        <article class="tarjeta">
+            <h2>Cantidad de Trámites Cancelados</h2>
+            <p>Últimos 5 meses</p>
+            <canvas id="graficoCancelados"></canvas>
         </article>
 
-        <article class="tarjeta">
-          <h2>Tasa de Rechazo de Trámites</h2>
-          <p>Últimos 5 meses</p>
-          <canvas id="graficoRechazo"></canvas>
-        </article>
-
-        <article class="tarjeta">
-          <h2>Tasa de Abandono o Desistimiento</h2>
-          <p>Últimos 5 meses</p>
-          <canvas id="graficoAbandono"></canvas>
-        </article>
-
-        <article class="tarjeta">
-          <h2>Intensidad de Entrada</h2>
-          <p>Últimas 4 semanas</p>
-          <canvas id="graficoEntrada"></canvas>
-        </article>
-
-        <article class="tarjeta">
-          <h2>Tiempo Promedio de Resolución</h2>
-          <p>Últimos 5 meses</p>
-          <canvas id="graficoTiempo"></canvas>
-        </article>
       </section>
     </main>
 
     <script>
       Chart.register(ChartDataLabels);
 
-      const aprobacionLabels = [
-        <c:forEach items="${aprobacionRows}" var="fila" varStatus="st">
+      const aprobadosLabels = [
+        <c:forEach items="${aprobadosRows}" var="fila" varStatus="st">
           '${fila[0]}'<c:if test="${!st.last}">,</c:if>
         </c:forEach>,
       ];
-      const aprobacionValues = [
-        <c:forEach items="${aprobacionRows}" var="fila" varStatus="st">
+      const aprobadosValues = [
+        <c:forEach items="${aprobadosRows}" var="fila" varStatus="st">
           ${fila[1]}
           <c:if test="${!st.last}">,</c:if>
         </c:forEach>,
       ];
 
-      const rechazoLabels = [
-        <c:forEach items="${rechazoRows}" var="fila" varStatus="st">
+      const rechazadosLabels = [
+        <c:forEach items="${rechazadosRows}" var="fila" varStatus="st">
           '${fila[0]}'<c:if test="${!st.last}">,</c:if>
         </c:forEach>,
       ];
-      const rechazoValues = [
-        <c:forEach items="${rechazoRows}" var="fila" varStatus="st">
+      const rechazadosValues = [
+        <c:forEach items="${rechazadosRows}" var="fila" varStatus="st">
           ${fila[1]}
           <c:if test="${!st.last}">,</c:if>
         </c:forEach>,
       ];
 
-      const abandonoLabels = [
-        <c:forEach items="${abandonoRows}" var="fila" varStatus="st">
+      const canceladosLabels = [
+        <c:forEach items="${canceladosRows}" var="fila" varStatus="st">
           '${fila[0]}'<c:if test="${!st.last}">,</c:if>
         </c:forEach>,
       ];
-      const abandonoValues = [
-        <c:forEach items="${abandonoRows}" var="fila" varStatus="st">
+      const canceladosValues = [
+        <c:forEach items="${canceladosRows}" var="fila" varStatus="st">
           ${fila[1]}
           <c:if test="${!st.last}">,</c:if>
         </c:forEach>,
@@ -106,13 +103,13 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         </c:forEach>,
       ];
 
-      const tiempoLabels = [
-        <c:forEach items="${tiempoRows}" var="fila" varStatus="st">
+      const evaluacionLabels = [
+        <c:forEach items="${evaluacionRows}" var="fila" varStatus="st">
           '${fila[0]}'<c:if test="${!st.last}">,</c:if>
         </c:forEach>,
       ];
-      const tiempoValues = [
-        <c:forEach items="${tiempoRows}" var="fila" varStatus="st">
+      const evaluacionValues = [
+        <c:forEach items="${evaluacionRows}" var="fila" varStatus="st">
           ${fila[1]}
           <c:if test="${!st.last}">,</c:if>
         </c:forEach>,
@@ -173,39 +170,43 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
       }
 
       crearGrafico(
-        "graficoAprobacion",
-        aprobacionLabels,
-        aprobacionValues,
-        "rgba(75, 192, 192, 0.35)",
-        "%",
+        "graficoAprobados",
+        aprobadosLabels,
+        aprobadosValues,
+        "rgba(75,192,192,0.35)",
+        ""
       );
+
       crearGrafico(
-        "graficoRechazo",
-        rechazoLabels,
-        rechazoValues,
-        "rgba(255, 99, 132, 0.35)",
-        "%",
+        "graficoRechazados",
+        rechazadosLabels,
+        rechazadosValues,
+        "rgba(255,99,132,0.35)",
+        ""
       );
+
       crearGrafico(
-        "graficoAbandono",
-        abandonoLabels,
-        abandonoValues,
-        "rgba(255, 159, 64, 0.35)",
-        "%",
+        "graficoCancelados",
+        canceladosLabels,
+        canceladosValues,
+        "rgba(255,159,64,0.35)",
+        ""
       );
+
+      crearGrafico(
+        "graficoEvaluacion",
+        evaluacionLabels,
+        evaluacionValues,
+        "rgba(153,102,255,0.35)",
+        ""
+      );
+
       crearGrafico(
         "graficoEntrada",
         intensidadLabels,
         intensidadValues,
-        "rgba(54, 162, 235, 0.35)",
-        "",
-      );
-      crearGrafico(
-        "graficoTiempo",
-        tiempoLabels,
-        tiempoValues,
-        "rgba(153, 102, 255, 0.35)",
-        " días",
+        "rgba(54,162,235,0.35)",
+        ""
       );
     </script>
   </body>

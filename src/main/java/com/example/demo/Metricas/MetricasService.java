@@ -4,13 +4,7 @@ import java.util.List;
 
 public interface MetricasService {
 
-    List<Object[]> aprobarUltimos5Meses();
-
-    List<Object[]> rechazoUltimos5Meses();
-
-    List<Object[]> abandonoUltimos5Meses();
+    MetricasEstadoDTO estadosUltimos5Meses();
 
     List<Object[]> intensidadUltimas4Semanas();
-
-    List<Object[]> tiempoResolucionUltimos5Meses();
 }

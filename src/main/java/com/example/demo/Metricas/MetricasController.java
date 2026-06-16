@@ -17,11 +17,15 @@ public class MetricasController {
 
     @GetMapping
     public String metricas(Model model) {
-        model.addAttribute("aprobacionRows", metricaService.aprobarUltimos5Meses());
-        model.addAttribute("rechazoRows", metricaService.rechazoUltimos5Meses());
-        model.addAttribute("abandonoRows", metricaService.abandonoUltimos5Meses());
+
+        MetricasEstadoDTO estados = metricaService.estadosUltimos5Meses();
+
+        model.addAttribute("aprobadosRows", estados.getAprobados());
+        model.addAttribute("rechazadosRows", estados.getRechazados());
+        model.addAttribute("canceladosRows", estados.getCancelados());
+        model.addAttribute("evaluacionRows", estados.getEvaluacion());
         model.addAttribute("intensidadRows", metricaService.intensidadUltimas4Semanas());
-        model.addAttribute("tiempoRows", metricaService.tiempoResolucionUltimos5Meses());
+
         return "metricas";
     }
 }
