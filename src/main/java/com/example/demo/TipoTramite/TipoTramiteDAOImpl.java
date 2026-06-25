@@ -19,14 +19,14 @@ public class TipoTramiteDAOImpl implements TipoTramiteDAO {
     public List<TipoTramite> listarTodos() {
         return repository.findAll()
                 .stream()
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .toList();
     }
 
     @Override
     public TipoTramite buscarPorId(Long id) {
         return repository.findById(id)
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .orElse(null);
     }
 

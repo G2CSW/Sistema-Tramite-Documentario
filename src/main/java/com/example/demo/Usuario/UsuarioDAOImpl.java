@@ -20,14 +20,14 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     public List<Usuario> listarTodos() {
         return repository.findAll()
                 .stream()
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .toList();
     }
 
     @Override
     public Usuario buscarPorId(String id) {
         return repository.findById(id)
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .orElse(null);
     }
 
@@ -41,7 +41,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     @Override
     public Optional<Usuario> buscarPrimerUsuarioActivo() {
         return repository.findFirstByActivoTrueOrderByIdUsuarioAsc()
-                .map(adapter::toModel);
+                .map(x -> adapter.toModel(x));
     }
 
     @Override

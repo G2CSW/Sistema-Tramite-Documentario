@@ -19,14 +19,14 @@ public class SolicitanteDAOImpl implements SolicitanteDAO {
     public List<Solicitante> listarTodos() {
         return repository.findAll()
                 .stream()
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .toList();
     }
 
     @Override
     public Solicitante buscarPorId(String id) {
         return repository.findById(id)
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .orElse(null);
     }
 

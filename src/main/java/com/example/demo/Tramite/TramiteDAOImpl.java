@@ -19,14 +19,14 @@ public class TramiteDAOImpl implements TramiteDAO {
     public List<Tramite> listarTodos() {
         return repository.findAll()
                 .stream()
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .toList();
     }
 
     @Override
     public Tramite buscarPorId(Long id) {
         return repository.findById(id)
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .orElse(null);
     }
 
@@ -52,7 +52,7 @@ public class TramiteDAOImpl implements TramiteDAO {
     public List<Tramite> buscarPorEstadoActual(EstadoTramite estadoActual) {
         return repository.findByEstadoActual(estadoActual)
                 .stream()
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .toList();
     }
 
@@ -60,7 +60,7 @@ public class TramiteDAOImpl implements TramiteDAO {
     public List<Tramite> buscarPorEstadoActualYSolicitante(EstadoTramite estadoActual, String idSolicitante) {
         return repository.findByEstadoActualAndSolicitante_IdSolicitante(estadoActual, idSolicitante)
                 .stream()
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .toList();
     }
 }

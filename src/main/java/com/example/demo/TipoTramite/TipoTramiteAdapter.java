@@ -47,7 +47,7 @@ public class TipoTramiteAdapter {
         tipoTramite.setDocumentacionMinima(
                 entity.getDocumentacionMinima() != null
                         ? entity.getDocumentacionMinima().stream()
-                        .map(documentoAdapter::toModel)
+                        .map(x -> documentoAdapter.toModel(x))
                         .collect(Collectors.toList())
                         : new ArrayList<>()
         );

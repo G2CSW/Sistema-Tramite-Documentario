@@ -19,14 +19,14 @@ public class TrazabilidadDAOImpl implements TrazabilidadDAO {
     public List<Trazabilidad> listarTodos() {
         return repository.findAll()
                 .stream()
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .toList();
     }
 
     @Override
     public Trazabilidad buscarPorId(Long id) {
         return repository.findById(id)
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .orElse(null);
     }
 
@@ -41,7 +41,7 @@ public class TrazabilidadDAOImpl implements TrazabilidadDAO {
     public List<Trazabilidad> buscarPorTramiteOrdenado(Long nroTramite) {
         return repository.findByTramite_NroTramiteOrderByFechaHoraDesc(nroTramite)
                 .stream()
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .toList();
     }
 }

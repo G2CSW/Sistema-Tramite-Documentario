@@ -19,14 +19,14 @@ public class DocumentoDAOImpl implements DocumentoDAO {
     public List<Documento> listarTodos() {
         return repository.findAll()
                 .stream()
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .toList();
     }
 
     @Override
     public Documento buscarPorId(Long id) {
         return repository.findById(id)
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .orElse(null);
     }
 
@@ -41,7 +41,7 @@ public class DocumentoDAOImpl implements DocumentoDAO {
     public List<Documento> listarActivos() {
         return repository.findByActivoTrue()
                 .stream()
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .toList();
     }
 
@@ -49,7 +49,7 @@ public class DocumentoDAOImpl implements DocumentoDAO {
     public List<Documento> buscarPorIds(List<Long> ids) {
         return repository.findByIdDocumentoIn(ids)
                 .stream()
-                .map(adapter::toModel)
+                .map(x -> adapter.toModel(x))
                 .toList();
     }
 }
