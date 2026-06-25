@@ -7,13 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class SolicitanteServiceImpl implements SolicitanteService {
 
-    private final SolicitanteRepository solicitanteRepository;
-    private final SolicitanteAdapter solicitanteAdapter;
+    private final SolicitanteDAO solicitanteDAO;
 
-    public SolicitanteServiceImpl(SolicitanteRepository solicitanteRepository,
-                                  SolicitanteAdapter solicitanteAdapter) {
-        this.solicitanteRepository = solicitanteRepository;
-        this.solicitanteAdapter = solicitanteAdapter;
+    public SolicitanteServiceImpl(SolicitanteDAO solicitanteDAO) {
+        this.solicitanteDAO = solicitanteDAO;
     }
 
     @Override
@@ -57,10 +54,7 @@ public class SolicitanteServiceImpl implements SolicitanteService {
             return null;
         }
 
-        SolicitanteEntity entidad = solicitanteAdapter.toEntity(s);
-        SolicitanteEntity guardado = solicitanteRepository.save(entidad);
-
-        return solicitanteAdapter.toModel(guardado);
+        return solicitanteDAO.guardar(s);
     }
 
     @Override
@@ -69,14 +63,7 @@ public class SolicitanteServiceImpl implements SolicitanteService {
             return null;
         }
 
-        SolicitanteEntity entidad =
-                solicitanteRepository.findById(idSolicitante).orElse(null);
-
-        if (entidad == null) {
-            return null;
-        }
-
-        return solicitanteAdapter.toModel(entidad);
+        return solicitanteDAO.buscarPorId(idSolicitante);
     }
 
     @Override
@@ -85,6 +72,6 @@ public class SolicitanteServiceImpl implements SolicitanteService {
             return false;
         }
 
-        return solicitanteRepository.existsById(idSolicitante);
+        return solicitanteDAO.existePorId(idSolicitante);
     }
 }

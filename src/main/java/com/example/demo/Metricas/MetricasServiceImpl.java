@@ -11,16 +11,16 @@ import java.util.Map;
 @Service
 public class MetricasServiceImpl implements MetricasService {
 
-    private final MetricasRepository metricaRepository;
+    private final MetricasDAO metricasDAO;
 
-    public MetricasServiceImpl(MetricasRepository metricaRepository) {
-        this.metricaRepository = metricaRepository;
+    public MetricasServiceImpl(MetricasDAO metricasDAO) {
+        this.metricasDAO = metricasDAO;
     }
 
     @Override
     public MetricasEstadoDTO estadosUltimos5Meses() {
 
-        List<Object[]> filas = metricaRepository.estadosUltimos5Meses();
+        List<Object[]> filas = metricasDAO.estadosUltimos5Meses();
 
         Map<String, Object[]> aprobados = new LinkedHashMap<>();
         Map<String, Object[]> rechazados = new LinkedHashMap<>();
@@ -66,7 +66,7 @@ public class MetricasServiceImpl implements MetricasService {
 
     @Override
     public List<Object[]> cantidadTramitesRegistradosUltimas4Semanas() {
-        return metricaRepository.cantidadTramitesRegistradosUltimas4Semanas();
+        return metricasDAO.cantidadTramitesRegistradosUltimas4Semanas();
     }
 
     private List<Object[]> completarMeses(Map<String, Object[]> datos) {

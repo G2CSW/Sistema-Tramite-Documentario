@@ -4,9 +4,7 @@ import com.example.demo.Solicitante.SolicitanteService;
 import com.example.demo.TipoTramite.TipoTramiteService;
 import com.example.demo.Trazabilidad.TrazabilidadService;
 import com.example.demo.Usuario.Usuario;
-import com.example.demo.Usuario.UsuarioAdapter;
-import com.example.demo.Usuario.UsuarioEntity;
-import com.example.demo.Usuario.UsuarioRepository;
+import com.example.demo.Usuario.UsuarioDAO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,67 +16,52 @@ import java.util.stream.Collectors;
 @Transactional
 public class TramiteServiceImpl implements TramiteService {
 
-    private final TramiteRepository tramiteRepository;
-    private final TramiteAdapter tramiteAdapter;
+    private final TramiteDAO tramiteDAO;
     private final TrazabilidadService trazabilidadService;
     private final SolicitanteService solicitanteService;
     private final TipoTramiteService tipoTramiteService;
 
+    private final UsuarioDAO usuarioDAO;
 
-
-    private final UsuarioRepository usuarioRepository;
-    private final UsuarioAdapter usuarioAdapter;
-
-    public TramiteServiceImpl(TramiteRepository tramiteRepository,
-                              TramiteAdapter tramiteAdapter,
+    public TramiteServiceImpl(TramiteDAO tramiteDAO,
                               TrazabilidadService trazabilidadService,
                               SolicitanteService solicitanteService,
                               TipoTramiteService tipoTramiteService,
-                              UsuarioRepository usuarioRepository,
-                              UsuarioAdapter usuarioAdapter) {
+                              UsuarioDAO usuarioDAO) {
 
-        this.tramiteRepository = tramiteRepository;
-        this.tramiteAdapter = tramiteAdapter;
+        this.tramiteDAO = tramiteDAO;
         this.trazabilidadService = trazabilidadService;
         this.solicitanteService = solicitanteService;
         this.tipoTramiteService = tipoTramiteService;
-        this.usuarioRepository = usuarioRepository;
-        this.usuarioAdapter = usuarioAdapter;
+        this.usuarioDAO = usuarioDAO;
     }
 
     @Override
     public List<Tramite> listarActivos(String idSolicitante) {
-        List<TramiteEntity> entidades = tramiteRepository.findAll();
+        List<Tramite> tramites = tramiteDAO.listarTodos();
 
-        return entidades.stream()
-                .filter(entidad -> {
-                    EstadoTramite estadoActual = entidad.getEstadoActual();
+        return tramites.stream()
+                .filter(tramite -> {
+                    EstadoTramite estadoActual = tramite.getEstadoActual();
                     boolean activo = estadoActual != EstadoTramite.ARCHIVADO
                             && estadoActual != EstadoTramite.CANCELADO;
 
-                    String idSolicitanteEntidad = null;
-                    if (entidad.getSolicitante() != null) {
-                        idSolicitanteEntidad = entidad.getSolicitante().getIdSolicitante();
+                    String idSolicitanteTramite = null;
+                    if (tramite.getSolicitante() != null) {
+                        idSolicitanteTramite = tramite.getSolicitante().getIdSolicitante();
                     }
 
                     boolean coincide = idSolicitante == null || idSolicitante.isBlank()
-                            || (idSolicitanteEntidad != null && idSolicitanteEntidad.equals(idSolicitante));
+                            || (idSolicitanteTramite != null && idSolicitanteTramite.equals(idSolicitante));
 
                     return activo && coincide;
                 })
-                .map(e -> tramiteAdapter.toModel(e))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Tramite buscarPorId(Long id) {
-        TramiteEntity entidad = tramiteRepository.findById(id).orElse(null);
-
-        if (entidad == null) {
-            return null;
-        }
-
-        return tramiteAdapter.toModel(entidad);
+        return tramiteDAO.buscarPorId(id);
     }
 
     @Override
@@ -98,16 +81,12 @@ public class TramiteServiceImpl implements TramiteService {
                 tipoTramiteService.buscarTipo(idTipoTramite)
         );
 
-        TramiteEntity entidad = tramiteAdapter.toEntity(tramite);
-        TramiteEntity entidadGuardada = tramiteRepository.save(entidad);
-        Tramite tramiteGuardado = tramiteAdapter.toModel(entidadGuardada);
+        Tramite tramiteGuardado = tramiteDAO.guardar(tramite);
 
-
-        UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuarioLogueado).orElse(null);
-        if (usuarioEntity == null) {
-            return tramiteGuardado;
+        Usuario usuarioTrazabilidad = null;
+        if (idUsuarioLogueado != null) {
+            usuarioTrazabilidad = usuarioDAO.buscarPorId(idUsuarioLogueado);
         }
-        Usuario usuarioTrazabilidad = usuarioAdapter.toModel(usuarioEntity);
 
 
 
@@ -138,8 +117,7 @@ public class TramiteServiceImpl implements TramiteService {
                 tipoTramiteService.buscarTipo(idTipoTramite)
         );
 
-        TramiteEntity entidad = tramiteAdapter.toEntity(tramiteActual);
-        tramiteRepository.save(entidad);
+        tramiteDAO.actualizar(tramiteActual);
 
         return true;
     }
@@ -170,19 +148,11 @@ public class TramiteServiceImpl implements TramiteService {
                 break;
         }
 
-        TramiteEntity entidad = tramiteAdapter.toEntity(tramiteActual);
-        tramiteRepository.save(entidad);
-
-
+        tramiteDAO.actualizar(tramiteActual);
 
         Usuario usuarioTrazabilidad = null;
-        UsuarioEntity usuarioEntity = null;
         if (idUsuarioLogueado != null) {
-            usuarioEntity = usuarioRepository.findById(idUsuarioLogueado).orElse(null);
-        }
-
-        if (usuarioEntity != null) {
-            usuarioTrazabilidad = usuarioAdapter.toModel(usuarioEntity);
+            usuarioTrazabilidad = usuarioDAO.buscarPorId(idUsuarioLogueado);
         }
 
 
@@ -200,7 +170,7 @@ public class TramiteServiceImpl implements TramiteService {
     @Override
     public Long obtenerSiguienteId() {
 
-        Long ultimoId = tramiteRepository.obtenerUltimoId();
+        Long ultimoId = tramiteDAO.obtenerUltimoId();
 
         if (ultimoId == null) {
             return 1L;

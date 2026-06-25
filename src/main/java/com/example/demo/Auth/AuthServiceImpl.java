@@ -1,29 +1,24 @@
 package com.example.demo.Auth;
 
 import com.example.demo.Usuario.Usuario;
-import com.example.demo.Usuario.UsuarioAdapter;
-import com.example.demo.Usuario.UsuarioEntity;
-import com.example.demo.Usuario.UsuarioRepository;
+import com.example.demo.Usuario.UsuarioDAO;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final UsuarioRepository usuarioRepository;
-    private final UsuarioAdapter usuarioAdapter;
+    private final UsuarioDAO usuarioDAO;
 
-    public AuthServiceImpl(UsuarioRepository usuarioRepository,
-                           UsuarioAdapter usuarioAdapter) {
-        this.usuarioRepository = usuarioRepository;
-        this.usuarioAdapter = usuarioAdapter;
+    public AuthServiceImpl(UsuarioDAO usuarioDAO) {
+        this.usuarioDAO = usuarioDAO;
     }
 
     @Override
     public Usuario login(String dni, String password) {
-        UsuarioEntity entity = usuarioRepository.findById(dni).orElse(null);
+        Usuario usuario = usuarioDAO.buscarPorId(dni);
 
-        if (entity != null && entity.isActivo() && entity.getPassword().equals(password)) {
-            return usuarioAdapter.toModel(entity);
+        if (usuario != null && usuario.isActivo() && usuario.getPassword().equals(password)) {
+            return usuario;
         }
 
         return null;

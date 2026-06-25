@@ -12,24 +12,18 @@ import java.util.stream.Collectors;
 @Service
 public class TipoTramiteServiceImpl implements TipoTramiteService {
 
-    private final TipoTramiteRepository repository;
-    private final TipoTramiteAdapter adapter;
+    private final TipoTramiteDAO tipoTramiteDAO;
     private final DocumentoService documentoService;
 
-    public TipoTramiteServiceImpl(TipoTramiteRepository repository,
-                                  TipoTramiteAdapter adapter,
+    public TipoTramiteServiceImpl(TipoTramiteDAO tipoTramiteDAO,
                                   DocumentoService documentoService) {
-        this.repository = repository;
-        this.adapter = adapter;
+        this.tipoTramiteDAO = tipoTramiteDAO;
         this.documentoService = documentoService;
     }
 
     @Override
     public List<TipoTramite> listar() {
-        return repository.findAll()
-                .stream()
-                .map(adapter::toModel)
-                .collect(Collectors.toList());
+        return tipoTramiteDAO.listarTodos();
     }
 
     @Override
@@ -49,42 +43,34 @@ public class TipoTramiteServiceImpl implements TipoTramiteService {
         List<Documento> documentos = documentoService.obtenerDocumentosPorIds(documentacionMinimaIds);
         tipo.setDocumentacionMinima(documentos);
 
-        TipoTramiteEntity guardado = repository.save(adapter.toEntity(tipo));
-        return adapter.toModel(guardado);
+        return tipoTramiteDAO.guardar(tipo);
     }
 
     @Override
     public TipoTramite buscarTipo(Long id) {
-        Optional<TipoTramiteEntity> entity = repository.findById(id);
-        return entity.map(adapter::toModel).orElse(null);
+        return tipoTramiteDAO.buscarPorId(id);
     }
 
     @Override
     public TipoTramite editar(Long id, String nombre, List<Long> documentacionMinimaIds) {
-        Optional<TipoTramiteEntity> optional = repository.findById(id);
-        if (optional.isEmpty()) {
+        TipoTramite modelo = tipoTramiteDAO.buscarPorId(id);
+        if (modelo == null) {
             return null;
         }
 
-        TipoTramiteEntity entity = optional.get();
-        entity.setNombre(nombre);
-
-        TipoTramite modelo = adapter.toModel(entity);
         modelo.setNombre(nombre);
         modelo.setDocumentacionMinima(documentoService.obtenerDocumentosPorIds(documentacionMinimaIds));
 
-        TipoTramiteEntity actualizado = repository.save(adapter.toEntity(modelo));
-        return adapter.toModel(actualizado);
+        return tipoTramiteDAO.guardar(modelo);
     }
 
 
     @Override
     public void cambiarEstado(Long id) {
-        Optional<TipoTramiteEntity> optional = repository.findById(id);
-        if (optional.isPresent()) {
-            TipoTramiteEntity entity = optional.get();
-            entity.setActivo(!entity.isActivo());
-            repository.save(entity);
+        TipoTramite modelo = tipoTramiteDAO.buscarPorId(id);
+        if (modelo != null) {
+            modelo.setActivo(!modelo.isActivo());
+            tipoTramiteDAO.guardar(modelo);
         }
     }
 }

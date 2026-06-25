@@ -10,24 +10,20 @@ import java.util.stream.Collectors;
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
-    private final UsuarioRepository repository;
-    private final UsuarioAdapter adapter;
+    private final UsuarioDAO usuarioDAO;
     private final AreaService areaService;
 
-    public UsuarioServiceImpl(UsuarioRepository repository,
-                              UsuarioAdapter adapter,
+    public UsuarioServiceImpl(UsuarioDAO usuarioDAO,
                               AreaService areaService) {
-        this.repository = repository;
-        this.adapter = adapter;
+        this.usuarioDAO = usuarioDAO;
         this.areaService = areaService;
     }
 
     @Override
     public List<Usuario> listarUsuarios() {
-        return repository.findAll()
+        return usuarioDAO.listarTodos()
                 .stream()
                 .filter(e -> !"admin".equals(e.getIdUsuario()))
-                .map(adapter::toModel)
                 .collect(Collectors.toList());
     }
 
@@ -40,28 +36,26 @@ public class UsuarioServiceImpl implements UsuarioService {
             return false;
         }
 
-        if (repository.existsById(usuario.getIdUsuario())) {
+        if (usuarioDAO.existePorId(usuario.getIdUsuario())) {
             return false;
         }
 
         usuario.setArea(area.getNombreArea());
         usuario.setActivo(true);
 
-        repository.save(adapter.toEntity(usuario));
+        usuarioDAO.guardar(usuario);
 
         return true;
     }
 
     @Override
     public Usuario obtenerUsuario(String idUsuario) {
-        return repository.findById(idUsuario)
-                .map(adapter::toModel)
-                .orElse(null);
+        return usuarioDAO.buscarPorId(idUsuario);
     }
 
     @Override
     public boolean existeUsuario(String idUsuario) {
-        return repository.existsById(idUsuario);
+        return usuarioDAO.existePorId(idUsuario);
     }
 
     @Override
@@ -72,24 +66,25 @@ public class UsuarioServiceImpl implements UsuarioService {
             return false;
         }
 
-        return repository.findById(idUsuario)
-                .map(entity -> {
-                    entity.setNombre(form.getNombre());
-                    entity.setCorreoElectronico(form.getCorreoElectronico());
-                    entity.setPassword(form.getPassword());
-                    entity.setArea(area.getNombreArea());
-                    repository.save(entity);
-                    return true;
-                })
-                .orElse(false);
+        Usuario modelo = usuarioDAO.buscarPorId(idUsuario);
+        if (modelo != null) {
+            modelo.setNombre(form.getNombre());
+            modelo.setCorreoElectronico(form.getCorreoElectronico());
+            modelo.setPassword(form.getPassword());
+            modelo.setArea(area.getNombreArea());
+            usuarioDAO.guardar(modelo);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public void toggleEstado(String idUsuario) {
-        repository.findById(idUsuario).ifPresent(entity -> {
-            entity.setActivo(!entity.isActivo());
-            repository.save(entity);
-        });
+        Usuario modelo = usuarioDAO.buscarPorId(idUsuario);
+        if (modelo != null) {
+            modelo.setActivo(!modelo.isActivo());
+            usuarioDAO.guardar(modelo);
+        }
     }
 
     private boolean validarUsuario(Usuario u) {

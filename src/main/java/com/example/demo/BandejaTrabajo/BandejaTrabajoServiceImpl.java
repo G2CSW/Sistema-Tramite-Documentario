@@ -3,9 +3,7 @@ package com.example.demo.BandejaTrabajo;
 import com.example.demo.Tramite.*;
 import com.example.demo.Trazabilidad.TrazabilidadService;
 import com.example.demo.Usuario.Usuario;
-import com.example.demo.Usuario.UsuarioAdapter;
-import com.example.demo.Usuario.UsuarioEntity;
-import com.example.demo.Usuario.UsuarioRepository;
+import com.example.demo.Usuario.UsuarioDAO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,51 +14,37 @@ import java.util.stream.Collectors;
 @Transactional
 public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
 
-    private final TramiteRepository tramiteRepository;
-    private final TramiteAdapter tramiteAdapter;
+    private final TramiteDAO tramiteDAO;
     private final TrazabilidadService trazabilidadService;
-    private final UsuarioRepository usuarioRepository;
-    private final UsuarioAdapter usuarioAdapter;
+    private final UsuarioDAO usuarioDAO;
 
-    public BandejaTrabajoServiceImpl(TramiteRepository tramiteRepository,
-                                     TramiteAdapter tramiteAdapter,
+    public BandejaTrabajoServiceImpl(TramiteDAO tramiteDAO,
                                      TrazabilidadService trazabilidadService,
-                                     UsuarioRepository usuarioRepository,
-                                     UsuarioAdapter usuarioAdapter) {
-        this.tramiteRepository = tramiteRepository;
-        this.tramiteAdapter = tramiteAdapter;
+                                     UsuarioDAO usuarioDAO) {
+        this.tramiteDAO = tramiteDAO;
         this.trazabilidadService = trazabilidadService;
-        this.usuarioRepository = usuarioRepository;
-        this.usuarioAdapter = usuarioAdapter;
+        this.usuarioDAO = usuarioDAO;
     }
 
     @Override
     public List<Tramite> listarTramitesAEvaluar(String dni) {
-        List<TramiteEntity> entidades;
+        List<Tramite> tramites;
 
         if (dni != null && !dni.isBlank()) {
-            entidades = tramiteRepository.findByEstadoActualAndSolicitante_IdSolicitante(
+            tramites = tramiteDAO.buscarPorEstadoActualYSolicitante(
                     EstadoTramite.EN_EVALUACION,
                     dni
             );
         } else {
-            entidades = tramiteRepository.findByEstadoActual(EstadoTramite.EN_EVALUACION);
+            tramites = tramiteDAO.buscarPorEstadoActual(EstadoTramite.EN_EVALUACION);
         }
 
-        return entidades.stream()
-                .map(e -> tramiteAdapter.toModel(e))
-                .collect(Collectors.toList());
+        return tramites;
     }
 
     @Override
     public Tramite buscarPorId(Long id) {
-        TramiteEntity entidad = tramiteRepository.findById(id).orElse(null);
-
-        if (entidad == null) {
-            return null;
-        }
-
-        return tramiteAdapter.toModel(entidad);
+        return tramiteDAO.buscarPorId(id);
     }
 
     @Override
@@ -73,9 +57,9 @@ public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
                                      String comentario,
                                      String idUsuarioLogueado) {
 
-        TramiteEntity entidad = tramiteRepository.findById(id).orElse(null);
+        Tramite tramite = tramiteDAO.buscarPorId(id);
 
-        if (entidad == null) {
+        if (tramite == null) {
             return "Trámite no encontrado";
         }
 
@@ -92,39 +76,37 @@ public class BandejaTrabajoServiceImpl implements BandejaTrabajoService {
             return "No se puede rechazar un trámite que tiene todo check.";
         }
 
-        entidad.setDatosCompletos(datosCompletos);
-        entidad.setDatosConsistentes(datosConsistentes);
-        entidad.setCumpleRequisitos(cumpleRequisitos);
-        entidad.setSustentoValido(sustentoValido);
+        tramite.setDatosCompletos(datosCompletos);
+        tramite.setDatosConsistentes(datosConsistentes);
+        tramite.setCumpleRequisitos(cumpleRequisitos);
+        tramite.setSustentoValido(sustentoValido);
 
         EstadoTramite estado;
         String comentarioTrazabilidad;
 
         if ("aprobar".equals(accion)) {
-            entidad.setEstadoActual(EstadoTramite.APROBADO);
+            tramite.setEstadoActual(EstadoTramite.APROBADO);
             estado = EstadoTramite.APROBADO;
             comentarioTrazabilidad = "Trámite aprobado" + agregarComentarioExtra(comentario);
         } else {
-            entidad.setEstadoActual(EstadoTramite.RECHAZADO);
+            tramite.setEstadoActual(EstadoTramite.RECHAZADO);
             estado = EstadoTramite.RECHAZADO;
             comentarioTrazabilidad = "Trámite rechazado por no cumplir con los siguientes criterios: "
                     + listarChecksNoCumplidos(datosCompletos, datosConsistentes, cumpleRequisitos, sustentoValido)
                     + agregarComentarioExtra(comentario);
         }
 
-        TramiteEntity entidadGuardada = tramiteRepository.save(entidad);
-        Tramite tramiteGuardado = tramiteAdapter.toModel(entidadGuardada);
+        Tramite tramiteGuardado = tramiteDAO.guardar(tramite);
 
 
 
-        UsuarioEntity usuarioEntity = null;
+        Usuario usuarioEvaluador = null;
         if (idUsuarioLogueado != null) {
-            usuarioEntity = usuarioRepository.findById(idUsuarioLogueado).orElse(null);
+            usuarioEvaluador = usuarioDAO.buscarPorId(idUsuarioLogueado);
         }
-        if (usuarioEntity == null) {
+        if (usuarioEvaluador == null) {
             return "No se encontró el usuario evaluador";
         }
-        Usuario usuarioEvaluador = usuarioAdapter.toModel(usuarioEntity);
 
 
 
