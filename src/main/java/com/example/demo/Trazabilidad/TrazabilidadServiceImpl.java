@@ -14,15 +14,10 @@ import java.util.stream.Collectors;
 @Transactional
 public class TrazabilidadServiceImpl implements TrazabilidadService {
 
-    private final TrazabilidadRepository trazabilidadRepository;
-    private final TrazabilidadAdapter trazabilidadAdapter;
+    private final TrazabilidadDAO trazabilidadDAO;
 
-    public TrazabilidadServiceImpl(
-            TrazabilidadRepository trazabilidadRepository,
-            TrazabilidadAdapter trazabilidadAdapter) {
-
-        this.trazabilidadRepository = trazabilidadRepository;
-        this.trazabilidadAdapter = trazabilidadAdapter;
+    public TrazabilidadServiceImpl(TrazabilidadDAO trazabilidadDAO) {
+        this.trazabilidadDAO = trazabilidadDAO;
     }
 
     @Override
@@ -40,23 +35,12 @@ public class TrazabilidadServiceImpl implements TrazabilidadService {
         trazabilidad.setComentario(comentario);
         trazabilidad.setFechaHora(LocalDateTime.now());
 
-        TrazabilidadEntity entity =
-                trazabilidadAdapter.toEntity(trazabilidad);
-
-        trazabilidadRepository.save(entity);
+        trazabilidadDAO.guardar(trazabilidad);
     }
 
     @Override
     public List<Trazabilidad> obtenerTrazabilidad(Long nroTramite) {
 
-        List<TrazabilidadEntity> entidades =
-                trazabilidadRepository
-                        .findByTramite_NroTramiteOrderByFechaHoraDesc(
-                                nroTramite
-                        );
-
-        return entidades.stream()
-                .map(e -> trazabilidadAdapter.toModel(e))
-                .collect(Collectors.toList());
+        return trazabilidadDAO.buscarPorTramiteOrdenado(nroTramite);
     }
 }

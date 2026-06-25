@@ -2,9 +2,7 @@ package com.example.demo.Archivados;
 
 import com.example.demo.Tramite.EstadoTramite;
 import com.example.demo.Tramite.Tramite;
-import com.example.demo.Tramite.TramiteAdapter;
-import com.example.demo.Tramite.TramiteEntity;
-import com.example.demo.Tramite.TramiteRepository;
+import com.example.demo.Tramite.TramiteDAO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,55 +12,48 @@ import java.util.stream.Collectors;
 @Service
 public class ArchivadosServiceImpl implements ArchivadosService {
 
-    private final TramiteRepository tramiteRepository;
-    private final TramiteAdapter tramiteAdapter;
+    private final TramiteDAO tramiteDAO;
 
-    public ArchivadosServiceImpl(TramiteRepository tramiteRepository,
-                                 TramiteAdapter tramiteAdapter) {
-        this.tramiteRepository = tramiteRepository;
-        this.tramiteAdapter = tramiteAdapter;
+    public ArchivadosServiceImpl(TramiteDAO tramiteDAO) {
+        this.tramiteDAO = tramiteDAO;
     }
 
     @Override
     public List<Tramite> listarArchivados(String idSolicitante) {
 
-        List<TramiteEntity> entidades = new ArrayList<>();
+        List<Tramite> tramites = new ArrayList<>();
 
         if (idSolicitante == null || idSolicitante.isBlank()) {
 
-            entidades.addAll(
-                    tramiteRepository.findByEstadoActual(
+            tramites.addAll(
+                    tramiteDAO.buscarPorEstadoActual(
                             EstadoTramite.ARCHIVADO
                     )
             );
 
-            entidades.addAll(
-                    tramiteRepository.findByEstadoActual(
+            tramites.addAll(
+                    tramiteDAO.buscarPorEstadoActual(
                             EstadoTramite.CANCELADO
                     )
             );
 
         } else {
 
-            entidades.addAll(
-                    tramiteRepository
-                            .findByEstadoActualAndSolicitante_IdSolicitante(
+            tramites.addAll(
+                    tramiteDAO.buscarPorEstadoActualYSolicitante(
                                     EstadoTramite.ARCHIVADO,
                                     idSolicitante
                             )
             );
 
-            entidades.addAll(
-                    tramiteRepository
-                            .findByEstadoActualAndSolicitante_IdSolicitante(
+            tramites.addAll(
+                    tramiteDAO.buscarPorEstadoActualYSolicitante(
                                     EstadoTramite.CANCELADO,
                                     idSolicitante
                             )
             );
         }
 
-        return entidades.stream()
-                .map(tramiteAdapter::toModel)
-                .collect(Collectors.toList());
+        return tramites;
     }
 }
