@@ -29,7 +29,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             <canvas id="graficoEntrada"></canvas>
         </article>
         <article class="tarjeta">
-            <h2>Cantidad de Trámites en Evaluación</h2>
+            <h2>Cantidad de Trámites que pasaron a Evaluación</h2>
             <p>Últimos 5 meses</p>
             <canvas id="graficoEvaluacion"></canvas>
         </article>
