@@ -21,6 +21,6 @@ public class ArchivadosController {
         model.addAttribute("tramites", archivadosService.listarArchivados(idSolicitante));
         model.addAttribute("idSolicitanteBuscado", idSolicitante);
 
-        return "/archivados";
+        return "archivados";
     }
 }
