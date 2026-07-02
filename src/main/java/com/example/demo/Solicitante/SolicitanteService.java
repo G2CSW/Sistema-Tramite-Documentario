@@ -1,5 +1,7 @@
 package com.example.demo.Solicitante;
 
+import java.util.List;
+
 public interface SolicitanteService {
 
     String validarSolicitante(Solicitante solicitante);
@@ -7,6 +9,8 @@ public interface SolicitanteService {
     Solicitante guardarOActualizarSolicitante(Solicitante solicitante);
 
     Solicitante buscarSolicitante(String idSolicitante);
+
+    List<Solicitante> listarTodos();
 
     boolean existeSolicitante(String idSolicitante);
 }
