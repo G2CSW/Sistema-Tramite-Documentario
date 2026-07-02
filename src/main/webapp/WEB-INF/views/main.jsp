@@ -50,16 +50,30 @@
             <c:if test="${sessionScope.usuario.area == 'Mesa de Partes'}">
               <a href="/tramite/registrar">
                 <button class="accion-btn">
-                  <!-- file-plus -->
                   <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 5v14M5 12h14" />
                   </svg>
                   Nuevo trámite
                 </button>
               </a>
+              <a href="/solicitante/registrar">
+                <button class="accion-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+                  </svg>
+                  Nuevo Solicitante
+                </button>
+              </a>
+
+
               <a href="/tramite/listar">
                 <button class="accion-btn">
-                  <!-- inbox -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-file-search">
@@ -73,11 +87,9 @@
                 </button>
               </a>
             </c:if>
-
             <c:if test="${sessionScope.usuario.area == 'Área de Evaluación'}">
               <a href="/bandejaTrabajo/listar">
                 <button class="accion-btn">
-                  <!-- inbox -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check">
@@ -94,7 +106,6 @@
             <c:if test="${sessionScope.usuario.area == 'Mesa de Partes'}">
               <a href="/archivados/listar">
                 <button class="accion-btn">
-                  <!-- archive -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-archive">

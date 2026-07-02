@@ -3,6 +3,8 @@ package com.example.demo.Solicitante;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class SolicitanteServiceImpl implements SolicitanteService {
@@ -45,6 +47,10 @@ public class SolicitanteServiceImpl implements SolicitanteService {
             return "El teléfono de contacto es obligatorio";
         }
 
+        if (!s.getTelefonoContacto().matches("\\d+")) {
+            return "El teléfono solo debe contener números";
+        }
+
         return null;
     }
 
@@ -64,6 +70,11 @@ public class SolicitanteServiceImpl implements SolicitanteService {
         }
 
         return solicitanteDAO.buscarPorId(idSolicitante);
+    }
+
+    @Override
+    public List<Solicitante> listarTodos() {
+        return solicitanteDAO.listarTodos();
     }
 
     @Override

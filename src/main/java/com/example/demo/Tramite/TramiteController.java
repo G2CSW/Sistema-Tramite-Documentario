@@ -94,18 +94,26 @@ public class TramiteController {
             Model model,
             HttpSession session) {
 
-        String error = solicitanteService.validarSolicitante(tramite.getSolicitante());
+        String idSolicitante = tramite.getSolicitante().getIdSolicitante();
+        Long tipoId = tramite.getTipoTramite() != null
+                ? tramite.getTipoTramite().getIdTipoTramite()
+                : null;
 
-        if (error != null) {
-            model.addAttribute("error", error);
-
-            Long tipoId = tramite.getTipoTramite() != null
-                    ? tramite.getTipoTramite().getIdTipoTramite()
-                    : null;
-
+        if (idSolicitante == null || idSolicitante.isBlank()) {
+            model.addAttribute("error", "El DNI / CE es obligatorio");
             cargarFormularioRegistro(model, tramite, tipoId);
             return "tramite/registrarTramite";
         }
+
+        Solicitante solicitanteBuscado = solicitanteService.buscarSolicitante(idSolicitante);
+
+        if (solicitanteBuscado == null) {
+            model.addAttribute("error", "El DNI no está registrado en el sistema. Debe registrarse primero al solicitante.");
+            cargarFormularioRegistro(model, tramite, tipoId);
+            return "tramite/registrarTramite";
+        }
+
+        tramite.setSolicitante(solicitanteBuscado);
 
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         String idUsuario = usuario != null ? usuario.getIdUsuario() : null;
@@ -150,21 +158,29 @@ public class TramiteController {
             RedirectAttributes ra,
             Model model) {
 
-        String error = solicitanteService.validarSolicitante(form.getSolicitante());
+        String idSolicitante = form.getSolicitante().getIdSolicitante();
+        Tramite tramiteOriginal = tramiteService.buscarPorId(id);
 
-        if (error != null) {
-            model.addAttribute("error", error);
+        if (tramiteOriginal == null) {
+            ra.addFlashAttribute("mensaje", "Trámite no encontrado");
+            return "redirect:/tramite/listar";
+        }
 
-            Tramite tramite = tramiteService.buscarPorId(id);
-            if (tramite != null) {
-                cargarFormularioEdicion(model, form, tramite);
-            } else {
-                ra.addFlashAttribute("mensaje", "Trámite no encontrado");
-                return "redirect:/tramite/listar";
-            }
-
+        if (idSolicitante == null || idSolicitante.isBlank()) {
+            model.addAttribute("error", "El DNI / CE es obligatorio");
+            cargarFormularioEdicion(model, form, tramiteOriginal);
             return "tramite/editarTramite";
         }
+
+        Solicitante solicitanteBuscado = solicitanteService.buscarSolicitante(idSolicitante);
+
+        if (solicitanteBuscado == null) {
+            model.addAttribute("error", "El DNI no está registrado en el sistema. Debe registrarse primero al solicitante.");
+            cargarFormularioEdicion(model, form, tramiteOriginal);
+            return "tramite/editarTramite";
+        }
+
+        form.setSolicitante(solicitanteBuscado);
 
         boolean actualizado = tramiteService.editar(id, form);
 
