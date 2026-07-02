@@ -60,53 +60,53 @@
             </a>
           </div>
 
-          <div class="table-container">
-            <table class="tbl">
-              <thead>
-                <tr>
-                  <th>DNI / CE</th>
-                  <th>Nombre Completo</th>
-                  <th>Correo Electrónico</th>
-                  <th>Teléfono</th>
-                  <th style="text-align: center;">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <c:choose>
-                  <c:when test="${not empty solicitantes}">
-                    <c:forEach var="s" items="${solicitantes}">
-                      <tr>
-                        <td>${s.idSolicitante}</td>
-                        <td>${s.nombreCompleto}</td>
-                        <td>${s.correoElectronico}</td>
-                        <td>${s.telefonoContacto}</td>
-                        <td style="text-align: center;">
-                          <a href="/solicitante/editar?id=${s.idSolicitante}" class="btn btn-secondary"
-                            style="padding: 0.5rem; display: inline-flex;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                              stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-pencil">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                              <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-                              <path d="M13.5 6.5l4 4" />
-                            </svg>
-                            Editar
-                          </a>
-                        </td>
-                      </tr>
-                    </c:forEach>
-                  </c:when>
-                  <c:otherwise>
+
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>DNI / CE</th>
+                <th>Nombre Completo</th>
+                <th>Correo Electrónico</th>
+                <th>Teléfono</th>
+                <th style="text-align: center;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <c:choose>
+                <c:when test="${not empty solicitantes}">
+                  <c:forEach var="s" items="${solicitantes}">
                     <tr>
-                      <td colspan="5" style="text-align: center; color: #6b7280; padding: 2rem;">
-                        No se encontraron solicitantes registrados.
+                      <td>${s.idSolicitante}</td>
+                      <td>${s.nombreCompleto}</td>
+                      <td>${s.correoElectronico}</td>
+                      <td>${s.telefonoContacto}</td>
+                      <td style="text-align: center;">
+                        <a href="/solicitante/editar?id=${s.idSolicitante}" class="btn btn-secondary"
+                          style="padding: 0.5rem; display: inline-flex;">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-pencil">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                            <path d="M13.5 6.5l4 4" />
+                          </svg>
+                          Editar
+                        </a>
                       </td>
                     </tr>
-                  </c:otherwise>
-                </c:choose>
-              </tbody>
-            </table>
-          </div>
+                  </c:forEach>
+                </c:when>
+                <c:otherwise>
+                  <tr>
+                    <td colspan="5" style="text-align: center; color: #6b7280; padding: 2rem;">
+                      No se encontraron solicitantes registrados.
+                    </td>
+                  </tr>
+                </c:otherwise>
+              </c:choose>
+            </tbody>
+          </table>
+
         </main>
     </body>
 

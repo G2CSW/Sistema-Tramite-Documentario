@@ -72,9 +72,7 @@ public class TramiteServiceImpl implements TramiteService {
         tramite.setFechaRegistro(fechaRegistro);
         tramite.setEstadoActual(estadoInicial);
 
-        tramite.setSolicitante(
-                solicitanteService.guardarOActualizarSolicitante(tramite.getSolicitante())
-        );
+        
 
         Long idTipoTramite = tramite.getTipoTramite().getIdTipoTramite();
         tramite.setTipoTramite(
@@ -108,9 +106,7 @@ public class TramiteServiceImpl implements TramiteService {
             return false;
         }
 
-        tramiteActual.setSolicitante(
-                solicitanteService.guardarOActualizarSolicitante(form.getSolicitante())
-        );
+        tramiteActual.setSolicitante(form.getSolicitante());
 
         Long idTipoTramite = form.getTipoTramite().getIdTipoTramite();
         tramiteActual.setTipoTramite(

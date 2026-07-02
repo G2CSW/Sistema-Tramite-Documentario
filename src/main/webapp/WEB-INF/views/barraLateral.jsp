@@ -1,303 +1,179 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+  <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<c:set var="path" value="${pageContext.request.servletPath}" />
+    <c:set var="path" value="${pageContext.request.servletPath}" />
 
-<aside class="sidebar">
+    <aside class="sidebar">
       <div class="profile-section">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="30"
-          height="30"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-user-circle"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="icon icon-tabler icons-tabler-outline icon-tabler-user-circle">
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
           <path d="M9 10a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-          <path
-            d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"
-          />
+          <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
         </svg>
         <div class="profile-info">
           <c:choose>
             <c:when test="${not empty sessionScope.usuario}">
               <p class="system-name">${sessionScope.usuario.nombre}</p>
               <p style="font-size: 0.8rem; color: #a1a1aa; margin-top: 4px;">${sessionScope.usuario.area}</p>
-              <a href="/logout" style="font-size: 0.8rem; color: #ef4444; text-decoration: none; margin-top: 4px; display: inline-block;">Cerrar sesión</a>
+              <a href="/logout"
+                style="font-size: 0.8rem; color: #ef4444; text-decoration: none; margin-top: 4px; display: inline-block;">Cerrar
+                sesión</a>
             </c:when>
             <c:otherwise>
               <p class="system-name">Sistema de Trámite Documentario</p>
-              <a href="/login" style="font-size: 0.8rem; color: #3b82f6; text-decoration: none; margin-top: 4px; display: inline-block;">Iniciar sesión</a>
+              <a href="/login"
+                style="font-size: 0.8rem; color: #3b82f6; text-decoration: none; margin-top: 4px; display: inline-block;">Iniciar
+                sesión</a>
             </c:otherwise>
           </c:choose>
         </div>
       </div>
       <nav class="nav-menu">
-        <a class="${path.contains('/main') ? 'active' : ''}" href="/"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-home"
-          >
+        <a class="${path.contains('/main') ? 'active' : ''}" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-home">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
             <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg
-          >Inicio</a
-        >
+            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+          </svg>Inicio</a>
 
-        <a class="${path.contains('/gestion') ? 'active' : ''}" href="/gestion"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-brand-asana"
-          >
+        <a class="${path.contains('/gestion') ? 'active' : ''}" href="/gestion"><svg xmlns="http://www.w3.org/2000/svg"
+            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-brand-asana">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M9 7a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
             <path d="M14 16a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-            <path d="M4 16a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /></svg
-          >Gestión</a
-        >
+            <path d="M4 16a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+          </svg>Gestión</a>
 
         <c:if test="${sessionScope.usuario.area == 'Mesa de Partes'}">
-        <p class="section-title">GESTIÓN DE TRÁMITES</p>
-        <a class="${path.contains('/tramite') ? 'active' : ''}" href="/tramite/listar"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-file-description"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-            <path
-              d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2"
-            />
-            <path d="M9 17h6" />
-            <path d="M9 13h6" /></svg
-          >Trámites</a
-        >
-        <a class="${path.contains('/solicitante') ? 'active' : ''}" href="/solicitante/listar"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-users"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" /></svg
-          >Solicitantes</a
-        >
+          <a class="${path.contains('/solicitante') ? 'active' : ''}" href="/solicitante/listar"><svg
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+              <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+            </svg>Solicitantes</a>
+          <p class="section-title">GESTIÓN DE TRÁMITES</p>
+          <a class="${path.contains('/tramite') ? 'active' : ''}" href="/tramite/listar"><svg
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-file-description">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+              <path d="M9 17h6" />
+              <path d="M9 13h6" />
+            </svg>Trámites</a>
+          <a class="${path.contains('/archivados') ? 'active' : ''}" href="/archivados/listar"><svg
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-archive">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2" />
+              <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+              <path d="M10 12l4 0" />
+            </svg>Archivados</a>
         </c:if>
         <c:if test="${sessionScope.usuario.area == 'Área de Evaluación'}">
-        <a class="${path.contains('/bandejaTrabajo') ? 'active' : ''}" href="/bandejaTrabajo/listar"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path
-              d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"
-            />
-            <path
-              d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2"
-            />
-            <path d="M9 14l2 2l4 -4" /></svg
-          >Bandeja de Trabajo</a
-        >
-        </c:if>
-        <c:if test="${sessionScope.usuario.area == 'Mesa de Partes'}">
-        <a class="${path.contains('/archivados') ? 'active' : ''}" href="/archivados/listar"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-archive"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path
-              d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2"
-            />
-            <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-            <path d="M10 12l4 0" /></svg
-          >Archivados</a
-        >
+          <a class="${path.contains('/bandejaTrabajo') ? 'active' : ''}" href="/bandejaTrabajo/listar"><svg
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+              <path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" />
+              <path d="M9 14l2 2l4 -4" />
+            </svg>Bandeja de Trabajo</a>
         </c:if>
 
         <c:if test="${sessionScope.usuario.area == 'Admin' || sessionScope.usuario.area == 'Administrador'}">
-        <p class="section-title">Configuración</p>
-        <a class="${path.contains('/tipoTramite') ? 'active' : ''}" href="/tipoTramite/listar"
-          ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-list-details"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M13 5h8" /><path d="M13 9h5" /><path d="M13 15h8" /><path d="M13 19h5" /><path d="M3 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M3 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /></svg>Tipo de Trámite</a
-        >
+          <p class="section-title">Configuración</p>
+          <a class="${path.contains('/tipoTramite') ? 'active' : ''}" href="/tipoTramite/listar"><svg
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M13 5h8" />
+              <path d="M13 9h5" />
+              <path d="M13 15h8" />
+              <path d="M13 19h5" />
+              <path d="M3 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" />
+              <path d="M3 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" />
+            </svg>Tipo de Trámite</a>
 
-         <a class="${path.contains('/documento') ? 'active' : ''}" href="/documento/listar"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-file-settings"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                    <path d="M12 10.5v1.5" />
-                    <path d="M12 16v1.5" />
-                    <path d="M15.031 12.25l-1.299 .75" />
-                    <path d="M10.268 15l-1.3 .75" />
-                    <path d="M15 15.803l-1.285 -.773" />
-                    <path d="M10.285 12.97l-1.285 -.773" />
-                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                    <path
-                      d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2"
-                    /></svg
-                  >Documentos</a
-                >
+          <a class="${path.contains('/documento') ? 'active' : ''}" href="/documento/listar"><svg
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-file-settings">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+              <path d="M12 10.5v1.5" />
+              <path d="M12 16v1.5" />
+              <path d="M15.031 12.25l-1.299 .75" />
+              <path d="M10.268 15l-1.3 .75" />
+              <path d="M15 15.803l-1.285 -.773" />
+              <path d="M10.285 12.97l-1.285 -.773" />
+              <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+            </svg>Documentos</a>
 
-        <a class="${path.contains('/usuario') ? 'active' : ''}" href="/usuario/listar"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-users-group"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-            <path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" />
-            <path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-            <path d="M17 10h2a2 2 0 0 1 2 2v1" />
-            <path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-            <path d="M3 13v-1a2 2 0 0 1 2 -2h2" /></svg
-          >Usuarios</a
-        >
+          <a class="${path.contains('/usuario') ? 'active' : ''}" href="/usuario/listar"><svg
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-users-group">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+              <path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" />
+              <path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+              <path d="M17 10h2a2 2 0 0 1 2 2v1" />
+              <path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+              <path d="M3 13v-1a2 2 0 0 1 2 -2h2" />
+            </svg>Usuarios</a>
         </c:if>
 
         <c:if test="${sessionScope.usuario.area == 'Admin' || sessionScope.usuario.area == 'Administrador'}">
-        <p class="section-title">ESTADÍSTICAS</p>
-        <a class="${path.contains('/metricas') ? 'active' : ''}" href="/metricas"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-chart-histogram"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 3v18h18" />
-            <path d="M20 18v3" />
-            <path d="M16 16v5" />
-            <path d="M12 13v8" />
-            <path d="M8 16v5" />
-            <path d="M3 11c6 0 5 -5 9 -5s3 5 9 5" /></svg
-          >Métricas</a
-        >
+          <p class="section-title">ESTADÍSTICAS</p>
+          <a class="${path.contains('/metricas') ? 'active' : ''}" href="/metricas"><svg
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-chart-histogram">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M3 3v18h18" />
+              <path d="M20 18v3" />
+              <path d="M16 16v5" />
+              <path d="M12 13v8" />
+              <path d="M8 16v5" />
+              <path d="M3 11c6 0 5 -5 9 -5s3 5 9 5" />
+            </svg>Métricas</a>
         </c:if>
         <p class="section-title">AYUDA Y SOPORTE</p>
-        <a class="${path.contains('/contacto') ? 'active' : ''}"  href="/contacto"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-help-circle"
-          >
+        <a class="${path.contains('/contacto') ? 'active' : ''}" href="/contacto"><svg
+            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-help-circle">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
             <path d="M12 16v.01" />
-            <path
-              d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"
-            /></svg
-          >Contacto</a
-        >
-        <a class="${path.contains('/publicidad') ? 'active' : ''}"  href="/publicidad"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-speakerphone"
-          >
+            <path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483" />
+          </svg>Contacto</a>
+        <a class="${path.contains('/publicidad') ? 'active' : ''}" href="/publicidad"><svg
+            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-speakerphone">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M18 8a3 3 0 0 1 0 6" />
             <path d="M10 8v11a1 1 0 0 1 -1 1h-1a1 1 0 0 1 -1 -1v-5" />
             <path
-              d="M12 8l4.524 -3.77a.9 .9 0 0 1 1.476 .692v12.156a.9 .9 0 0 1 -1.476 .692l-4.524 -3.77h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h8"
-            /></svg
-          >Publicidad</a
-        >
+              d="M12 8l4.524 -3.77a.9 .9 0 0 1 1.476 .692v12.156a.9 .9 0 0 1 -1.476 .692l-4.524 -3.77h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h8" />
+          </svg>Publicidad</a>
       </nav>
     </aside>
