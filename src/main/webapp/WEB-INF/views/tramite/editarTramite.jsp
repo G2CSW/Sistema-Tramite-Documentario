@@ -47,7 +47,8 @@
                   <label for="tipoTramite">Tipo de Trámite</label>
 
                   <div class="buscar-documentacion-contenedor">
-                    <select id="tipoTramite" class="select" name="tipoTramite.idTipoTramite">
+                    <select id="tipoTramite" class="select" name="tipoTramite.idTipoTramite"
+                      onchange="actualizarDocumentos(this.value)">
                       <c:forEach var="tipo" items="${tipoTramites}">
                         <c:choose>
                           <c:when test="${tipo.idTipoTramite eq tipoTramiteId}">
@@ -63,11 +64,6 @@
                         </c:choose>
                       </c:forEach>
                     </select>
-
-                    <button type="submit" formmethod="get" formaction="/tramite/editar/${numeroTramiteGenerado}"
-                      class="btn btn-primary">
-                      Cargar documentación
-                    </button>
                   </div>
                 </div>
               </div>
@@ -80,22 +76,26 @@
                 <div>
                   <label>Documentación mínima requerida</label>
 
-                  <c:choose>
-                    <c:when test="${not empty tipoSeleccionado and not empty tipoSeleccionado.documentacionMinima}">
-                      <ul class="doc-minima-lista">
-                        <c:forEach var="doc" items="${tipoSeleccionado.documentacionMinima}">
-                          <li class="doc-minima-item">
-                            <span class="doc-minima-texto">${doc.nombreDocumento}</span>
-                          </li>
-                        </c:forEach>
-                      </ul>
-                    </c:when>
-                    <c:otherwise>
-                      <div class="doc-minima-vacio">
-                        Seleccione un tipo de trámite y presione "Cargar documentación".
-                      </div>
-                    </c:otherwise>
-                  </c:choose>
+                  <c:forEach var="tipo" items="${tipoTramites}">
+                    <div id="docs-${tipo.idTipoTramite}" class="lista-documentos" style="display: none;">
+                      <c:choose>
+                        <c:when test="${not empty tipo.documentacionMinima}">
+                          <ul class="doc-minima-lista">
+                            <c:forEach var="doc" items="${tipo.documentacionMinima}">
+                              <li class="doc-minima-item">
+                                <span class="doc-minima-texto">${doc.nombreDocumento}</span>
+                              </li>
+                            </c:forEach>
+                          </ul>
+                        </c:when>
+                        <c:otherwise>
+                          <div class="doc-minima-vacio">
+                            No requiere documentación mínima.
+                          </div>
+                        </c:otherwise>
+                      </c:choose>
+                    </div>
+                  </c:forEach>
                 </div>
               </div>
             </section>
@@ -112,6 +112,20 @@
 
           </form>
         </main>
+
+        <script>
+          function actualizarDocumentos(idSeleccionado) {
+            document.querySelectorAll('.lista-documentos').forEach(lista => {
+              lista.style.display = 'none';
+            });
+
+            let listaAMostrar = document.getElementById('docs-' + idSeleccionado);
+            if (listaAMostrar) {
+              listaAMostrar.style.display = 'block';
+            }
+          }
+          actualizarDocumentos(document.getElementById('tipoTramite').value);
+        </script>
     </body>
 
     </html>
